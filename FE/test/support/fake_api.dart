@@ -31,6 +31,7 @@ class FakeApi implements HttpClientAdapter {
     ('Surendranagar', 'સુરેન્દ્રનગર'),
     ('Rajkot', 'રાજકોટ'),
     ('Vapi', 'વાપી'),
+    ('Valsad', 'વલસાડ'),
   ];
   Map<String, List<String>> translit = {
     'mundra': ['મુન્દ્રા', 'મુંદ્રા'],

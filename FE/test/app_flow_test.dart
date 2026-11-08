@@ -59,7 +59,7 @@ void main() {
       await t.pumpAndSettle();
       expect(find.text('નમસ્તે, Jaydip'), findsOneWidget);
       for (final tab in ['હોમ', 'ટ્રીપ', 'ખર્ચ', 'ખાતા', 'રિપોર્ટ']) {
-        expect(find.text(tab), findsOneWidget);
+        expect(find.text(tab), findsWidgets); // Home also has a quick tile named ખર્ચ
       }
     });
   });

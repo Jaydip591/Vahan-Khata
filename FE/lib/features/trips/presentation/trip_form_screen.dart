@@ -144,7 +144,8 @@ class _TripFormScreenState extends ConsumerState<TripFormScreen> {
     } else if (_bhada <= 0) {
       problem = t.enterAmount;
     } else if (!_editing && _advanceAmount > 0 && accountId == null) {
-      problem = t.needAccountFirst;
+      final noAccounts = ref.read(accountsProvider).asData?.value.isEmpty ?? false;
+      problem = noAccounts ? t.needAccountFirst : t.chooseAccount;
     }
     if (problem != null) {
       setState(() => _error = problem);

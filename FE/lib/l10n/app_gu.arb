@@ -211,5 +211,12 @@
         "type": "int"
       }
     }
-  }
+  },
+  "creditLabel": "એડવાન્સ જમા",
+  "newPartyShort": "પાર્ટી",
+  "homeDueCard": "બાકી લેવાના",
+  "noPartyYet": "પહેલા પાર્ટી ઉમેરો",
+  "advanceTag": "એડવાન્સ",
+  "deletePaymentTitle": "આ પેમેન્ટ કાઢી નાખવું છે?",
+  "chooseAccount": "ખાતું પસંદ કરો"
 }

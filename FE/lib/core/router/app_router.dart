@@ -12,6 +12,9 @@ import '../../features/drivers/presentation/drivers_screen.dart';
 import '../../features/parties/data/party.dart';
 import '../../features/parties/presentation/parties_screen.dart';
 import '../../features/parties/presentation/party_form_screen.dart';
+import '../../features/expenses/presentation/kharcha_screen.dart';
+import '../../features/ledger/presentation/khata_screen.dart';
+import '../../features/ledger/presentation/party_ledger_screen.dart';
 import '../../features/trips/data/trip.dart';
 import '../../features/trips/presentation/trip_detail_screen.dart';
 import '../../features/trips/presentation/trip_form_screen.dart';
@@ -51,6 +54,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/splash', builder: (_, _) => const _Splash()),
       GoRoute(path: '/login', builder: (_, _) => const LoginScreen()),
       GoRoute(path: '/more', builder: (_, _) => const MoreScreen()),
+      GoRoute(
+        path: '/party/:id',
+        builder: (_, s) => PartyLedgerScreen(partyId: s.pathParameters['id']!),
+      ),
       GoRoute(path: '/trip/new', builder: (_, _) => const TripFormScreen()),
       GoRoute(path: '/trip/edit', builder: (_, s) => TripFormScreen(trip: s.extra as Trip?)),
       GoRoute(path: '/trip/detail', builder: (_, s) => TripDetailScreen(trip: s.extra as Trip)),
@@ -84,18 +91,10 @@ final routerProvider = Provider<GoRouter>((ref) {
             GoRoute(path: '/trips', builder: (_, _) => const TripsScreen()),
           ]),
           StatefulShellBranch(routes: [
-            GoRoute(
-              path: '/kharcha',
-              builder: (c, _) => PlaceholderTab(
-                  title: AppL10n.of(c).tabKharcha, icon: Icons.local_gas_station_rounded),
-            ),
+            GoRoute(path: '/kharcha', builder: (_, _) => const KharchaScreen()),
           ]),
           StatefulShellBranch(routes: [
-            GoRoute(
-              path: '/khata',
-              builder: (c, _) => PlaceholderTab(
-                  title: AppL10n.of(c).tabKhata, icon: Icons.menu_book_rounded),
-            ),
+            GoRoute(path: '/khata', builder: (_, _) => const KhataScreen()),
           ]),
           StatefulShellBranch(routes: [
             GoRoute(

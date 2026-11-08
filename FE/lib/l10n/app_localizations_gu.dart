@@ -588,4 +588,25 @@ class AppL10nGu extends AppL10n {
 
   @override
   String get monthNext => 'આવતો મહિનો';
+
+  @override
+  String get creditLabel => 'એડવાન્સ જમા';
+
+  @override
+  String get newPartyShort => 'પાર્ટી';
+
+  @override
+  String get homeDueCard => 'બાકી લેવાના';
+
+  @override
+  String get noPartyYet => 'પહેલા પાર્ટી ઉમેરો';
+
+  @override
+  String get advanceTag => 'એડવાન્સ';
+
+  @override
+  String get deletePaymentTitle => 'આ પેમેન્ટ કાઢી નાખવું છે?';
+
+  @override
+  String get chooseAccount => 'ખાતું પસંદ કરો';
 }

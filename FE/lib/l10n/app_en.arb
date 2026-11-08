@@ -204,5 +204,12 @@
         "type": "int"
       }
     }
-  }
+  },
+  "creditLabel": "Credit",
+  "newPartyShort": "Party",
+  "homeDueCard": "To receive",
+  "noPartyYet": "Add a party first",
+  "advanceTag": "Advance",
+  "deletePaymentTitle": "Delete this payment?",
+  "chooseAccount": "Choose an account"
 }

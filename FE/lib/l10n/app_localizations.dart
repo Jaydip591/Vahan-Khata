@@ -1242,6 +1242,48 @@ abstract class AppL10n {
   /// In gu, this message translates to:
   /// **'આવતો મહિનો'**
   String get monthNext;
+
+  /// No description provided for @creditLabel.
+  ///
+  /// In gu, this message translates to:
+  /// **'એડવાન્સ જમા'**
+  String get creditLabel;
+
+  /// No description provided for @newPartyShort.
+  ///
+  /// In gu, this message translates to:
+  /// **'પાર્ટી'**
+  String get newPartyShort;
+
+  /// No description provided for @homeDueCard.
+  ///
+  /// In gu, this message translates to:
+  /// **'બાકી લેવાના'**
+  String get homeDueCard;
+
+  /// No description provided for @noPartyYet.
+  ///
+  /// In gu, this message translates to:
+  /// **'પહેલા પાર્ટી ઉમેરો'**
+  String get noPartyYet;
+
+  /// No description provided for @advanceTag.
+  ///
+  /// In gu, this message translates to:
+  /// **'એડવાન્સ'**
+  String get advanceTag;
+
+  /// No description provided for @deletePaymentTitle.
+  ///
+  /// In gu, this message translates to:
+  /// **'આ પેમેન્ટ કાઢી નાખવું છે?'**
+  String get deletePaymentTitle;
+
+  /// No description provided for @chooseAccount.
+  ///
+  /// In gu, this message translates to:
+  /// **'ખાતું પસંદ કરો'**
+  String get chooseAccount;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

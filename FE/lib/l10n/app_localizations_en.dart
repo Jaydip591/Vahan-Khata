@@ -591,4 +591,25 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get monthNext => 'Next month';
+
+  @override
+  String get creditLabel => 'Credit';
+
+  @override
+  String get newPartyShort => 'Party';
+
+  @override
+  String get homeDueCard => 'To receive';
+
+  @override
+  String get noPartyYet => 'Add a party first';
+
+  @override
+  String get advanceTag => 'Advance';
+
+  @override
+  String get deletePaymentTitle => 'Delete this payment?';
+
+  @override
+  String get chooseAccount => 'Choose an account';
 }

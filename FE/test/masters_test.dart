@@ -25,6 +25,7 @@ void main() {
   }
 
   Finder field(int i) => find.byType(TextFormField).at(i);
+  String firstVehicleId() => api.db['vehicles']!.first['id'] as String;
 
   setUp(() => api = FakeApi());
 
@@ -119,6 +120,7 @@ void main() {
 
     testWidgets('edit sends the change, delete asks first', (t) async {
       api.addVehicle('Eicher 1', 'GJ05 AB 1234');
+      final vehicleId = firstVehicleId();
       await boot(t);
       await openMore(t, 'ગાડીઓ');
       await t.tap(find.text('Eicher 1'));
@@ -127,7 +129,7 @@ void main() {
       await t.enterText(field(0), 'Eicher Red');
       await t.tap(find.text('સેવ કરો'));
       await t.pumpAndSettle();
-      expect((api.where('PATCH', '/api/v1/vehicles/id-5').single.data as Map)['name'], 'Eicher Red');
+      expect((api.where('PATCH', '/api/v1/vehicles/$vehicleId').single.data as Map)['name'], 'Eicher Red');
       expect(find.text('Eicher Red'), findsOneWidget);
 
       await t.tap(find.text('Eicher Red'));
@@ -137,12 +139,12 @@ void main() {
       expect(find.text('કાઢી નાખવું છે?'), findsOneWidget);
       await t.tap(find.text('રદ કરો'));
       await t.pumpAndSettle();
-      expect(api.where('DELETE', '/api/v1/vehicles/id-5'), isEmpty);
+      expect(api.where('DELETE', '/api/v1/vehicles/$vehicleId'), isEmpty);
       await t.tap(find.byTooltip('કાઢી નાખો'));
       await t.pumpAndSettle();
       await t.tap(find.descendant(of: find.byType(AlertDialog), matching: find.text('કાઢી નાખો')));
       await t.pumpAndSettle();
-      expect(api.where('DELETE', '/api/v1/vehicles/id-5'), hasLength(1));
+      expect(api.where('DELETE', '/api/v1/vehicles/$vehicleId'), hasLength(1));
       expect(find.text('હજી કોઈ ગાડી નથી'), findsOneWidget);
     });
 
@@ -158,7 +160,7 @@ void main() {
       await t.pumpAndSettle();
       await t.tap(find.text('સેવ કરો'));
       await t.pumpAndSettle();
-      expect((api.where('PATCH', '/api/v1/vehicles/id-5').single.data as Map)['puc_exp'], isNull);
+      expect((api.where('PATCH', '/api/v1/vehicles/${firstVehicleId()}').single.data as Map)['puc_exp'], isNull);
     });
   });
 
@@ -214,7 +216,7 @@ void main() {
       await t.tap(find.text('સેવ કરો'));
       await t.pumpAndSettle();
       final sent = api.where('POST', '/api/v1/drivers').single.data as Map;
-      expect(sent['default_vehicle_id'], 'id-5');
+      expect(sent['default_vehicle_id'], firstVehicleId());
       expect(sent['phone'], isNull);
     });
 

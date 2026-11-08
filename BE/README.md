@@ -49,6 +49,10 @@ PYTHONPATH=src .venv/bin/alembic upgrade head
 | GET | `/api/v1/places?q=` | Bearer | search shared and own places, English or Gujarati |
 | GET | `/api/v1/places/transliterate?text=` | Bearer | Gujarati spellings (Google Input Tools, needs internet) |
 | POST | `/api/v1/places` | Bearer | add a place (returns the existing one if the name exists) |
+| GET/POST | `/api/v1/trips` (+ GET/PATCH/DELETE `/{id}`, GET `/routes/recent`) | Bearer | trips; create may include an `advance` (saved as a linked payment) |
+| GET/POST | `/api/v1/payments`, DELETE `/{id}` | Bearer | money received from parties |
+| GET/POST | `/api/v1/expenses` (+ GET/PATCH/DELETE `/{id}`) | Bearer | diesel, toll, repair, allowance, challan, other |
+| GET | `/api/v1/ledger/parties`, `/ledger/parties/{id}` | Bearer | what each party owes (oldest first) and one party's khata |
 | GET | `/health` | — | health check |
 
 ## Production

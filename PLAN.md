@@ -14,7 +14,7 @@ Rule: one phase per session. Tick boxes as work finishes. See `CLAUDE.md` for de
 | parties | id, company_id, name, phone?, payment_cycle? (daily/10d/monthly) |
 | places | id, company_id?, name_en, name_gu, is_seed (company_id null = shared seed list) |
 | accounts | id, company_id, name, kind (cash/bank/upi), opening_balance |
-| trips | id, company_id, vehicle_id, driver_id?, party_id, from_place_id, to_place_id, trip_date, bhada, advance, advance_account_id?, status (running/closed), note |
+| trips | id, company_id, vehicle_id, driver_id?, party_id, from_place_id, to_place_id, trip_date, bhada, status (running/closed), note (advance = payments linked to the trip) |
 | payments | id, company_id, party_id, amount, mode (cash/online), account_id, paid_on, received_by, trip_id? (set only for an advance given with a trip) |
 | expenses | id, company_id, vehicle_id, trip_id?, category (diesel/toll/repair/allowance/challan/other), amount, expense_date, account_id?, liters?, rate?, odometer?, note, repair_kind? |
 
@@ -62,18 +62,24 @@ Status: backend (53 tests) and Flutter (45 tests) are done. Still to verify by h
 
 ## Phase 2 — Core entries (biggest phase; split across two sessions)
 2a Trips
-- [ ] Trips API: create, list (filters: vehicle, party, month, status), detail, close, soft delete
-- [ ] Advance on create writes a payment row in the same transaction
-- [ ] `GET /trips/routes/recent` returns frequent routes with last bhada
-- [ ] Trip screen: vehicle/party chips, quick-route chips, place picker, rate stepper, advance chips (full/half/none/custom) with live balance
-- [ ] "Same as last trip" copy button
+- [x] Trips API: create, list (filters: vehicle, party, month, status), detail, close, soft delete
+- [x] Advance on create writes a payment row in the same transaction
+- [x] `GET /trips/routes/recent` returns frequent routes with last bhada
+- [x] Trip screen: vehicle/party chips, quick-route chips, place picker, rate stepper, advance chips (full/half/none/custom) with live balance
+- [x] "Same as last trip" copy button
 2b Expenses and payments
-- [ ] Expenses API (+ diesel extras: liters, rate, odometer) and list/filter
-- [ ] Payments API; optional allocation view (oldest trip first) for showing which trips are settled
-- [ ] Party ledger API: totals, trip list with paid/unpaid, payments list
-- [ ] Kharcha screen: category tiles, keypad sheet with vehicle chips and account chip
-- [ ] Khata screens: party list sorted by oldest unpaid, party detail, payment sheet (All / Half / Custom)
+- [x] Expenses API (+ diesel extras: liters, rate, odometer) and list/filter
+- [x] Payments API; allocation (advance to its own trip first, the rest oldest trip first) shows which trips are settled
+- [x] Party ledger API: totals, trip list with paid/unpaid, payments list
+- [x] Kharcha screen: category tiles, keypad sheet with vehicle chips and account chip
+- [x] Khata screens: party list sorted by oldest unpaid, party detail, payment sheet (All / Half / Custom)
 Done when: a trip is saved in 5-6 taps; party balance matches by hand; expense and payment entries are 3-4 taps.
+
+Status: backend (97 tests) and Flutter (93 tests) are done. Decisions made while building:
+- The advance is not a column on the trip: it is a payment linked to the trip, created in the same transaction.
+- Deleting a trip keeps its advance as a payment without a trip (the party keeps the credit) and unlinks its expenses.
+- Amounts in the app are whole rupees (keypad); the server stores exact decimals.
+Still to verify by hand on the phone: a full trip entry, a diesel expense, a payment, and the Khata numbers.
 
 ## Phase 3 — Reports and dashboard
 - [ ] Reports API: month summary, vehicle-wise, party-wise, monthly trend, expense-by-category, account balances
