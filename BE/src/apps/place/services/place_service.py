@@ -1,5 +1,7 @@
 from uuid import UUID
 
+from fastapi import HTTPException, status
+
 from sqlalchemy import case, func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -48,6 +50,21 @@ class PlaceService:
         order += [Place.company_id.is_(None), Place.rank.asc().nulls_last(), Place.name_en]
         result = await db.execute(stmt.order_by(*order).limit(limit))
         return list(result.scalars().all())
+
+    @staticmethod
+    async def get_visible(db: AsyncSession, company_id: UUID, place_id: UUID) -> Place:
+        """A place the company may use: shared seed place or its own."""
+        result = await db.execute(
+            select(Place).where(
+                Place.id == place_id,
+                or_(Place.company_id == company_id, Place.company_id.is_(None)),
+                Place.deleted_at.is_(None),
+            )
+        )
+        place = result.scalars().first()
+        if place is None:
+            raise HTTPException(status.HTTP_404_NOT_FOUND, "Place not found.")
+        return place
 
     @classmethod
     async def create(cls, db: AsyncSession, actor: User, payload: PlaceCreateRequest) -> tuple[Place, bool]:

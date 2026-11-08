@@ -29,6 +29,9 @@ import apps.driver.models  # noqa: F401
 import apps.party.models  # noqa: F401
 import apps.account.models  # noqa: F401
 import apps.place.models  # noqa: F401
+import apps.trip.models  # noqa: F401
+import apps.payment.models  # noqa: F401
+import apps.expense.models  # noqa: F401
 
 # ── Alembic Config ────────────────────────────────────────────────────────────
 config = context.config

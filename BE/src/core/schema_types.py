@@ -1,8 +1,9 @@
 """Reusable pydantic field types for request schemas."""
 import re
+from decimal import Decimal
 from typing import Annotated
 
-from pydantic import AfterValidator, StringConstraints
+from pydantic import AfterValidator, Field, StringConstraints
 
 _PHONE_RE = re.compile(r"^\+?[0-9]{7,15}$")
 
@@ -30,3 +31,6 @@ Name = Annotated[
 ]
 
 Phone = Annotated[str | None, AfterValidator(_clean_phone)]
+
+# Positive money with at most 2 decimals, fits Numeric(12,2).
+Money = Annotated[Decimal, Field(gt=0, max_digits=12, decimal_places=2)]

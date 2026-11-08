@@ -28,6 +28,9 @@ import apps.driver.models  # noqa: E402,F401
 import apps.party.models  # noqa: E402,F401
 import apps.account.models  # noqa: E402,F401
 import apps.place.models  # noqa: E402,F401
+import apps.trip.models  # noqa: E402,F401
+import apps.payment.models  # noqa: E402,F401
+import apps.expense.models  # noqa: E402,F401
 from apps.company.services.bootstrap import bootstrap_admin  # noqa: E402
 from core.database import AsyncSessionLocal, Base, engine  # noqa: E402
 from main import app  # noqa: E402

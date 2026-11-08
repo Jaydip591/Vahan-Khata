@@ -79,3 +79,12 @@ def apply_updates(obj: Any, data: dict[str, Any]) -> None:
 async def soft_delete(db: AsyncSession, obj: Any) -> None:
     obj.deleted_at = datetime.now(timezone.utc)
     await db.commit()
+
+
+async def fetch_map(db: AsyncSession, model: type[T], ids: Any) -> dict[UUID, T]:
+    """Load rows by id into a dict. Ids come from already company-scoped rows."""
+    ids = {i for i in ids if i is not None}
+    if not ids:
+        return {}
+    rows = await db.execute(select(model).where(model.id.in_(ids)))
+    return {r.id: r for r in rows.scalars().all()}

@@ -12,9 +12,13 @@ from apps.auth.controllers.auth_controller import router as auth_router
 from apps.account.controllers.account_controller import router as account_router
 from apps.company.services.bootstrap import bootstrap_admin
 from apps.driver.controllers.driver_controller import router as driver_router
+from apps.expense.controllers.expense_controller import router as expense_router
+from apps.ledger.controllers.ledger_controller import router as ledger_router
+from apps.payment.controllers.payment_controller import router as payment_router
 from apps.party.controllers.party_controller import router as party_router
 from apps.place.controllers.place_controller import router as place_router
 from apps.place.services.place_service import ensure_seed_places
+from apps.trip.controllers.trip_controller import router as trip_router
 from apps.user.controllers.user_controller import router as user_router
 from apps.vehicle.controllers.vehicle_controller import router as vehicle_router
 from core.config import settings
@@ -50,7 +54,17 @@ app.add_middleware(
 # ── Routers ────────────────────────────────────────────────────────────────────
 app.include_router(auth_router, prefix="/api/v1")
 app.include_router(user_router, prefix="/api/v1")
-for _router in (vehicle_router, driver_router, party_router, account_router, place_router):
+for _router in (
+    vehicle_router,
+    driver_router,
+    party_router,
+    account_router,
+    place_router,
+    trip_router,
+    payment_router,
+    expense_router,
+    ledger_router,
+):
     app.include_router(_router, prefix="/api/v1")
 
 
