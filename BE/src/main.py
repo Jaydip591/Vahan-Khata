@@ -9,8 +9,14 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from apps.auth.controllers.auth_controller import router as auth_router
+from apps.account.controllers.account_controller import router as account_router
 from apps.company.services.bootstrap import bootstrap_admin
+from apps.driver.controllers.driver_controller import router as driver_router
+from apps.party.controllers.party_controller import router as party_router
+from apps.place.controllers.place_controller import router as place_router
+from apps.place.services.place_service import ensure_seed_places
 from apps.user.controllers.user_controller import router as user_router
+from apps.vehicle.controllers.vehicle_controller import router as vehicle_router
 from core.config import settings
 from core.database import AsyncSessionLocal
 
@@ -19,6 +25,7 @@ from core.database import AsyncSessionLocal
 async def lifespan(app: FastAPI):
     async with AsyncSessionLocal() as db:
         await bootstrap_admin(db)
+        await ensure_seed_places(db)
     yield
 
 
@@ -43,6 +50,8 @@ app.add_middleware(
 # ── Routers ────────────────────────────────────────────────────────────────────
 app.include_router(auth_router, prefix="/api/v1")
 app.include_router(user_router, prefix="/api/v1")
+for _router in (vehicle_router, driver_router, party_router, account_router, place_router):
+    app.include_router(_router, prefix="/api/v1")
 
 
 @app.get("/health", tags=["Health"])

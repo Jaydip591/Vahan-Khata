@@ -14,3 +14,6 @@ bcrypt==5.0.0
 # Configuration
 pydantic-settings==2.16.2
 python-dotenv==1.2.4
+
+# HTTP client (Gujarati transliteration)
+httpx==0.28.1
