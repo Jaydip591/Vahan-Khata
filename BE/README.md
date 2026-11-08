@@ -33,7 +33,7 @@ PYTHONPATH=src .venv/bin/alembic revision --autogenerate -m "describe change"
 PYTHONPATH=src .venv/bin/alembic upgrade head
 ```
 
-## API (Phase 0)
+## API
 | Method | Path | Auth | |
 |---|---|---|---|
 | POST | `/api/v1/auth/login` | — | username + password → access + refresh token |
@@ -42,6 +42,13 @@ PYTHONPATH=src .venv/bin/alembic upgrade head
 | GET | `/api/v1/users/me` | Bearer | current user |
 | GET/POST | `/api/v1/users` | Bearer (superadmin) | list / create users |
 | PATCH | `/api/v1/users/{id}` | Bearer (superadmin) | rename, reset password, activate/deactivate |
+| GET/POST | `/api/v1/vehicles`, GET/PATCH/DELETE `/{id}`, GET `/suggest-name?type=` | Bearer | vehicles (number unique per company) |
+| GET/POST | `/api/v1/drivers` (+ `/{id}`) | Bearer | drivers |
+| GET/POST | `/api/v1/parties` (+ `/{id}`) | Bearer | parties (customers), unique name |
+| GET/POST | `/api/v1/accounts` (+ `/{id}`) | Bearer | cash / bank / upi accounts |
+| GET | `/api/v1/places?q=` | Bearer | search shared and own places, English or Gujarati |
+| GET | `/api/v1/places/transliterate?text=` | Bearer | Gujarati spellings (Google Input Tools, needs internet) |
+| POST | `/api/v1/places` | Bearer | add a place (returns the existing one if the name exists) |
 | GET | `/health` | — | health check |
 
 ## Production

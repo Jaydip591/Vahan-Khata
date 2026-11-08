@@ -58,12 +58,18 @@ Selected chip: ink fill, white text. Active tab: gold top border.
   revokes that user's sessions.
 - Dev DB: `docker compose up -d db` (Postgres on localhost:5432). Tests use database `transport_test`:
   `cd BE && set -a && . ./.env && set +a && .venv/bin/pytest`.
+- Shared place list lives in `BE/src/apps/place/seed_data.py` (English, Gujarati, in popularity order). It is
+  synced into the database on every start; edit the file to add places or fix spellings.
+- Master modules (vehicle, driver, party, account) use the helpers in `core/crud.py`; new master-like modules should too.
 - Prod: `docker-compose.prod.yml` (DB not published, API on 127.0.0.1 behind Caddy).
 
 ## Flutter conventions (FE/)
 - Riverpod (state), go_router (navigation), dio (HTTP), drift (local DB / offline queue),
   flutter_secure_storage (tokens), intl + flutter_localizations, fl_chart, pdf + share_plus.
 - Feature-first folders: `lib/features/<feature>/{data,domain,presentation}`, shared UI in `lib/core/ui`.
+- Riverpod providers do not auto-retry (`core/provider_retry.dart`): failures show an error with a Retry button.
+- Reusable entry widgets: `AppChip`, `AppTextField`, `FormShell`, `MasterListScreen`, `showPlacePicker`,
+  `VehicleChips`, `PartyChips` (use these in Phase 2 forms instead of new widgets).
 - All strings in ARB files (`app_gu.arb`, `app_en.arb`). No hardcoded user-facing text.
 - Theme tokens in one file; never hardcode colors in widgets.
 - Every entry screen must be usable in 5-6 taps and with one hand.

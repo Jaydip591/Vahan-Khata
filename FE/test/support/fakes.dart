@@ -1,11 +1,17 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vahan_khata/app.dart';
+import 'package:vahan_khata/core/network/api_client.dart';
+import 'package:vahan_khata/core/provider_retry.dart';
 import 'package:vahan_khata/core/providers.dart';
+import 'package:vahan_khata/core/storage/token_storage.dart';
 import 'package:vahan_khata/features/auth/data/app_user.dart';
 import 'package:vahan_khata/features/auth/data/auth_repository.dart';
+
+import 'fake_api.dart';
 
 class FakeAuthRepository implements AuthRepository {
   FakeAuthRepository({this.loginFailure, this.session = false});
@@ -51,13 +57,23 @@ Future<void> loadAppFonts() async {
 Future<Widget> appWith(
   FakeAuthRepository repo, {
   Map<String, Object> prefs = const {},
+  FakeApi? api,
 }) async {
   SharedPreferences.setMockInitialValues(prefs);
+  FlutterSecureStorage.setMockInitialValues({});
   final sp = await SharedPreferences.getInstance();
+  final fake = api ?? FakeApi();
   return ProviderScope(
+    retry: noAutoRetry,
     overrides: [
       sharedPreferencesProvider.overrideWithValue(sp),
       authRepositoryProvider.overrideWithValue(repo),
+      apiClientProvider.overrideWithValue(ApiClient(
+        baseUrl: 'http://test',
+        storage: TokenStorage(),
+        onSessionExpired: () {},
+        adapter: fake,
+      )),
     ],
     child: const VahanKhataApp(),
   );

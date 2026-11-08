@@ -91,4 +91,240 @@ class AppL10nGu extends AppL10n {
 
   @override
   String get comingSoon => 'આ સુવિધા જલ્દી આવશે';
+
+  @override
+  String get vehicles => 'ગાડીઓ';
+
+  @override
+  String get drivers => 'ડ્રાઇવરો';
+
+  @override
+  String get parties => 'પાર્ટીઓ';
+
+  @override
+  String get accounts => 'ખાતા (Cash / Bank)';
+
+  @override
+  String get users => 'યુઝર્સ';
+
+  @override
+  String get addVehicle => 'નવી ગાડી ઉમેરો';
+
+  @override
+  String get editVehicle => 'ગાડી સુધારો';
+
+  @override
+  String get vehicleType => 'ગાડીનો પ્રકાર';
+
+  @override
+  String get typeEicher => 'આઇશર';
+
+  @override
+  String get typeBolero => 'બોલેરો';
+
+  @override
+  String get typeTataAce => 'ટાટા એસ';
+
+  @override
+  String get typeTruck => 'ટ્રક';
+
+  @override
+  String get typeTempo => 'ટેમ્પો';
+
+  @override
+  String get typeOther => 'બીજું';
+
+  @override
+  String get vehicleName => 'ગાડીનું નામ';
+
+  @override
+  String get vehicleNameHint => 'આપોઆપ ભરાય છે, બદલી શકાય';
+
+  @override
+  String get vehicleNumber => 'ગાડી નંબર';
+
+  @override
+  String get docDates => 'વધુ વિગત (વીમો, PUC તારીખ)';
+
+  @override
+  String get docInsurance => 'વીમો પૂરો થાય';
+
+  @override
+  String get docPuc => 'PUC પૂરું થાય';
+
+  @override
+  String get docFitness => 'ફિટનેસ પૂરું થાય';
+
+  @override
+  String get docPermit => 'પરમિટ પૂરું થાય';
+
+  @override
+  String get docTax => 'ટેક્સ ભરવાનો';
+
+  @override
+  String get pickDate => 'તારીખ પસંદ કરો';
+
+  @override
+  String get addDriver => 'નવો ડ્રાઇવર';
+
+  @override
+  String get editDriver => 'ડ્રાઇવર સુધારો';
+
+  @override
+  String get name => 'નામ';
+
+  @override
+  String get phone => 'ફોન નંબર';
+
+  @override
+  String get defaultVehicle => 'મુખ્ય ગાડી';
+
+  @override
+  String get none => 'કોઈ નહીં';
+
+  @override
+  String get addParty => 'નવી પાર્ટી';
+
+  @override
+  String get editParty => 'પાર્ટી સુધારો';
+
+  @override
+  String get partyName => 'પાર્ટીનું નામ';
+
+  @override
+  String get paymentCycle => 'પેમેન્ટ ક્યારે આપે';
+
+  @override
+  String get cycleDaily => 'રોજ';
+
+  @override
+  String get cycleTenDays => '10 દિવસે';
+
+  @override
+  String get cycleMonthly => 'મહિને';
+
+  @override
+  String get addAccount => 'નવું ખાતું';
+
+  @override
+  String get editAccount => 'ખાતું સુધારો';
+
+  @override
+  String get accountName => 'ખાતાનું નામ';
+
+  @override
+  String get accountNameHint => 'જેમ કે Cash - જયદીપ';
+
+  @override
+  String get kindCash => 'રોકડ';
+
+  @override
+  String get kindBank => 'બેંક';
+
+  @override
+  String get kindUpi => 'UPI';
+
+  @override
+  String get openingBalance => 'શરૂઆતની રકમ';
+
+  @override
+  String get addUser => 'નવો યુઝર';
+
+  @override
+  String get editUser => 'યુઝર સુધારો';
+
+  @override
+  String get fullName => 'પૂરું નામ';
+
+  @override
+  String get newPasswordOptional => 'નવો પાસવર્ડ (ખાલી રાખો તો બદલાશે નહીં)';
+
+  @override
+  String get userActive => 'ચાલુ છે';
+
+  @override
+  String get passwordTooShort => 'પાસવર્ડ ઓછામાં ઓછા 6 અક્ષરનો રાખો';
+
+  @override
+  String get usernameRule => '3-32 અક્ષર: નાના અંગ્રેજી અક્ષર, આંકડા, . - _';
+
+  @override
+  String get save => 'સેવ કરો';
+
+  @override
+  String get delete => 'કાઢી નાખો';
+
+  @override
+  String get deleteConfirmTitle => 'કાઢી નાખવું છે?';
+
+  @override
+  String get deleteConfirmBody => 'તે લિસ્ટમાંથી હટી જશે.';
+
+  @override
+  String get emptyVehicles => 'હજી કોઈ ગાડી નથી';
+
+  @override
+  String get emptyDrivers => 'હજી કોઈ ડ્રાઇવર નથી';
+
+  @override
+  String get emptyParties => 'હજી કોઈ પાર્ટી નથી';
+
+  @override
+  String get emptyAccounts => 'હજી કોઈ ખાતું નથી';
+
+  @override
+  String get emptyUsers => 'હજી કોઈ યુઝર નથી';
+
+  @override
+  String get emptyHint => 'નીચેના બટનથી ઉમેરો';
+
+  @override
+  String get required => 'આ ખાનું ભરવું જરૂરી છે';
+
+  @override
+  String get invalidNumber => 'સાચો ગાડી નંબર લખો';
+
+  @override
+  String get invalidPhone => 'સાચો ફોન નંબર લખો';
+
+  @override
+  String get errorDuplicate => 'આ પહેલેથી લિસ્ટમાં છે';
+
+  @override
+  String get errorInvalid => 'વિગત તપાસો';
+
+  @override
+  String get retry => 'ફરી પ્રયત્ન';
+
+  @override
+  String get placeSearchHint => 'સ્થળ શોધો (Surat, સુરત)';
+
+  @override
+  String get placePopular => 'વધુ વપરાતા';
+
+  @override
+  String get placeNoResult => 'કોઈ સ્થળ મળ્યું નથી';
+
+  @override
+  String get placeAddHint => 'ગુજરાતી નામ પસંદ કરો';
+
+  @override
+  String get placeChecking => 'ગુજરાતી નામ શોધી રહ્યા છીએ…';
+
+  @override
+  String get placeTypeGujarati => 'ગુજરાતીમાં નામ લખો';
+
+  @override
+  String get fromPlace => 'ક્યાંથી';
+
+  @override
+  String get toPlace => 'ક્યાં સુધી';
+
+  @override
+  String placeAdd(String name) {
+    return '“$name” ઉમેરો';
+  }
+
+  @override
+  String get userInactive => 'બંધ';
 }

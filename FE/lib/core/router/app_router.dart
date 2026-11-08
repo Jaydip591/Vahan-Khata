@@ -2,7 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/accounts/data/account.dart';
+import '../../features/accounts/presentation/account_form_screen.dart';
+import '../../features/accounts/presentation/accounts_screen.dart';
 import '../../features/auth/presentation/auth_controller.dart';
+import '../../features/drivers/data/driver.dart';
+import '../../features/drivers/presentation/driver_form_screen.dart';
+import '../../features/drivers/presentation/drivers_screen.dart';
+import '../../features/parties/data/party.dart';
+import '../../features/parties/presentation/parties_screen.dart';
+import '../../features/parties/presentation/party_form_screen.dart';
+import '../../features/users/data/managed_user.dart';
+import '../../features/users/presentation/user_form_screen.dart';
+import '../../features/users/presentation/users_screen.dart';
+import '../../features/vehicles/data/vehicle.dart';
+import '../../features/vehicles/presentation/vehicle_form_screen.dart';
+import '../../features/vehicles/presentation/vehicles_screen.dart';
 import '../../features/auth/presentation/login_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
 import '../../features/home/presentation/placeholder_tab.dart';
@@ -32,6 +47,26 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/splash', builder: (_, _) => const _Splash()),
       GoRoute(path: '/login', builder: (_, _) => const LoginScreen()),
       GoRoute(path: '/more', builder: (_, _) => const MoreScreen()),
+      GoRoute(path: '/vehicles', builder: (_, _) => const VehiclesScreen(), routes: [
+        GoRoute(path: 'new', builder: (_, _) => const VehicleFormScreen()),
+        GoRoute(path: 'edit', builder: (_, s) => VehicleFormScreen(vehicle: s.extra as Vehicle?)),
+      ]),
+      GoRoute(path: '/drivers', builder: (_, _) => const DriversScreen(), routes: [
+        GoRoute(path: 'new', builder: (_, _) => const DriverFormScreen()),
+        GoRoute(path: 'edit', builder: (_, s) => DriverFormScreen(driver: s.extra as Driver?)),
+      ]),
+      GoRoute(path: '/parties', builder: (_, _) => const PartiesScreen(), routes: [
+        GoRoute(path: 'new', builder: (_, _) => const PartyFormScreen()),
+        GoRoute(path: 'edit', builder: (_, s) => PartyFormScreen(party: s.extra as Party?)),
+      ]),
+      GoRoute(path: '/accounts', builder: (_, _) => const AccountsScreen(), routes: [
+        GoRoute(path: 'new', builder: (_, _) => const AccountFormScreen()),
+        GoRoute(path: 'edit', builder: (_, s) => AccountFormScreen(account: s.extra as Account?)),
+      ]),
+      GoRoute(path: '/users', builder: (_, _) => const UsersScreen(), routes: [
+        GoRoute(path: 'new', builder: (_, _) => const UserFormScreen()),
+        GoRoute(path: 'edit', builder: (_, s) => UserFormScreen(user: s.extra as ManagedUser?)),
+      ]),
       StatefulShellRoute.indexedStack(
         builder: (_, _, shell) => ShellScaffold(navigationShell: shell),
         branches: [

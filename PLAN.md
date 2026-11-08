@@ -45,18 +45,20 @@ Still to verify by hand: log in from a real phone against the running backend (s
 
 ## Phase 1 — Masters
 Backend
-- [ ] vehicles, drivers, parties, accounts: CRUD (soft delete), company scoped
-- [ ] places: seed list of ~300-500 Gujarat cities/towns with name_en and name_gu (shared, `company_id` null)
-- [ ] `GET /places?q=sur` search over English and Gujarati; `POST /places` with auto Gujarati via transliteration
+- [x] vehicles, drivers, parties, accounts: CRUD (soft delete), company scoped
+- [x] places: seed list of 193 Gujarat and nearby places (grow it over time; spellings need proofreading) with name_en and name_gu (shared, `company_id` null)
+- [x] `GET /places?q=sur` search over English and Gujarati; `POST /places` with auto Gujarati via transliteration
       (Google Input Tools, best effort, user can edit); newly added places saved for the company
-- [ ] Vehicle auto-name suggestion ("Eicher 1" from type + serial)
-- [ ] Tests for each module
+- [x] Vehicle auto-name suggestion ("Eicher 1" from type + serial)
+- [x] Tests for each module
 Frontend
-- [ ] More menu: Vehicles, Drivers, Accounts, Users, Language, Logout
-- [ ] Add vehicle: type chips, auto name, number field, optional document dates
-- [ ] Party add/list, driver add/list, account add/list
-- [ ] Reusable pickers: vehicle chips, party chips, place picker bottom sheet (type English -> Gujarati)
+- [x] More menu: Vehicles, Drivers, Accounts, Users, Language, Logout
+- [x] Add vehicle: type chips, auto name, number field, optional document dates
+- [x] Party add/list, driver add/list, account add/list
+- [x] Reusable pickers: vehicle chips, party chips, place picker bottom sheet (type English -> Gujarati)
 Done when: add a vehicle in 4 taps; typing "surat" shows સુરત; a new unknown place gets saved and appears next time.
+
+Status: backend (53 tests) and Flutter (45 tests) are done. Still to verify by hand on the phone: add a vehicle in 4 taps, party/driver/account/user forms, place picker (picker widget is built and tested but is first used by the Trip form in Phase 2).
 
 ## Phase 2 — Core entries (biggest phase; split across two sessions)
 2a Trips

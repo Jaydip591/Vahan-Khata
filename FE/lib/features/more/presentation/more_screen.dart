@@ -6,6 +6,7 @@ import '../../../core/locale_controller.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/ui/ink_header.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../core/ui/master_list.dart';
 import '../../auth/presentation/auth_controller.dart';
 
 class MoreScreen extends ConsumerWidget {
@@ -93,6 +94,21 @@ class MoreScreen extends ConsumerWidget {
                     ),
                   ),
                 const SizedBox(height: 20),
+                for (final item in [
+                  (Icons.local_shipping_rounded, t.vehicles, '/vehicles'),
+                  (Icons.badge_rounded, t.drivers, '/drivers'),
+                  (Icons.groups_rounded, t.parties, '/parties'),
+                  (Icons.account_balance_wallet_rounded, t.accounts, '/accounts'),
+                  (Icons.people_alt_rounded, t.users, '/users'),
+                ]) ...[
+                  MasterTile(
+                    icon: item.$1,
+                    title: item.$2,
+                    onTap: () => context.push(item.$3),
+                  ),
+                  const SizedBox(height: 10),
+                ],
+                const SizedBox(height: 10),
                 Text(t.language, style: const TextStyle(fontSize: 14, color: AppColors.muted)),
                 const SizedBox(height: 8),
                 Row(
