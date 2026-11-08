@@ -7,7 +7,7 @@ vehicle-wise profit. Read `PLAN.md` for the phase plan and current progress befo
 
 ## Repo layout
 - `BE/` — FastAPI backend (modular apps, async SQLAlchemy, Postgres, Alembic, Docker)
-- `FE/` — Flutter app (Android only for now). Not created yet; Phase 0 creates it.
+- `FE/` — Flutter app (Android only for now), package `vahan_khata`.
 - `PLAN.md` — phases, tasks, done-criteria. Tick items off as they finish.
 
 ## Product decisions (final, do not re-ask)
@@ -68,8 +68,16 @@ Selected chip: ink fill, white text. Active tab: gold top border.
 - Theme tokens in one file; never hardcode colors in widgets.
 - Every entry screen must be usable in 5-6 taps and with one hand.
 
+## Flutter toolchain on this machine
+- Flutter SDK: `~/development/flutter` (add `~/development/flutter/bin` to PATH). Android SDK: `~/Android/Sdk`.
+- Gradle needs a full JDK: `flutter config --jdk-dir /snap/android-studio/current/jbr` (already set).
+- Checks: `cd FE && flutter analyze && flutter test`. Debug APK: `flutter build apk --debug` (first build ~5 min).
+- Run on a phone/emulator against the dev API: see `FE/README.md` (`--dart-define=API_BASE_URL=...`).
+- Android package id `com.jaydip.vahan_khata`; launcher name comes from `res/values*/strings.xml` (English + Gujarati).
+
 ## Working agreement
 - One phase (or one feature slice) per session. Finish a slice end to end: table -> API -> test -> screen.
 - Commit after each slice. Update `PLAN.md` checkboxes when a task is done.
+- Commit messages: plain, no co-author or tool attribution lines (user's instruction).
 - Hosting target: Oracle Cloud Always Free VM, Docker compose, Caddy for HTTPS, nightly `pg_dump`
   to Google Drive with rclone. Fallback: home PC with Cloudflare Tunnel.

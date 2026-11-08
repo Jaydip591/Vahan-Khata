@@ -1,0 +1,104 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../../core/theme/app_colors.dart';
+import '../../../l10n/app_localizations.dart';
+
+/// Bottom bar with the five main tabs. Active tab has a gold top border.
+class ShellScaffold extends StatelessWidget {
+  const ShellScaffold({super.key, required this.navigationShell});
+
+  final StatefulNavigationShell navigationShell;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = AppL10n.of(context);
+    final items = [
+      (Icons.home_outlined, Icons.home_rounded, t.tabHome),
+      (Icons.local_shipping_outlined, Icons.local_shipping_rounded, t.tabTrips),
+      (Icons.local_gas_station_outlined, Icons.local_gas_station_rounded, t.tabKharcha),
+      (Icons.menu_book_outlined, Icons.menu_book_rounded, t.tabKhata),
+      (Icons.bar_chart_outlined, Icons.bar_chart_rounded, t.tabReport),
+    ];
+    return Scaffold(
+      body: navigationShell,
+      bottomNavigationBar: Material(
+        color: Colors.white,
+        child: SafeArea(
+          top: false,
+          child: Container(
+            height: 66,
+            decoration: const BoxDecoration(
+              border: Border(top: BorderSide(color: AppColors.line)),
+            ),
+            child: Row(
+              children: [
+                for (var i = 0; i < items.length; i++)
+                  Expanded(
+                    child: _BarItem(
+                      icon: items[i].$1,
+                      activeIcon: items[i].$2,
+                      label: items[i].$3,
+                      active: navigationShell.currentIndex == i,
+                      onTap: () => navigationShell.goBranch(
+                        i,
+                        initialLocation: i == navigationShell.currentIndex,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _BarItem extends StatelessWidget {
+  const _BarItem({
+    required this.icon,
+    required this.activeIcon,
+    required this.label,
+    required this.active,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final IconData activeIcon;
+  final String label;
+  final bool active;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = active ? AppColors.ink : AppColors.muted;
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border(
+            top: BorderSide(color: active ? AppColors.gold : Colors.transparent, width: 3),
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(active ? activeIcon : icon, size: 26, color: color),
+            const SizedBox(height: 2),
+            Text(
+              label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 12,
+                color: color,
+                fontWeight: active ? FontWeight.w500 : FontWeight.w400,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

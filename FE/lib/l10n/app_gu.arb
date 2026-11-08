@@ -1,0 +1,35 @@
+{
+  "@@locale": "gu",
+  "appName": "વાહન ખાતા",
+  "tagline": "તમારો આખો હિસાબ, એક જગ્યાએ",
+  "username": "યુઝરનેમ",
+  "password": "પાસવર્ડ",
+  "loginButton": "લોગિન કરો",
+  "stayLoggedInNote": "એક વાર લોગિન, લોગઆઉટ સુધી ચાલુ",
+  "enterUsername": "યુઝરનેમ લખો",
+  "enterPassword": "પાસવર્ડ લખો",
+  "loginInvalid": "યુઝરનેમ અથવા પાસવર્ડ ખોટો છે",
+  "loginDisabled": "આ એકાઉન્ટ બંધ છે",
+  "errorNoConnection": "સર્વર સાથે જોડાઈ શકાયું નથી. ઇન્ટરનેટ તપાસો",
+  "errorGeneric": "કંઈક ખોટું થયું. ફરી પ્રયત્ન કરો",
+  "tabHome": "હોમ",
+  "tabTrips": "ટ્રીપ",
+  "tabKharcha": "ખર્ચ",
+  "tabKhata": "ખાતા",
+  "tabReport": "રિપોર્ટ",
+  "more": "વધુ",
+  "language": "ભાષા",
+  "languageGujarati": "ગુજરાતી",
+  "languageEnglish": "English",
+  "logout": "લોગઆઉટ",
+  "logoutConfirmTitle": "લોગઆઉટ કરવું છે?",
+  "logoutConfirmBody": "ફરી લોગિન કરવું પડશે.",
+  "cancel": "રદ કરો",
+  "hello": "નમસ્તે, {name}",
+  "@hello": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "comingSoon": "આ સુવિધા જલ્દી આવશે"
+}

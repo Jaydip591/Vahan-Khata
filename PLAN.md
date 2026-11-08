@@ -34,11 +34,14 @@ Backend
 - [x] Docker: dev compose + production compose (DB port closed, no reload)
 - [x] Tests: login, refresh, logout, create user, company isolation
 Frontend
-- [ ] Install Flutter SDK + Android toolchain (not installed on this machine yet), create `FE/` project
-- [ ] Theme (ink and gold tokens), Noto Sans Gujarati font, ARB files gu + en, language switch
-- [ ] Dio client with token refresh interceptor, secure token storage, go_router with auth guard
-- [ ] Login screen; stays logged in until Logout (More screen)
+- [x] Install Flutter SDK + Android toolchain (not installed on this machine yet), create `FE/` project
+- [x] Theme (ink and gold tokens), Noto Sans Gujarati font, ARB files gu + en, language switch
+- [x] Dio client with token refresh interceptor, secure token storage, go_router with auth guard
+- [x] Login screen; stays logged in until Logout (More screen)
 Done when: login works from the phone, app reopens still logged in, logout clears it, `/docs` shows the new auth API.
+
+Status: backend and Flutter code are done and covered by tests (BE 24, FE 15) and a debug APK builds.
+Still to verify by hand: log in from a real phone against the running backend (see FE/README.md).
 
 ## Phase 1 — Masters
 Backend
