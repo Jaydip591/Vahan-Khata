@@ -12,6 +12,10 @@ import '../../features/drivers/presentation/drivers_screen.dart';
 import '../../features/parties/data/party.dart';
 import '../../features/parties/presentation/parties_screen.dart';
 import '../../features/parties/presentation/party_form_screen.dart';
+import '../../features/trips/data/trip.dart';
+import '../../features/trips/presentation/trip_detail_screen.dart';
+import '../../features/trips/presentation/trip_form_screen.dart';
+import '../../features/trips/presentation/trips_screen.dart';
 import '../../features/users/data/managed_user.dart';
 import '../../features/users/presentation/user_form_screen.dart';
 import '../../features/users/presentation/users_screen.dart';
@@ -47,6 +51,9 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/splash', builder: (_, _) => const _Splash()),
       GoRoute(path: '/login', builder: (_, _) => const LoginScreen()),
       GoRoute(path: '/more', builder: (_, _) => const MoreScreen()),
+      GoRoute(path: '/trip/new', builder: (_, _) => const TripFormScreen()),
+      GoRoute(path: '/trip/edit', builder: (_, s) => TripFormScreen(trip: s.extra as Trip?)),
+      GoRoute(path: '/trip/detail', builder: (_, s) => TripDetailScreen(trip: s.extra as Trip)),
       GoRoute(path: '/vehicles', builder: (_, _) => const VehiclesScreen(), routes: [
         GoRoute(path: 'new', builder: (_, _) => const VehicleFormScreen()),
         GoRoute(path: 'edit', builder: (_, s) => VehicleFormScreen(vehicle: s.extra as Vehicle?)),
@@ -74,11 +81,7 @@ final routerProvider = Provider<GoRouter>((ref) {
             GoRoute(path: '/home', builder: (_, _) => const HomeScreen()),
           ]),
           StatefulShellBranch(routes: [
-            GoRoute(
-              path: '/trips',
-              builder: (c, _) => PlaceholderTab(
-                  title: AppL10n.of(c).tabTrips, icon: Icons.local_shipping_rounded),
-            ),
+            GoRoute(path: '/trips', builder: (_, _) => const TripsScreen()),
           ]),
           StatefulShellBranch(routes: [
             GoRoute(

@@ -330,4 +330,265 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get userInactive => 'Inactive';
+
+  @override
+  String get newTrip => 'New trip';
+
+  @override
+  String get editTrip => 'Edit trip';
+
+  @override
+  String get copyLastTrip => 'Same as last trip';
+
+  @override
+  String get quickRoutes => 'Quick routes (one tap)';
+
+  @override
+  String get vehicle => 'Vehicle';
+
+  @override
+  String get party => 'Party';
+
+  @override
+  String get driver => 'Driver';
+
+  @override
+  String get choosePlace => 'Choose a place';
+
+  @override
+  String get bhada => 'Bhada (freight)';
+
+  @override
+  String get tapToType => 'Tap the amount to type it';
+
+  @override
+  String get advanceReceived => 'Advance received';
+
+  @override
+  String get advFull => 'Full';
+
+  @override
+  String get advHalf => 'Half';
+
+  @override
+  String get advNone => 'None';
+
+  @override
+  String get advCustom => 'Other';
+
+  @override
+  String get advanceLabel => 'Advance';
+
+  @override
+  String get balanceLeft => 'Balance';
+
+  @override
+  String get howReceived => 'How received';
+
+  @override
+  String get modeCash => 'Cash';
+
+  @override
+  String get modeOnline => 'Online';
+
+  @override
+  String get whichAccount => 'Which account';
+
+  @override
+  String get dateLabel => 'Date';
+
+  @override
+  String get today => 'Today';
+
+  @override
+  String get yesterday => 'Yesterday';
+
+  @override
+  String get otherDate => 'Other date';
+
+  @override
+  String get tripSaved => 'Trip saved';
+
+  @override
+  String get needAccountFirst => 'Add an account first (More → Accounts)';
+
+  @override
+  String get needVehicleFirst => 'Add a vehicle first (More → Vehicles)';
+
+  @override
+  String get needPartyFirst => 'Add a party first (More → Parties)';
+
+  @override
+  String get chooseVehicle => 'Choose a vehicle';
+
+  @override
+  String get chooseParty => 'Choose a party';
+
+  @override
+  String get chooseRoute => 'Choose from and to';
+
+  @override
+  String get emptyTrips => 'No trips this month';
+
+  @override
+  String get tripDetail => 'Trip details';
+
+  @override
+  String get closeTrip => 'Close trip';
+
+  @override
+  String get reopenTrip => 'Reopen trip';
+
+  @override
+  String get statusRunning => 'Running';
+
+  @override
+  String get statusClosed => 'Closed';
+
+  @override
+  String get payUnpaid => 'Due';
+
+  @override
+  String get payPartial => 'Part paid';
+
+  @override
+  String get payPaid => 'Paid';
+
+  @override
+  String get receivedLabel => 'Received';
+
+  @override
+  String get advanceNotEditable =>
+      'Advance can\'t be changed here. Add payments from the Khata tab.';
+
+  @override
+  String get amountLabel => 'Amount';
+
+  @override
+  String get amountOk => 'OK';
+
+  @override
+  String get enterAmount => 'Enter an amount';
+
+  @override
+  String get whatExpense => 'What was the expense?';
+
+  @override
+  String get catDiesel => 'Diesel';
+
+  @override
+  String get catToll => 'Toll';
+
+  @override
+  String get catRepair => 'Repair';
+
+  @override
+  String get catAllowance => 'Allowance';
+
+  @override
+  String get catChallan => 'Challan';
+
+  @override
+  String get catOther => 'Other';
+
+  @override
+  String get liters => 'Liters';
+
+  @override
+  String get ratePerLiter => 'Rate / liter';
+
+  @override
+  String get odometer => 'Odometer (km)';
+
+  @override
+  String get repairKind => 'What was repaired?';
+
+  @override
+  String get rkTyre => 'Tyre';
+
+  @override
+  String get rkOil => 'Oil';
+
+  @override
+  String get rkEngine => 'Engine';
+
+  @override
+  String get rkBattery => 'Battery';
+
+  @override
+  String get rkService => 'Service';
+
+  @override
+  String get expenseSaved => 'Expense saved';
+
+  @override
+  String get recentExpenses => 'This month\'s expenses';
+
+  @override
+  String get emptyExpenses => 'No expenses this month';
+
+  @override
+  String get paidFrom => 'Paid from';
+
+  @override
+  String get khataTitle => 'Party khata';
+
+  @override
+  String get totalDue => 'Total to receive';
+
+  @override
+  String daysOld(int days) {
+    return '$days days old';
+  }
+
+  @override
+  String get settled => 'Settled';
+
+  @override
+  String get receivePayment => 'Payment received';
+
+  @override
+  String get whoPaid => 'Who paid';
+
+  @override
+  String get howMuch => 'How much received';
+
+  @override
+  String get payAll => 'All';
+
+  @override
+  String get payHalf => 'Half';
+
+  @override
+  String get payCustom => 'Other amount';
+
+  @override
+  String get willCredit => 'Will be credited';
+
+  @override
+  String get remaining => 'Will remain';
+
+  @override
+  String get paymentSaved => 'Payment saved';
+
+  @override
+  String get totalBhada => 'Total bhada';
+
+  @override
+  String get totalReceived => 'Total received';
+
+  @override
+  String get tripsHeading => 'Trips';
+
+  @override
+  String get paymentsHeading => 'Payments';
+
+  @override
+  String get partyHasCredit => 'Credit with us';
+
+  @override
+  String get monthPrev => 'Previous month';
+
+  @override
+  String get monthNext => 'Next month';
 }

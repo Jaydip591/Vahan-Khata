@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -77,4 +78,12 @@ Future<Widget> appWith(
     ],
     child: const VahanKhataApp(),
   );
+}
+
+/// Scrolls the widget into view (forms are taller than the screen), then taps it.
+Future<void> tapIt(WidgetTester t, Finder f, {bool settle = true}) async {
+  await t.ensureVisible(f);
+  await t.pump();
+  await t.tap(f);
+  if (settle) await t.pumpAndSettle();
 }

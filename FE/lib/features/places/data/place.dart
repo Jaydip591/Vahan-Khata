@@ -10,7 +10,7 @@ class Place {
         id: j['id'] as String,
         nameEn: j['name_en'] as String,
         nameGu: j['name_gu'] as String,
-        isSeed: j['is_seed'] as bool,
+        isSeed: (j['is_seed'] as bool?) ?? false,
       );
 
   /// Name in the app language.

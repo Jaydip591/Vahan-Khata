@@ -726,6 +726,522 @@ abstract class AppL10n {
   /// In gu, this message translates to:
   /// **'બંધ'**
   String get userInactive;
+
+  /// No description provided for @newTrip.
+  ///
+  /// In gu, this message translates to:
+  /// **'નવી ટ્રીપ'**
+  String get newTrip;
+
+  /// No description provided for @editTrip.
+  ///
+  /// In gu, this message translates to:
+  /// **'ટ્રીપ સુધારો'**
+  String get editTrip;
+
+  /// No description provided for @copyLastTrip.
+  ///
+  /// In gu, this message translates to:
+  /// **'પાછલી ટ્રીપ જેવી'**
+  String get copyLastTrip;
+
+  /// No description provided for @quickRoutes.
+  ///
+  /// In gu, this message translates to:
+  /// **'ઝડપી રૂટ (એક ટેપ)'**
+  String get quickRoutes;
+
+  /// No description provided for @vehicle.
+  ///
+  /// In gu, this message translates to:
+  /// **'ગાડી'**
+  String get vehicle;
+
+  /// No description provided for @party.
+  ///
+  /// In gu, this message translates to:
+  /// **'પાર્ટી'**
+  String get party;
+
+  /// No description provided for @driver.
+  ///
+  /// In gu, this message translates to:
+  /// **'ડ્રાઇવર'**
+  String get driver;
+
+  /// No description provided for @choosePlace.
+  ///
+  /// In gu, this message translates to:
+  /// **'સ્થળ પસંદ કરો'**
+  String get choosePlace;
+
+  /// No description provided for @bhada.
+  ///
+  /// In gu, this message translates to:
+  /// **'ભાડું'**
+  String get bhada;
+
+  /// No description provided for @tapToType.
+  ///
+  /// In gu, this message translates to:
+  /// **'લખવા માટે રકમ પર ટેપ કરો'**
+  String get tapToType;
+
+  /// No description provided for @advanceReceived.
+  ///
+  /// In gu, this message translates to:
+  /// **'એડવાન્સ મળ્યું'**
+  String get advanceReceived;
+
+  /// No description provided for @advFull.
+  ///
+  /// In gu, this message translates to:
+  /// **'પૂરું'**
+  String get advFull;
+
+  /// No description provided for @advHalf.
+  ///
+  /// In gu, this message translates to:
+  /// **'અડધું'**
+  String get advHalf;
+
+  /// No description provided for @advNone.
+  ///
+  /// In gu, this message translates to:
+  /// **'કંઈ નહીં'**
+  String get advNone;
+
+  /// No description provided for @advCustom.
+  ///
+  /// In gu, this message translates to:
+  /// **'બીજું'**
+  String get advCustom;
+
+  /// No description provided for @advanceLabel.
+  ///
+  /// In gu, this message translates to:
+  /// **'એડવાન્સ'**
+  String get advanceLabel;
+
+  /// No description provided for @balanceLeft.
+  ///
+  /// In gu, this message translates to:
+  /// **'બાકી'**
+  String get balanceLeft;
+
+  /// No description provided for @howReceived.
+  ///
+  /// In gu, this message translates to:
+  /// **'કેવી રીતે મળ્યું'**
+  String get howReceived;
+
+  /// No description provided for @modeCash.
+  ///
+  /// In gu, this message translates to:
+  /// **'રોકડ'**
+  String get modeCash;
+
+  /// No description provided for @modeOnline.
+  ///
+  /// In gu, this message translates to:
+  /// **'ઓનલાઇન'**
+  String get modeOnline;
+
+  /// No description provided for @whichAccount.
+  ///
+  /// In gu, this message translates to:
+  /// **'કયા ખાતામાં'**
+  String get whichAccount;
+
+  /// No description provided for @dateLabel.
+  ///
+  /// In gu, this message translates to:
+  /// **'તારીખ'**
+  String get dateLabel;
+
+  /// No description provided for @today.
+  ///
+  /// In gu, this message translates to:
+  /// **'આજે'**
+  String get today;
+
+  /// No description provided for @yesterday.
+  ///
+  /// In gu, this message translates to:
+  /// **'ગઈકાલે'**
+  String get yesterday;
+
+  /// No description provided for @otherDate.
+  ///
+  /// In gu, this message translates to:
+  /// **'બીજી તારીખ'**
+  String get otherDate;
+
+  /// No description provided for @tripSaved.
+  ///
+  /// In gu, this message translates to:
+  /// **'ટ્રીપ સેવ થઈ'**
+  String get tripSaved;
+
+  /// No description provided for @needAccountFirst.
+  ///
+  /// In gu, this message translates to:
+  /// **'પહેલા ખાતું ઉમેરો (વધુ → ખાતા)'**
+  String get needAccountFirst;
+
+  /// No description provided for @needVehicleFirst.
+  ///
+  /// In gu, this message translates to:
+  /// **'પહેલા ગાડી ઉમેરો (વધુ → ગાડીઓ)'**
+  String get needVehicleFirst;
+
+  /// No description provided for @needPartyFirst.
+  ///
+  /// In gu, this message translates to:
+  /// **'પહેલા પાર્ટી ઉમેરો (વધુ → પાર્ટીઓ)'**
+  String get needPartyFirst;
+
+  /// No description provided for @chooseVehicle.
+  ///
+  /// In gu, this message translates to:
+  /// **'ગાડી પસંદ કરો'**
+  String get chooseVehicle;
+
+  /// No description provided for @chooseParty.
+  ///
+  /// In gu, this message translates to:
+  /// **'પાર્ટી પસંદ કરો'**
+  String get chooseParty;
+
+  /// No description provided for @chooseRoute.
+  ///
+  /// In gu, this message translates to:
+  /// **'ક્યાંથી અને ક્યાં સુધી પસંદ કરો'**
+  String get chooseRoute;
+
+  /// No description provided for @emptyTrips.
+  ///
+  /// In gu, this message translates to:
+  /// **'આ મહિને કોઈ ટ્રીપ નથી'**
+  String get emptyTrips;
+
+  /// No description provided for @tripDetail.
+  ///
+  /// In gu, this message translates to:
+  /// **'ટ્રીપની વિગત'**
+  String get tripDetail;
+
+  /// No description provided for @closeTrip.
+  ///
+  /// In gu, this message translates to:
+  /// **'ટ્રીપ પૂરી કરો'**
+  String get closeTrip;
+
+  /// No description provided for @reopenTrip.
+  ///
+  /// In gu, this message translates to:
+  /// **'ફરી ચાલુ કરો'**
+  String get reopenTrip;
+
+  /// No description provided for @statusRunning.
+  ///
+  /// In gu, this message translates to:
+  /// **'ચાલુ'**
+  String get statusRunning;
+
+  /// No description provided for @statusClosed.
+  ///
+  /// In gu, this message translates to:
+  /// **'પૂરી'**
+  String get statusClosed;
+
+  /// No description provided for @payUnpaid.
+  ///
+  /// In gu, this message translates to:
+  /// **'બાકી'**
+  String get payUnpaid;
+
+  /// No description provided for @payPartial.
+  ///
+  /// In gu, this message translates to:
+  /// **'આંશિક'**
+  String get payPartial;
+
+  /// No description provided for @payPaid.
+  ///
+  /// In gu, this message translates to:
+  /// **'મળી ગયા'**
+  String get payPaid;
+
+  /// No description provided for @receivedLabel.
+  ///
+  /// In gu, this message translates to:
+  /// **'મળ્યા'**
+  String get receivedLabel;
+
+  /// No description provided for @advanceNotEditable.
+  ///
+  /// In gu, this message translates to:
+  /// **'એડવાન્સ અહીં બદલાતું નથી. પેમેન્ટ ખાતા ટેબમાંથી ઉમેરો.'**
+  String get advanceNotEditable;
+
+  /// No description provided for @amountLabel.
+  ///
+  /// In gu, this message translates to:
+  /// **'રકમ'**
+  String get amountLabel;
+
+  /// No description provided for @amountOk.
+  ///
+  /// In gu, this message translates to:
+  /// **'બરાબર'**
+  String get amountOk;
+
+  /// No description provided for @enterAmount.
+  ///
+  /// In gu, this message translates to:
+  /// **'રકમ લખો'**
+  String get enterAmount;
+
+  /// No description provided for @whatExpense.
+  ///
+  /// In gu, this message translates to:
+  /// **'શેનો ખર્ચ?'**
+  String get whatExpense;
+
+  /// No description provided for @catDiesel.
+  ///
+  /// In gu, this message translates to:
+  /// **'ડીઝલ'**
+  String get catDiesel;
+
+  /// No description provided for @catToll.
+  ///
+  /// In gu, this message translates to:
+  /// **'ટોલ'**
+  String get catToll;
+
+  /// No description provided for @catRepair.
+  ///
+  /// In gu, this message translates to:
+  /// **'રિપેર'**
+  String get catRepair;
+
+  /// No description provided for @catAllowance.
+  ///
+  /// In gu, this message translates to:
+  /// **'ભથ્થું'**
+  String get catAllowance;
+
+  /// No description provided for @catChallan.
+  ///
+  /// In gu, this message translates to:
+  /// **'ચલણ'**
+  String get catChallan;
+
+  /// No description provided for @catOther.
+  ///
+  /// In gu, this message translates to:
+  /// **'બીજું'**
+  String get catOther;
+
+  /// No description provided for @liters.
+  ///
+  /// In gu, this message translates to:
+  /// **'લિટર'**
+  String get liters;
+
+  /// No description provided for @ratePerLiter.
+  ///
+  /// In gu, this message translates to:
+  /// **'ભાવ / લિટર'**
+  String get ratePerLiter;
+
+  /// No description provided for @odometer.
+  ///
+  /// In gu, this message translates to:
+  /// **'ઓડોમીટર (કિમી)'**
+  String get odometer;
+
+  /// No description provided for @repairKind.
+  ///
+  /// In gu, this message translates to:
+  /// **'શું રિપેર કર્યું?'**
+  String get repairKind;
+
+  /// No description provided for @rkTyre.
+  ///
+  /// In gu, this message translates to:
+  /// **'ટાયર'**
+  String get rkTyre;
+
+  /// No description provided for @rkOil.
+  ///
+  /// In gu, this message translates to:
+  /// **'ઓઇલ'**
+  String get rkOil;
+
+  /// No description provided for @rkEngine.
+  ///
+  /// In gu, this message translates to:
+  /// **'એન્જિન'**
+  String get rkEngine;
+
+  /// No description provided for @rkBattery.
+  ///
+  /// In gu, this message translates to:
+  /// **'બેટરી'**
+  String get rkBattery;
+
+  /// No description provided for @rkService.
+  ///
+  /// In gu, this message translates to:
+  /// **'સર્વિસ'**
+  String get rkService;
+
+  /// No description provided for @expenseSaved.
+  ///
+  /// In gu, this message translates to:
+  /// **'ખર્ચ સેવ થયો'**
+  String get expenseSaved;
+
+  /// No description provided for @recentExpenses.
+  ///
+  /// In gu, this message translates to:
+  /// **'આ મહિનાનો ખર્ચ'**
+  String get recentExpenses;
+
+  /// No description provided for @emptyExpenses.
+  ///
+  /// In gu, this message translates to:
+  /// **'આ મહિને કોઈ ખર્ચ નથી'**
+  String get emptyExpenses;
+
+  /// No description provided for @paidFrom.
+  ///
+  /// In gu, this message translates to:
+  /// **'કયા ખાતામાંથી'**
+  String get paidFrom;
+
+  /// No description provided for @khataTitle.
+  ///
+  /// In gu, this message translates to:
+  /// **'પાર્ટી ખાતા'**
+  String get khataTitle;
+
+  /// No description provided for @totalDue.
+  ///
+  /// In gu, this message translates to:
+  /// **'કુલ બાકી લેવાના'**
+  String get totalDue;
+
+  /// No description provided for @daysOld.
+  ///
+  /// In gu, this message translates to:
+  /// **'{days} દિવસ જૂનું'**
+  String daysOld(int days);
+
+  /// No description provided for @settled.
+  ///
+  /// In gu, this message translates to:
+  /// **'ચૂકતે'**
+  String get settled;
+
+  /// No description provided for @receivePayment.
+  ///
+  /// In gu, this message translates to:
+  /// **'પેમેન્ટ મળ્યું'**
+  String get receivePayment;
+
+  /// No description provided for @whoPaid.
+  ///
+  /// In gu, this message translates to:
+  /// **'કોણે આપ્યા'**
+  String get whoPaid;
+
+  /// No description provided for @howMuch.
+  ///
+  /// In gu, this message translates to:
+  /// **'કેટલા મળ્યા'**
+  String get howMuch;
+
+  /// No description provided for @payAll.
+  ///
+  /// In gu, this message translates to:
+  /// **'બધા'**
+  String get payAll;
+
+  /// No description provided for @payHalf.
+  ///
+  /// In gu, this message translates to:
+  /// **'અડધા'**
+  String get payHalf;
+
+  /// No description provided for @payCustom.
+  ///
+  /// In gu, this message translates to:
+  /// **'બીજી રકમ'**
+  String get payCustom;
+
+  /// No description provided for @willCredit.
+  ///
+  /// In gu, this message translates to:
+  /// **'જમા થશે'**
+  String get willCredit;
+
+  /// No description provided for @remaining.
+  ///
+  /// In gu, this message translates to:
+  /// **'બાકી રહેશે'**
+  String get remaining;
+
+  /// No description provided for @paymentSaved.
+  ///
+  /// In gu, this message translates to:
+  /// **'પેમેન્ટ સેવ થયું'**
+  String get paymentSaved;
+
+  /// No description provided for @totalBhada.
+  ///
+  /// In gu, this message translates to:
+  /// **'કુલ ભાડું'**
+  String get totalBhada;
+
+  /// No description provided for @totalReceived.
+  ///
+  /// In gu, this message translates to:
+  /// **'કુલ મળ્યા'**
+  String get totalReceived;
+
+  /// No description provided for @tripsHeading.
+  ///
+  /// In gu, this message translates to:
+  /// **'ટ્રીપ'**
+  String get tripsHeading;
+
+  /// No description provided for @paymentsHeading.
+  ///
+  /// In gu, this message translates to:
+  /// **'પેમેન્ટ'**
+  String get paymentsHeading;
+
+  /// No description provided for @partyHasCredit.
+  ///
+  /// In gu, this message translates to:
+  /// **'એડવાન્સ જમા'**
+  String get partyHasCredit;
+
+  /// No description provided for @monthPrev.
+  ///
+  /// In gu, this message translates to:
+  /// **'પાછલો મહિનો'**
+  String get monthPrev;
+
+  /// No description provided for @monthNext.
+  ///
+  /// In gu, this message translates to:
+  /// **'આવતો મહિનો'**
+  String get monthNext;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

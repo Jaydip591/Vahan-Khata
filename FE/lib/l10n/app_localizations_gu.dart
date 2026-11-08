@@ -327,4 +327,265 @@ class AppL10nGu extends AppL10n {
 
   @override
   String get userInactive => 'બંધ';
+
+  @override
+  String get newTrip => 'નવી ટ્રીપ';
+
+  @override
+  String get editTrip => 'ટ્રીપ સુધારો';
+
+  @override
+  String get copyLastTrip => 'પાછલી ટ્રીપ જેવી';
+
+  @override
+  String get quickRoutes => 'ઝડપી રૂટ (એક ટેપ)';
+
+  @override
+  String get vehicle => 'ગાડી';
+
+  @override
+  String get party => 'પાર્ટી';
+
+  @override
+  String get driver => 'ડ્રાઇવર';
+
+  @override
+  String get choosePlace => 'સ્થળ પસંદ કરો';
+
+  @override
+  String get bhada => 'ભાડું';
+
+  @override
+  String get tapToType => 'લખવા માટે રકમ પર ટેપ કરો';
+
+  @override
+  String get advanceReceived => 'એડવાન્સ મળ્યું';
+
+  @override
+  String get advFull => 'પૂરું';
+
+  @override
+  String get advHalf => 'અડધું';
+
+  @override
+  String get advNone => 'કંઈ નહીં';
+
+  @override
+  String get advCustom => 'બીજું';
+
+  @override
+  String get advanceLabel => 'એડવાન્સ';
+
+  @override
+  String get balanceLeft => 'બાકી';
+
+  @override
+  String get howReceived => 'કેવી રીતે મળ્યું';
+
+  @override
+  String get modeCash => 'રોકડ';
+
+  @override
+  String get modeOnline => 'ઓનલાઇન';
+
+  @override
+  String get whichAccount => 'કયા ખાતામાં';
+
+  @override
+  String get dateLabel => 'તારીખ';
+
+  @override
+  String get today => 'આજે';
+
+  @override
+  String get yesterday => 'ગઈકાલે';
+
+  @override
+  String get otherDate => 'બીજી તારીખ';
+
+  @override
+  String get tripSaved => 'ટ્રીપ સેવ થઈ';
+
+  @override
+  String get needAccountFirst => 'પહેલા ખાતું ઉમેરો (વધુ → ખાતા)';
+
+  @override
+  String get needVehicleFirst => 'પહેલા ગાડી ઉમેરો (વધુ → ગાડીઓ)';
+
+  @override
+  String get needPartyFirst => 'પહેલા પાર્ટી ઉમેરો (વધુ → પાર્ટીઓ)';
+
+  @override
+  String get chooseVehicle => 'ગાડી પસંદ કરો';
+
+  @override
+  String get chooseParty => 'પાર્ટી પસંદ કરો';
+
+  @override
+  String get chooseRoute => 'ક્યાંથી અને ક્યાં સુધી પસંદ કરો';
+
+  @override
+  String get emptyTrips => 'આ મહિને કોઈ ટ્રીપ નથી';
+
+  @override
+  String get tripDetail => 'ટ્રીપની વિગત';
+
+  @override
+  String get closeTrip => 'ટ્રીપ પૂરી કરો';
+
+  @override
+  String get reopenTrip => 'ફરી ચાલુ કરો';
+
+  @override
+  String get statusRunning => 'ચાલુ';
+
+  @override
+  String get statusClosed => 'પૂરી';
+
+  @override
+  String get payUnpaid => 'બાકી';
+
+  @override
+  String get payPartial => 'આંશિક';
+
+  @override
+  String get payPaid => 'મળી ગયા';
+
+  @override
+  String get receivedLabel => 'મળ્યા';
+
+  @override
+  String get advanceNotEditable =>
+      'એડવાન્સ અહીં બદલાતું નથી. પેમેન્ટ ખાતા ટેબમાંથી ઉમેરો.';
+
+  @override
+  String get amountLabel => 'રકમ';
+
+  @override
+  String get amountOk => 'બરાબર';
+
+  @override
+  String get enterAmount => 'રકમ લખો';
+
+  @override
+  String get whatExpense => 'શેનો ખર્ચ?';
+
+  @override
+  String get catDiesel => 'ડીઝલ';
+
+  @override
+  String get catToll => 'ટોલ';
+
+  @override
+  String get catRepair => 'રિપેર';
+
+  @override
+  String get catAllowance => 'ભથ્થું';
+
+  @override
+  String get catChallan => 'ચલણ';
+
+  @override
+  String get catOther => 'બીજું';
+
+  @override
+  String get liters => 'લિટર';
+
+  @override
+  String get ratePerLiter => 'ભાવ / લિટર';
+
+  @override
+  String get odometer => 'ઓડોમીટર (કિમી)';
+
+  @override
+  String get repairKind => 'શું રિપેર કર્યું?';
+
+  @override
+  String get rkTyre => 'ટાયર';
+
+  @override
+  String get rkOil => 'ઓઇલ';
+
+  @override
+  String get rkEngine => 'એન્જિન';
+
+  @override
+  String get rkBattery => 'બેટરી';
+
+  @override
+  String get rkService => 'સર્વિસ';
+
+  @override
+  String get expenseSaved => 'ખર્ચ સેવ થયો';
+
+  @override
+  String get recentExpenses => 'આ મહિનાનો ખર્ચ';
+
+  @override
+  String get emptyExpenses => 'આ મહિને કોઈ ખર્ચ નથી';
+
+  @override
+  String get paidFrom => 'કયા ખાતામાંથી';
+
+  @override
+  String get khataTitle => 'પાર્ટી ખાતા';
+
+  @override
+  String get totalDue => 'કુલ બાકી લેવાના';
+
+  @override
+  String daysOld(int days) {
+    return '$days દિવસ જૂનું';
+  }
+
+  @override
+  String get settled => 'ચૂકતે';
+
+  @override
+  String get receivePayment => 'પેમેન્ટ મળ્યું';
+
+  @override
+  String get whoPaid => 'કોણે આપ્યા';
+
+  @override
+  String get howMuch => 'કેટલા મળ્યા';
+
+  @override
+  String get payAll => 'બધા';
+
+  @override
+  String get payHalf => 'અડધા';
+
+  @override
+  String get payCustom => 'બીજી રકમ';
+
+  @override
+  String get willCredit => 'જમા થશે';
+
+  @override
+  String get remaining => 'બાકી રહેશે';
+
+  @override
+  String get paymentSaved => 'પેમેન્ટ સેવ થયું';
+
+  @override
+  String get totalBhada => 'કુલ ભાડું';
+
+  @override
+  String get totalReceived => 'કુલ મળ્યા';
+
+  @override
+  String get tripsHeading => 'ટ્રીપ';
+
+  @override
+  String get paymentsHeading => 'પેમેન્ટ';
+
+  @override
+  String get partyHasCredit => 'એડવાન્સ જમા';
+
+  @override
+  String get monthPrev => 'પાછલો મહિનો';
+
+  @override
+  String get monthNext => 'આવતો મહિનો';
 }
