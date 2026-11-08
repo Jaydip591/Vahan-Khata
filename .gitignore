@@ -1,0 +1,20 @@
+# OS / IDE
+.DS_Store
+.idea/
+.vscode/
+*.iml
+
+# Secrets
+.env
+*.jks
+*.keystore
+key.properties
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Flutter / Dart build output (FE/ also has its own .gitignore)
+.dart_tool/
+build/
