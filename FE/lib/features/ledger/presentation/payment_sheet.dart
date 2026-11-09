@@ -1,3 +1,5 @@
+import '../../reports/data/report_repository.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -63,7 +65,11 @@ class _PaymentSheetState extends ConsumerState<PaymentSheet> {
   Future<void> _pickAmount(_Amt choice, double balance) async {
     final t = AppL10n.of(context);
     if (choice == _Amt.custom) {
-      final v = await showAmountSheet(context, title: t.howMuch, initial: _custom);
+      final v = await showAmountSheet(
+        context,
+        title: t.howMuch,
+        initial: _custom,
+      );
       if (v == null || !mounted) return;
       setState(() {
         _custom = v;
@@ -83,7 +89,8 @@ class _PaymentSheetState extends ConsumerState<PaymentSheet> {
     } else if (amount <= 0) {
       problem = t.enterAmount;
     } else if (accountId == null) {
-      final noAccounts = ref.read(accountsProvider).asData?.value.isEmpty ?? false;
+      final noAccounts =
+          ref.read(accountsProvider).asData?.value.isEmpty ?? false;
       problem = noAccounts ? t.needAccountFirst : t.chooseAccount;
     }
     if (problem != null) {
@@ -95,7 +102,9 @@ class _PaymentSheetState extends ConsumerState<PaymentSheet> {
       _error = null;
     });
     try {
-      await ref.read(ledgerRepositoryProvider).addPayment(
+      await ref
+          .read(ledgerRepositoryProvider)
+          .addPayment(
             partyId: partyId!,
             amount: amount,
             mode: _mode,
@@ -109,6 +118,7 @@ class _PaymentSheetState extends ConsumerState<PaymentSheet> {
       ref.invalidate(partyBalancesProvider);
       ref.invalidate(partyLedgerProvider);
       ref.invalidate(tripsProvider);
+      invalidateReports(ref);
       if (!mounted) return;
       final messenger = ScaffoldMessenger.of(context);
       Navigator.pop(context, true);
@@ -124,9 +134,12 @@ class _PaymentSheetState extends ConsumerState<PaymentSheet> {
   }
 
   Widget _label(String text) => Padding(
-        padding: const EdgeInsets.only(top: 14, bottom: 8),
-        child: Text(text, style: const TextStyle(fontSize: 14, color: AppColors.muted)),
-      );
+    padding: const EdgeInsets.only(top: 14, bottom: 8),
+    child: Text(
+      text,
+      style: const TextStyle(fontSize: 14, color: AppColors.muted),
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -135,17 +148,22 @@ class _PaymentSheetState extends ConsumerState<PaymentSheet> {
     final accounts = ref.watch(accountsProvider).asData?.value;
     final parties = balances.asData?.value.parties ?? const <PartyBalance>[];
 
-    final partyId = parties.any((p) => p.partyId == _partyId) ? _partyId : (parties.length == 1 ? parties.first.partyId : null);
+    final partyId = parties.any((p) => p.partyId == _partyId)
+        ? _partyId
+        : (parties.length == 1 ? parties.first.partyId : null);
     final selected = parties.where((p) => p.partyId == partyId).firstOrNull;
     final balance = selected?.balance ?? 0;
-    final accountId = (accounts == null || accounts.any((a) => a.id == _accountId))
+    final accountId =
+        (accounts == null || accounts.any((a) => a.id == _accountId))
         ? _accountId
         : (accounts.length == 1 ? accounts.first.id : null);
     final amount = _amountFor(balance);
     final left = balance - amount;
 
     return ConstrainedBox(
-      constraints: BoxConstraints(maxHeight: MediaQuery.sizeOf(context).height * 0.94),
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.sizeOf(context).height * 0.94,
+      ),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
         child: Column(
@@ -154,7 +172,10 @@ class _PaymentSheetState extends ConsumerState<PaymentSheet> {
           children: [
             const SheetHandle(),
             const SizedBox(height: 10),
-            Text(t.receivePayment, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w500)),
+            Text(
+              t.receivePayment,
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
+            ),
             Flexible(
               child: SingleChildScrollView(
                 child: Column(
@@ -164,7 +185,11 @@ class _PaymentSheetState extends ConsumerState<PaymentSheet> {
                     if (balances.isLoading)
                       const Padding(
                         padding: EdgeInsets.all(12),
-                        child: Center(child: CircularProgressIndicator(color: AppColors.gold)),
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            color: AppColors.gold,
+                          ),
+                        ),
                       )
                     else if (balances.hasError)
                       OutlinedButton(
@@ -172,7 +197,13 @@ class _PaymentSheetState extends ConsumerState<PaymentSheet> {
                         child: Text(t.retry),
                       )
                     else if (parties.isEmpty)
-                      Text(t.noPartyYet, style: const TextStyle(color: AppColors.expense, fontSize: 15))
+                      Text(
+                        t.noPartyYet,
+                        style: const TextStyle(
+                          color: AppColors.expense,
+                          fontSize: 15,
+                        ),
+                      )
                     else
                       Column(
                         children: [
@@ -209,18 +240,31 @@ class _PaymentSheetState extends ConsumerState<PaymentSheet> {
                     const SizedBox(height: 10),
                     Container(
                       padding: const EdgeInsets.all(14),
-                      decoration: BoxDecoration(color: AppColors.ink, borderRadius: BorderRadius.circular(16)),
+                      decoration: BoxDecoration(
+                        color: AppColors.ink,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
                       child: Row(
                         children: [
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(t.willCredit,
-                                    style: const TextStyle(color: AppColors.mutedOnInk, fontSize: 13)),
-                                Text(formatRupees(amount),
-                                    style: const TextStyle(
-                                        color: AppColors.gold, fontSize: 28, fontWeight: FontWeight.w500)),
+                                Text(
+                                  t.willCredit,
+                                  style: const TextStyle(
+                                    color: AppColors.mutedOnInk,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                                Text(
+                                  formatRupees(amount),
+                                  style: const TextStyle(
+                                    color: AppColors.gold,
+                                    fontSize: 28,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
                               ],
                             ),
                           ),
@@ -228,14 +272,23 @@ class _PaymentSheetState extends ConsumerState<PaymentSheet> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                Text(left < 0 ? t.creditLabel : t.remaining,
-                                    style: const TextStyle(color: AppColors.mutedOnInk, fontSize: 13)),
-                                Text(formatRupees(left.abs()),
-                                    style: TextStyle(
-                                      color: left > 0 ? AppColors.expenseOnInk : AppColors.incomeOnInk,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w500,
-                                    )),
+                                Text(
+                                  left < 0 ? t.creditLabel : t.remaining,
+                                  style: const TextStyle(
+                                    color: AppColors.mutedOnInk,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                                Text(
+                                  formatRupees(left.abs()),
+                                  style: TextStyle(
+                                    color: left > 0
+                                        ? AppColors.expenseOnInk
+                                        : AppColors.incomeOnInk,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
                               ],
                             ),
                         ],
@@ -266,9 +319,15 @@ class _PaymentSheetState extends ConsumerState<PaymentSheet> {
                       ],
                     ),
                     _label(t.whichAccount),
-                    AccountChips(selectedId: accountId, onChanged: (id) => setState(() => _accountId = id)),
+                    AccountChips(
+                      selectedId: accountId,
+                      onChanged: (id) => setState(() => _accountId = id),
+                    ),
                     _label(t.dateLabel),
-                    DateChips(date: _date, onChanged: (d) => setState(() => _date = d)),
+                    DateChips(
+                      date: _date,
+                      onChanged: (d) => setState(() => _date = d),
+                    ),
                     const SizedBox(height: 6),
                   ],
                 ),
@@ -277,7 +336,13 @@ class _PaymentSheetState extends ConsumerState<PaymentSheet> {
             if (_error != null)
               Padding(
                 padding: const EdgeInsets.only(top: 6),
-                child: Text(_error!, style: const TextStyle(color: AppColors.expense, fontSize: 15)),
+                child: Text(
+                  _error!,
+                  style: const TextStyle(
+                    color: AppColors.expense,
+                    fontSize: 15,
+                  ),
+                ),
               ),
             const SizedBox(height: 8),
             AppButton(
@@ -293,7 +358,11 @@ class _PaymentSheetState extends ConsumerState<PaymentSheet> {
 }
 
 class _PartyRow extends StatelessWidget {
-  const _PartyRow({required this.party, required this.selected, required this.onTap});
+  const _PartyRow({
+    required this.party,
+    required this.selected,
+    required this.onTap,
+  });
   final PartyBalance party;
   final bool selected;
   final VoidCallback onTap;
@@ -304,7 +373,10 @@ class _PartyRow extends StatelessWidget {
       color: selected ? AppColors.ink : Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(14),
-        side: BorderSide(color: selected ? AppColors.ink : AppColors.fieldLine, width: 1.5),
+        side: BorderSide(
+          color: selected ? AppColors.ink : AppColors.fieldLine,
+          width: 1.5,
+        ),
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(14),
@@ -314,20 +386,26 @@ class _PartyRow extends StatelessWidget {
           child: Row(
             children: [
               Expanded(
-                child: Text(party.name,
-                    style: TextStyle(
-                      fontSize: 17,
-                      color: selected ? Colors.white : AppColors.ink,
-                      fontWeight: selected ? FontWeight.w500 : FontWeight.w400,
-                    )),
+                child: Text(
+                  party.name,
+                  style: TextStyle(
+                    fontSize: 17,
+                    color: selected ? Colors.white : AppColors.ink,
+                    fontWeight: selected ? FontWeight.w500 : FontWeight.w400,
+                  ),
+                ),
               ),
               if (party.balance > 0)
-                Text(formatRupees(party.balance),
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: selected ? AppColors.expenseOnInk : AppColors.expense,
-                    )),
+                Text(
+                  formatRupees(party.balance),
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: selected
+                        ? AppColors.expenseOnInk
+                        : AppColors.expense,
+                  ),
+                ),
             ],
           ),
         ),

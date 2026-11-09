@@ -1392,6 +1392,48 @@ abstract class AppL10n {
   /// In gu, this message translates to:
   /// **'બધું જુઓ'**
   String get seeAll;
+
+  /// No description provided for @otherExpenses.
+  ///
+  /// In gu, this message translates to:
+  /// **'બીજા ખર્ચ'**
+  String get otherExpenses;
+
+  /// No description provided for @litersLabel.
+  ///
+  /// In gu, this message translates to:
+  /// **'લિટર'**
+  String get litersLabel;
+
+  /// No description provided for @avgRate.
+  ///
+  /// In gu, this message translates to:
+  /// **'સરેરાશ ભાવ'**
+  String get avgRate;
+
+  /// No description provided for @entriesLabel.
+  ///
+  /// In gu, this message translates to:
+  /// **'એન્ટ્રી'**
+  String get entriesLabel;
+
+  /// No description provided for @monthDetails.
+  ///
+  /// In gu, this message translates to:
+  /// **'મહિનાની વિગત'**
+  String get monthDetails;
+
+  /// No description provided for @litersValue.
+  ///
+  /// In gu, this message translates to:
+  /// **'{value} લિટર'**
+  String litersValue(Object value);
+
+  /// No description provided for @rateValue.
+  ///
+  /// In gu, this message translates to:
+  /// **'{rate}/લિટર'**
+  String rateValue(Object rate);
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

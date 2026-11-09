@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../core/money.dart';
 import '../../../core/month_names.dart';
@@ -138,6 +139,7 @@ class _VehicleCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final t = AppL10n.of(context);
     return ReportCard(
+      onTap: () => context.push('/report/vehicle', extra: [row.id, row.name]),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -292,6 +294,10 @@ class _TrendTab extends ConsumerWidget {
           itemBuilder: (c, i) {
             final r = pts[pts.length - 1 - i]; // newest first
             return ReportCard(
+              onTap: () {
+                ref.read(selectedMonthProvider.notifier).set(r.month);
+                context.push('/report/month');
+              },
               child: Column(
                 children: [
                   Row(

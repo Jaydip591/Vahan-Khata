@@ -674,4 +674,29 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get seeAll => 'See all';
+
+  @override
+  String get otherExpenses => 'Other expenses';
+
+  @override
+  String get litersLabel => 'Liters';
+
+  @override
+  String get avgRate => 'Avg rate';
+
+  @override
+  String get entriesLabel => 'Entries';
+
+  @override
+  String get monthDetails => 'Month details';
+
+  @override
+  String litersValue(Object value) {
+    return '$value L';
+  }
+
+  @override
+  String rateValue(Object rate) {
+    return '$rate/L';
+  }
 }

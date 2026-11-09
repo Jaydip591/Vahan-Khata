@@ -8,12 +8,22 @@ class TripRepository {
   TripRepository(this._dio);
   final Dio _dio;
 
-  Future<List<Trip>> list({String? month, int limit = 200}) async {
-    final r = await _dio.get('/api/v1/trips', queryParameters: {
-      'month': ?month,
-      'limit': limit,
-    });
-    return (r.data as List).map((e) => Trip.fromJson(e as Map<String, dynamic>)).toList();
+  Future<List<Trip>> list({
+    String? month,
+    String? vehicleId,
+    int limit = 200,
+  }) async {
+    final r = await _dio.get(
+      '/api/v1/trips',
+      queryParameters: {
+        'month': ?month,
+        'vehicle_id': ?vehicleId,
+        'limit': limit,
+      },
+    );
+    return (r.data as List)
+        .map((e) => Trip.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   Future<Trip> get(String id) async {
@@ -28,12 +38,18 @@ class TripRepository {
 
   /// Edits the trip itself. The advance is a payment and is not changed here.
   Future<Trip> update(String id, TripInput input) async {
-    final r = await _dio.patch('/api/v1/trips/$id', data: input.toJson(includeAdvance: false));
+    final r = await _dio.patch(
+      '/api/v1/trips/$id',
+      data: input.toJson(includeAdvance: false),
+    );
     return Trip.fromJson(r.data as Map<String, dynamic>);
   }
 
   Future<Trip> setClosed(String id, bool closed) async {
-    final r = await _dio.patch('/api/v1/trips/$id', data: {'status': closed ? 'closed' : 'running'});
+    final r = await _dio.patch(
+      '/api/v1/trips/$id',
+      data: {'status': closed ? 'closed' : 'running'},
+    );
     return Trip.fromJson(r.data as Map<String, dynamic>);
   }
 
@@ -41,17 +57,29 @@ class TripRepository {
 
   Future<List<RecentRoute>> recentRoutes() async {
     final r = await _dio.get('/api/v1/trips/routes/recent');
-    return (r.data as List).map((e) => RecentRoute.fromJson(e as Map<String, dynamic>)).toList();
+    return (r.data as List)
+        .map((e) => RecentRoute.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 }
 
-final tripRepositoryProvider =
-    Provider<TripRepository>((ref) => TripRepository(ref.watch(apiClientProvider).dio));
+final tripRepositoryProvider = Provider<TripRepository>(
+  (ref) => TripRepository(ref.watch(apiClientProvider).dio),
+);
 
 /// Trips of one month ('2026-11').
 final tripsProvider = FutureProvider.family<List<Trip>, String>(
   (ref, month) => ref.watch(tripRepositoryProvider).list(month: month),
 );
 
-final recentRoutesProvider =
-    FutureProvider<List<RecentRoute>>((ref) => ref.watch(tripRepositoryProvider).recentRoutes());
+/// Trips of one vehicle in one month. Auto-disposed so it is fresh each time it is opened.
+final vehicleTripsProvider = FutureProvider.autoDispose
+    .family<List<Trip>, ({String month, String vehicleId})>(
+      (ref, k) => ref
+          .watch(tripRepositoryProvider)
+          .list(month: k.month, vehicleId: k.vehicleId, limit: 300),
+    );
+
+final recentRoutesProvider = FutureProvider<List<RecentRoute>>(
+  (ref) => ref.watch(tripRepositoryProvider).recentRoutes(),
+);

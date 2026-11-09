@@ -1,3 +1,5 @@
+import '../../reports/data/report_repository.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -21,8 +23,15 @@ import '../data/expense_repository.dart';
 enum _Field { amount, liters, odometer }
 
 /// Opens the quick expense sheet. Returns true if something was saved or deleted.
-Future<bool?> showExpenseSheet(BuildContext context, ExpenseCategory category, {Expense? existing}) {
-  return showAppSheet<bool>(context, (_) => ExpenseSheet(category: category, existing: existing));
+Future<bool?> showExpenseSheet(
+  BuildContext context,
+  ExpenseCategory category, {
+  Expense? existing,
+}) {
+  return showAppSheet<bool>(
+    context,
+    (_) => ExpenseSheet(category: category, existing: existing),
+  );
 }
 
 class ExpenseSheet extends ConsumerStatefulWidget {
@@ -50,7 +59,8 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
   bool get _isDiesel => widget.category == ExpenseCategory.diesel;
   bool get _isRepair => widget.category == ExpenseCategory.repair;
 
-  String _trimNumber(num n) => n == n.roundToDouble() ? n.round().toString() : n.toString();
+  String _trimNumber(num n) =>
+      n == n.roundToDouble() ? n.round().toString() : n.toString();
 
   @override
   void initState() {
@@ -115,8 +125,12 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
       date: _date,
       accountId: _accountId,
       liters: _isDiesel && liters > 0 ? _clean(_liters) : null,
-      rate: _isDiesel && liters > 0 ? (amount / liters).toStringAsFixed(2) : null,
-      odometer: _isDiesel && _odometer.isNotEmpty ? int.tryParse(_odometer) : null,
+      rate: _isDiesel && liters > 0
+          ? (amount / liters).toStringAsFixed(2)
+          : null,
+      odometer: _isDiesel && _odometer.isNotEmpty
+          ? int.tryParse(_odometer)
+          : null,
       repairKind: _isRepair ? _repairKind : null,
     );
     try {
@@ -130,6 +144,7 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
       await defaults.setVehicle(vehicleId);
       if (_accountId != null) await defaults.setAccount(_accountId!);
       ref.invalidate(expensesProvider);
+      invalidateReports(ref);
       if (!mounted) return;
       final messenger = ScaffoldMessenger.of(context);
       Navigator.pop(context, true);
@@ -146,12 +161,17 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
 
   Future<void> _delete() async {
     final t = AppL10n.of(context);
-    final ok = await confirmDialog(context,
-        title: t.deleteConfirmTitle, body: t.deleteConfirmBody, confirmLabel: t.delete);
+    final ok = await confirmDialog(
+      context,
+      title: t.deleteConfirmTitle,
+      body: t.deleteConfirmBody,
+      confirmLabel: t.delete,
+    );
     if (!ok) return;
     try {
       await ref.read(expenseRepositoryProvider).delete(widget.existing!.id);
       ref.invalidate(expensesProvider);
+      invalidateReports(ref);
       if (mounted) Navigator.pop(context, true);
     } catch (e) {
       if (mounted) setState(() => _error = errorMessage(t, e));
@@ -159,18 +179,30 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
   }
 
   Widget _label(String text) => Padding(
-        padding: const EdgeInsets.only(top: 14, bottom: 8),
-        child: Text(text, style: const TextStyle(fontSize: 14, color: AppColors.muted)),
-      );
+    padding: const EdgeInsets.only(top: 14, bottom: 8),
+    child: Text(
+      text,
+      style: const TextStyle(fontSize: 14, color: AppColors.muted),
+    ),
+  );
 
-  Widget _fieldBox(_Field field, String label, String text, {String? suffix, bool big = false}) {
+  Widget _fieldBox(
+    _Field field,
+    String label,
+    String text, {
+    String? suffix,
+    bool big = false,
+  }) {
     final selected = _active == field;
     return Expanded(
       child: Material(
         color: selected ? AppColors.goldSoft : AppColors.ivory,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(14),
-          side: BorderSide(color: selected ? AppColors.gold : AppColors.line, width: 1.5),
+          side: BorderSide(
+            color: selected ? AppColors.gold : AppColors.line,
+            width: 1.5,
+          ),
         ),
         child: InkWell(
           borderRadius: BorderRadius.circular(14),
@@ -180,13 +212,22 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(label, style: const TextStyle(fontSize: 12, color: AppColors.muted)),
                 Text(
-                  text.isEmpty ? '0' : '${field == _Field.amount ? '₹' : ''}${field == _Field.amount ? formatRupees(double.tryParse(_clean(text)) ?? 0, symbol: false) : text}${suffix ?? ''}',
+                  label,
+                  style: const TextStyle(fontSize: 12, color: AppColors.muted),
+                ),
+                Text(
+                  text.isEmpty
+                      ? '0'
+                      : '${field == _Field.amount ? '₹' : ''}${field == _Field.amount ? formatRupees(double.tryParse(_clean(text)) ?? 0, symbol: false) : text}${suffix ?? ''}',
                   style: TextStyle(
                     fontSize: big ? 28 : 20,
                     fontWeight: FontWeight.w500,
-                    color: text.isEmpty ? AppColors.muted : (field == _Field.amount ? AppColors.expense : AppColors.ink),
+                    color: text.isEmpty
+                        ? AppColors.muted
+                        : (field == _Field.amount
+                              ? AppColors.expense
+                              : AppColors.ink),
                   ),
                 ),
               ],
@@ -205,13 +246,18 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
     final vehicleId = vehicles == null
         ? _vehicleId
         : (vehicles.any((v) => v.id == _vehicleId)
-            ? _vehicleId
-            : (vehicles.length == 1 ? vehicles.first.id : null));
-    final accountId = (accounts == null || accounts.any((a) => a.id == _accountId)) ? _accountId : null;
+              ? _vehicleId
+              : (vehicles.length == 1 ? vehicles.first.id : null));
+    final accountId =
+        (accounts == null || accounts.any((a) => a.id == _accountId))
+        ? _accountId
+        : null;
     if (accountId != _accountId) _accountId = accountId;
 
     return ConstrainedBox(
-      constraints: BoxConstraints(maxHeight: MediaQuery.sizeOf(context).height * 0.94),
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.sizeOf(context).height * 0.94,
+      ),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
         child: Column(
@@ -225,13 +271,21 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
                 Container(
                   width: 44,
                   height: 44,
-                  decoration: const BoxDecoration(color: AppColors.ink, shape: BoxShape.circle),
+                  decoration: const BoxDecoration(
+                    color: AppColors.ink,
+                    shape: BoxShape.circle,
+                  ),
                   child: Icon(widget.category.icon, color: AppColors.gold),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: Text(widget.category.label(t),
-                      style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w500)),
+                  child: Text(
+                    widget.category.label(t),
+                    style: const TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                 ),
                 if (_editing)
                   IconButton(
@@ -248,7 +302,10 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     _label(t.vehicle),
-                    VehicleChips(selectedId: vehicleId, onChanged: (v) => setState(() => _vehicleId = v.id)),
+                    VehicleChips(
+                      selectedId: vehicleId,
+                      onChanged: (v) => setState(() => _vehicleId = v.id),
+                    ),
                     if (_isRepair) ...[
                       _label(t.repairKind),
                       Wrap(
@@ -259,7 +316,9 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
                             AppChip(
                               label: k.label(t),
                               selected: _repairKind == k,
-                              onTap: () => setState(() => _repairKind = _repairKind == k ? null : k),
+                              onTap: () => setState(
+                                () => _repairKind = _repairKind == k ? null : k,
+                              ),
                             ),
                         ],
                       ),
@@ -267,7 +326,12 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
                     const SizedBox(height: 14),
                     Row(
                       children: [
-                        _fieldBox(_Field.amount, t.amountLabel, _amount, big: true),
+                        _fieldBox(
+                          _Field.amount,
+                          t.amountLabel,
+                          _amount,
+                          big: true,
+                        ),
                         if (_isDiesel) ...[
                           const SizedBox(width: 8),
                           _fieldBox(_Field.liters, t.liters, _liters),
@@ -279,7 +343,10 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
                     const SizedBox(height: 10),
                     KeypadPad(onKey: _press, decimal: _active == _Field.liters),
                     _label(t.dateLabel),
-                    DateChips(date: _date, onChanged: (d) => setState(() => _date = d)),
+                    DateChips(
+                      date: _date,
+                      onChanged: (d) => setState(() => _date = d),
+                    ),
                     _label(t.paidFrom),
                     AccountChips(
                       selectedId: accountId,
@@ -294,10 +361,20 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
             if (_error != null)
               Padding(
                 padding: const EdgeInsets.only(top: 6),
-                child: Text(_error!, style: const TextStyle(color: AppColors.expense, fontSize: 15)),
+                child: Text(
+                  _error!,
+                  style: const TextStyle(
+                    color: AppColors.expense,
+                    fontSize: 15,
+                  ),
+                ),
               ),
             const SizedBox(height: 8),
-            AppButton(label: t.save, loading: _saving, onPressed: () => _save(vehicleId)),
+            AppButton(
+              label: t.save,
+              loading: _saving,
+              onPressed: () => _save(vehicleId),
+            ),
           ],
         ),
       ),

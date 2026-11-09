@@ -1,3 +1,5 @@
+import '../../reports/data/report_repository.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -64,7 +66,11 @@ class _TripFormScreenState extends ConsumerState<TripFormScreen> {
       _partyId = trip.party.id;
       _from = trip.from;
       _to = trip.to;
-      _date = DateTime(trip.tripDate.year, trip.tripDate.month, trip.tripDate.day);
+      _date = DateTime(
+        trip.tripDate.year,
+        trip.tripDate.month,
+        trip.tripDate.day,
+      );
       _bhada = trip.bhada.round();
     } else {
       _vehicleId = d.vehicleId;
@@ -75,19 +81,25 @@ class _TripFormScreenState extends ConsumerState<TripFormScreen> {
   }
 
   int get _advanceAmount => switch (_adv) {
-        _Adv.full => _bhada,
-        _Adv.half => (_bhada / 2).round(),
-        _Adv.none => 0,
-        _Adv.custom => _customAdvance > _bhada ? _bhada : _customAdvance,
-      };
+    _Adv.full => _bhada,
+    _Adv.half => (_bhada / 2).round(),
+    _Adv.none => 0,
+    _Adv.custom => _customAdvance > _bhada ? _bhada : _customAdvance,
+  };
 
   /// A remembered vehicle/party may have been deleted since: only keep it if it still exists.
-  String? _valid(String? id, Iterable<String> existing) => existing.contains(id) ? id : null;
+  String? _valid(String? id, Iterable<String> existing) =>
+      existing.contains(id) ? id : null;
 
   Future<void> _pickPlace(bool isFrom) async {
     final t = AppL10n.of(context);
-    final place = await showPlacePicker(context, title: isFrom ? t.fromPlace : t.toPlace);
-    if (place != null && mounted) setState(() => isFrom ? _from = place : _to = place);
+    final place = await showPlacePicker(
+      context,
+      title: isFrom ? t.fromPlace : t.toPlace,
+    );
+    if (place != null && mounted) {
+      setState(() => isFrom ? _from = place : _to = place);
+    }
   }
 
   Future<void> _typeBhada() async {
@@ -99,7 +111,12 @@ class _TripFormScreenState extends ConsumerState<TripFormScreen> {
   Future<void> _chooseAdvance(_Adv choice) async {
     final t = AppL10n.of(context);
     if (choice == _Adv.custom) {
-      final v = await showAmountSheet(context, title: t.advanceLabel, initial: _customAdvance, max: _bhada);
+      final v = await showAmountSheet(
+        context,
+        title: t.advanceLabel,
+        initial: _customAdvance,
+        max: _bhada,
+      );
       if (v == null || !mounted) return;
       setState(() {
         _customAdvance = v;
@@ -144,7 +161,8 @@ class _TripFormScreenState extends ConsumerState<TripFormScreen> {
     } else if (_bhada <= 0) {
       problem = t.enterAmount;
     } else if (!_editing && _advanceAmount > 0 && accountId == null) {
-      final noAccounts = ref.read(accountsProvider).asData?.value.isEmpty ?? false;
+      final noAccounts =
+          ref.read(accountsProvider).asData?.value.isEmpty ?? false;
       problem = noAccounts ? t.needAccountFirst : t.chooseAccount;
     }
     if (problem != null) {
@@ -156,7 +174,11 @@ class _TripFormScreenState extends ConsumerState<TripFormScreen> {
       _error = null;
     });
     final advance = (!_editing && _advanceAmount > 0)
-        ? AdvanceInput(amount: _advanceAmount, mode: _mode, accountId: accountId!)
+        ? AdvanceInput(
+            amount: _advanceAmount,
+            mode: _mode,
+            accountId: accountId!,
+          )
         : null;
     final input = TripInput(
       vehicleId: vehicleId!,
@@ -183,6 +205,7 @@ class _TripFormScreenState extends ConsumerState<TripFormScreen> {
         await defaults.setPayMode(_mode);
       }
       ref.invalidate(tripsProvider);
+      invalidateReports(ref);
       ref.invalidate(recentRoutesProvider);
       ref.invalidate(partyBalancesProvider);
       ref.invalidate(partyLedgerProvider);
@@ -201,11 +224,15 @@ class _TripFormScreenState extends ConsumerState<TripFormScreen> {
   }
 
   Widget _label(String text) => Padding(
-        padding: const EdgeInsets.only(bottom: 8),
-        child: Text(text, style: const TextStyle(fontSize: 14, color: AppColors.muted)),
-      );
+    padding: const EdgeInsets.only(bottom: 8),
+    child: Text(
+      text,
+      style: const TextStyle(fontSize: 14, color: AppColors.muted),
+    ),
+  );
 
-  Widget _stepper(IconData icon, String tip, VoidCallback onTap) => IconButton.filled(
+  Widget _stepper(IconData icon, String tip, VoidCallback onTap) =>
+      IconButton.filled(
         tooltip: tip,
         style: IconButton.styleFrom(
           backgroundColor: AppColors.ink,
@@ -216,7 +243,13 @@ class _TripFormScreenState extends ConsumerState<TripFormScreen> {
         onPressed: onTap,
       );
 
-  Widget _placeBox(String hint, Place? place, IconData icon, String lang, VoidCallback onTap) {
+  Widget _placeBox(
+    String hint,
+    Place? place,
+    IconData icon,
+    String lang,
+    VoidCallback onTap,
+  ) {
     return Expanded(
       child: Material(
         color: Colors.white,
@@ -268,21 +301,23 @@ class _TripFormScreenState extends ConsumerState<TripFormScreen> {
     final vehicleId = vehicles == null
         ? _vehicleId
         : _valid(_vehicleId, vehicles.map((v) => v.id)) ??
-            (vehicles.length == 1 ? vehicles.first.id : null);
+              (vehicles.length == 1 ? vehicles.first.id : null);
     final partyId = parties == null
         ? _partyId
-        : _valid(_partyId, parties.map((p) => p.id)) ?? (parties.length == 1 ? parties.first.id : null);
+        : _valid(_partyId, parties.map((p) => p.id)) ??
+              (parties.length == 1 ? parties.first.id : null);
     final accountId = accounts == null
         ? _accountId
         : _valid(_accountId, accounts.map((a) => a.id)) ??
-            (accounts.length == 1 ? accounts.first.id : null);
+              (accounts.length == 1 ? accounts.first.id : null);
 
     final advance = _advanceAmount;
     final balance = _bhada - advance;
 
     return FormShell(
       title: _editing ? t.editTrip : t.newTrip,
-      onSave: () => _save(vehicleId: vehicleId, partyId: partyId, accountId: accountId),
+      onSave: () =>
+          _save(vehicleId: vehicleId, partyId: partyId, accountId: accountId),
       saving: _saving,
       error: _error,
       child: Column(
@@ -290,7 +325,9 @@ class _TripFormScreenState extends ConsumerState<TripFormScreen> {
         children: [
           if (!_editing) ...[
             OutlinedButton.icon(
-              style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(48)),
+              style: OutlinedButton.styleFrom(
+                minimumSize: const Size.fromHeight(48),
+              ),
               onPressed: _copyLast,
               icon: const Icon(Icons.copy_rounded),
               label: Text(t.copyLastTrip, style: const TextStyle(fontSize: 16)),
@@ -308,7 +345,10 @@ class _TripFormScreenState extends ConsumerState<TripFormScreen> {
           ),
           const SizedBox(height: 16),
           _label(t.party),
-          PartyChips(selectedId: partyId, onChanged: (p) => setState(() => _partyId = p.id)),
+          PartyChips(
+            selectedId: partyId,
+            onChanged: (p) => setState(() => _partyId = p.id),
+          ),
           if (routes.isNotEmpty) ...[
             const SizedBox(height: 16),
             _label(t.quickRoutes),
@@ -332,17 +372,32 @@ class _TripFormScreenState extends ConsumerState<TripFormScreen> {
           const SizedBox(height: 16),
           Row(
             children: [
-              _placeBox(t.fromPlace, _from, Icons.my_location_rounded, lang, () => _pickPlace(true)),
+              _placeBox(
+                t.fromPlace,
+                _from,
+                Icons.my_location_rounded,
+                lang,
+                () => _pickPlace(true),
+              ),
               IconButton(
                 tooltip: '⇄',
-                icon: const Icon(Icons.swap_horiz_rounded, color: AppColors.muted),
+                icon: const Icon(
+                  Icons.swap_horiz_rounded,
+                  color: AppColors.muted,
+                ),
                 onPressed: () => setState(() {
                   final f = _from;
                   _from = _to;
                   _to = f;
                 }),
               ),
-              _placeBox(t.toPlace, _to, Icons.flag_rounded, lang, () => _pickPlace(false)),
+              _placeBox(
+                t.toPlace,
+                _to,
+                Icons.flag_rounded,
+                lang,
+                () => _pickPlace(false),
+              ),
             ],
           ),
           const SizedBox(height: 16),
@@ -356,9 +411,13 @@ class _TripFormScreenState extends ConsumerState<TripFormScreen> {
             ),
             child: Row(
               children: [
-                _stepper(Icons.remove_rounded, '-500', () => setState(() {
-                      _bhada = (_bhada - 500).clamp(0, 999999999);
-                    })),
+                _stepper(
+                  Icons.remove_rounded,
+                  '-500',
+                  () => setState(() {
+                    _bhada = (_bhada - 500).clamp(0, 999999999);
+                  }),
+                ),
                 Expanded(
                   child: InkWell(
                     onTap: _typeBhada,
@@ -369,16 +428,28 @@ class _TripFormScreenState extends ConsumerState<TripFormScreen> {
                         children: [
                           Text(
                             _bhada > 0 ? formatRupees(_bhada) : '₹ 0',
-                            style: const TextStyle(fontSize: 30, fontWeight: FontWeight.w500),
+                            style: const TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
-                          Text(t.tapToType,
-                              style: const TextStyle(fontSize: 12, color: AppColors.muted)),
+                          Text(
+                            t.tapToType,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: AppColors.muted,
+                            ),
+                          ),
                         ],
                       ),
                     ),
                   ),
                 ),
-                _stepper(Icons.add_rounded, '+500', () => setState(() => _bhada += 500)),
+                _stepper(
+                  Icons.add_rounded,
+                  '+500',
+                  () => setState(() => _bhada += 500),
+                ),
               ],
             ),
           ),
@@ -395,7 +466,12 @@ class _TripFormScreenState extends ConsumerState<TripFormScreen> {
                 children: [
                   const Icon(Icons.info_outline_rounded),
                   const SizedBox(width: 10),
-                  Expanded(child: Text(t.advanceNotEditable, style: const TextStyle(fontSize: 14))),
+                  Expanded(
+                    child: Text(
+                      t.advanceNotEditable,
+                      style: const TextStyle(fontSize: 14),
+                    ),
+                  ),
                 ],
               ),
             )
@@ -435,22 +511,43 @@ class _TripFormScreenState extends ConsumerState<TripFormScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(t.advanceLabel, style: const TextStyle(fontSize: 13, color: AppColors.muted)),
-                      Text(formatRupees(advance),
-                          style: const TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w500, color: AppColors.income)),
+                      Text(
+                        t.advanceLabel,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          color: AppColors.muted,
+                        ),
+                      ),
+                      Text(
+                        formatRupees(advance),
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.income,
+                        ),
+                      ),
                     ],
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text(t.balanceLeft, style: const TextStyle(fontSize: 13, color: AppColors.muted)),
-                      Text(formatRupees(balance),
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                            color: balance > 0 ? AppColors.expense : AppColors.income,
-                          )),
+                      Text(
+                        t.balanceLeft,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          color: AppColors.muted,
+                        ),
+                      ),
+                      Text(
+                        formatRupees(balance),
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                          color: balance > 0
+                              ? AppColors.expense
+                              : AppColors.income,
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -484,7 +581,10 @@ class _TripFormScreenState extends ConsumerState<TripFormScreen> {
               ),
               const SizedBox(height: 12),
               _label(t.whichAccount),
-              AccountChips(selectedId: accountId, onChanged: (id) => setState(() => _accountId = id)),
+              AccountChips(
+                selectedId: accountId,
+                onChanged: (id) => setState(() => _accountId = id),
+              ),
             ],
           ],
           const SizedBox(height: 16),
@@ -497,7 +597,11 @@ class _TripFormScreenState extends ConsumerState<TripFormScreen> {
               spacing: 8,
               runSpacing: 8,
               children: [
-                AppChip(label: t.none, selected: _driverId == null, onTap: () => setState(() => _driverId = null)),
+                AppChip(
+                  label: t.none,
+                  selected: _driverId == null,
+                  onTap: () => setState(() => _driverId = null),
+                ),
                 for (final d in drivers)
                   AppChip(
                     label: d.name,

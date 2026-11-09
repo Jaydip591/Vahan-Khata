@@ -671,4 +671,29 @@ class AppL10nGu extends AppL10n {
 
   @override
   String get seeAll => 'બધું જુઓ';
+
+  @override
+  String get otherExpenses => 'બીજા ખર્ચ';
+
+  @override
+  String get litersLabel => 'લિટર';
+
+  @override
+  String get avgRate => 'સરેરાશ ભાવ';
+
+  @override
+  String get entriesLabel => 'એન્ટ્રી';
+
+  @override
+  String get monthDetails => 'મહિનાની વિગત';
+
+  @override
+  String litersValue(Object value) {
+    return '$value લિટર';
+  }
+
+  @override
+  String rateValue(Object rate) {
+    return '$rate/લિટર';
+  }
 }

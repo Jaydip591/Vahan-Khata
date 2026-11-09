@@ -229,5 +229,12 @@
   "vsLastMonth": "Last month {amount}",
   "collectedLabel": "Received",
   "vehicleProfitTitle": "Vehicle-wise profit",
-  "seeAll": "See all"
+  "seeAll": "See all",
+  "otherExpenses": "Other expenses",
+  "litersLabel": "Liters",
+  "avgRate": "Avg rate",
+  "entriesLabel": "Entries",
+  "monthDetails": "Month details",
+  "litersValue": "{value} L",
+  "rateValue": "{rate}/L"
 }

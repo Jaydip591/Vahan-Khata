@@ -1,3 +1,5 @@
+import '../../reports/data/report_repository.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -20,7 +22,11 @@ class PartyLedgerScreen extends ConsumerWidget {
   const PartyLedgerScreen({super.key, required this.partyId});
   final String partyId;
 
-  Future<void> _openTrip(BuildContext context, WidgetRef ref, String tripId) async {
+  Future<void> _openTrip(
+    BuildContext context,
+    WidgetRef ref,
+    String tripId,
+  ) async {
     try {
       final trip = await ref.read(tripRepositoryProvider).get(tripId);
       if (context.mounted) context.push('/trip/detail', extra: trip);
@@ -29,19 +35,29 @@ class PartyLedgerScreen extends ConsumerWidget {
     }
   }
 
-  Future<void> _deletePayment(BuildContext context, WidgetRef ref, LedgerPayment p) async {
+  Future<void> _deletePayment(
+    BuildContext context,
+    WidgetRef ref,
+    LedgerPayment p,
+  ) async {
     final t = AppL10n.of(context);
-    final ok = await confirmDialog(context,
-        title: t.deletePaymentTitle, body: t.deleteConfirmBody, confirmLabel: t.delete);
+    final ok = await confirmDialog(
+      context,
+      title: t.deletePaymentTitle,
+      body: t.deleteConfirmBody,
+      confirmLabel: t.delete,
+    );
     if (!ok) return;
     try {
       await ref.read(ledgerRepositoryProvider).deletePayment(p.id);
       ref.invalidate(partyLedgerProvider);
       ref.invalidate(partyBalancesProvider);
       ref.invalidate(tripsProvider);
+      invalidateReports(ref);
     } catch (e) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(errorMessage(t, e))));
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(errorMessage(t, e))));
       }
     }
   }
@@ -65,37 +81,54 @@ class PartyLedgerScreen extends ConsumerWidget {
           ),
           Expanded(
             child: ledger.when(
-              loading: () => const Center(child: CircularProgressIndicator(color: AppColors.gold)),
+              loading: () => const Center(
+                child: CircularProgressIndicator(color: AppColors.gold),
+              ),
               error: (e, _) => Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(errorMessage(t, e), style: const TextStyle(fontSize: 17)),
+                    Text(
+                      errorMessage(t, e),
+                      style: const TextStyle(fontSize: 17),
+                    ),
                     const SizedBox(height: 12),
                     OutlinedButton(
-                      onPressed: () => ref.invalidate(partyLedgerProvider(partyId)),
+                      onPressed: () =>
+                          ref.invalidate(partyLedgerProvider(partyId)),
                       child: Text(t.retry),
                     ),
                   ],
                 ),
               ),
               data: (l) => RefreshIndicator(
-                onRefresh: () async => ref.refresh(partyLedgerProvider(partyId).future),
+                onRefresh: () async =>
+                    ref.refresh(partyLedgerProvider(partyId).future),
                 child: ListView(
                   padding: const EdgeInsets.all(16),
                   children: [
                     Container(
                       padding: const EdgeInsets.all(18),
-                      decoration: BoxDecoration(color: AppColors.ink, borderRadius: BorderRadius.circular(18)),
+                      decoration: BoxDecoration(
+                        color: AppColors.ink,
+                        borderRadius: BorderRadius.circular(18),
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(l.balance < 0 ? t.creditLabel : t.balanceLeft,
-                              style: const TextStyle(color: AppColors.mutedOnInk, fontSize: 15)),
+                          Text(
+                            l.balance < 0 ? t.creditLabel : t.balanceLeft,
+                            style: const TextStyle(
+                              color: AppColors.mutedOnInk,
+                              fontSize: 15,
+                            ),
+                          ),
                           Text(
                             formatRupees(l.balance.abs()),
                             style: TextStyle(
-                              color: l.balance > 0 ? AppColors.gold : AppColors.incomeOnInk,
+                              color: l.balance > 0
+                                  ? AppColors.gold
+                                  : AppColors.incomeOnInk,
                               fontSize: 34,
                               fontWeight: FontWeight.w500,
                             ),
@@ -103,7 +136,10 @@ class PartyLedgerScreen extends ConsumerWidget {
                           const SizedBox(height: 6),
                           Text(
                             '${t.totalBhada} ${formatRupees(l.totalBhada)}  ·  ${t.totalReceived} ${formatRupees(l.totalPaid)}',
-                            style: const TextStyle(color: AppColors.mutedOnInk, fontSize: 14),
+                            style: const TextStyle(
+                              color: AppColors.mutedOnInk,
+                              fontSize: 14,
+                            ),
                           ),
                         ],
                       ),
@@ -112,30 +148,51 @@ class PartyLedgerScreen extends ConsumerWidget {
                     AppButton(
                       label: t.receivePayment,
                       icon: Icons.payments_outlined,
-                      onPressed: () => showPaymentSheet(context, partyId: partyId),
+                      onPressed: () =>
+                          showPaymentSheet(context, partyId: partyId),
                     ),
                     const SizedBox(height: 20),
-                    Text(t.tripsHeading, style: const TextStyle(fontSize: 14, color: AppColors.muted)),
+                    Text(
+                      t.tripsHeading,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: AppColors.muted,
+                      ),
+                    ),
                     const SizedBox(height: 8),
                     for (final trip in l.trips) ...[
                       MasterTile(
                         icon: Icons.local_shipping_outlined,
-                        title: '${trip.from.nameFor(lang)} → ${trip.to.nameFor(lang)}',
-                        subtitle: '${formatDay(trip.date)} · ${trip.vehicleName}',
+                        title:
+                            '${trip.from.nameFor(lang)} → ${trip.to.nameFor(lang)}',
+                        subtitle:
+                            '${formatDay(trip.date)} · ${trip.vehicleName}',
                         trailing: Padding(
                           padding: const EdgeInsets.only(right: 4),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              Text(formatRupees(trip.bhada),
-                                  style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500)),
+                              Text(
+                                formatRupees(trip.bhada),
+                                style: const TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
                               switch (trip.status) {
-                                PayStatus.paid => StatusTag(t.payPaid, TagKind.good),
-                                PayStatus.partial =>
-                                  StatusTag('${t.balanceLeft} ${formatRupees(trip.due)}', TagKind.warn),
-                                PayStatus.unpaid =>
-                                  StatusTag('${t.payUnpaid} ${formatRupees(trip.due)}', TagKind.bad),
+                                PayStatus.paid => StatusTag(
+                                  t.payPaid,
+                                  TagKind.good,
+                                ),
+                                PayStatus.partial => StatusTag(
+                                  '${t.balanceLeft} ${formatRupees(trip.due)}',
+                                  TagKind.warn,
+                                ),
+                                PayStatus.unpaid => StatusTag(
+                                  '${t.payUnpaid} ${formatRupees(trip.due)}',
+                                  TagKind.bad,
+                                ),
                               },
                             ],
                           ),
@@ -146,7 +203,13 @@ class PartyLedgerScreen extends ConsumerWidget {
                     ],
                     if (l.payments.isNotEmpty) ...[
                       const SizedBox(height: 12),
-                      Text(t.paymentsHeading, style: const TextStyle(fontSize: 14, color: AppColors.muted)),
+                      Text(
+                        t.paymentsHeading,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: AppColors.muted,
+                        ),
+                      ),
                       const SizedBox(height: 8),
                       for (final p in l.payments) ...[
                         Container(
@@ -162,23 +225,34 @@ class PartyLedgerScreen extends ConsumerWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('+${formatRupees(p.amount)}',
-                                        style: const TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w500,
-                                            color: AppColors.income)),
+                                    Text(
+                                      '+${formatRupees(p.amount)}',
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500,
+                                        color: AppColors.income,
+                                      ),
+                                    ),
                                     Text(
                                       '${formatDay(p.date)} · ${p.accountName}',
-                                      style: const TextStyle(fontSize: 14, color: AppColors.muted),
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        color: AppColors.muted,
+                                      ),
                                     ),
                                   ],
                                 ),
                               ),
-                              if (p.isAdvance) StatusTag(t.advanceTag, TagKind.neutral),
+                              if (p.isAdvance)
+                                StatusTag(t.advanceTag, TagKind.neutral),
                               IconButton(
                                 tooltip: t.delete,
-                                icon: const Icon(Icons.delete_outline_rounded, color: AppColors.muted),
-                                onPressed: () => _deletePayment(context, ref, p),
+                                icon: const Icon(
+                                  Icons.delete_outline_rounded,
+                                  color: AppColors.muted,
+                                ),
+                                onPressed: () =>
+                                    _deletePayment(context, ref, p),
                               ),
                             ],
                           ),

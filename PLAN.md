@@ -86,7 +86,8 @@ Still to verify by hand on the phone: a full trip entry, a diesel expense, a pay
 - [x] Home dashboard: month picker, profit hero card, income, expense, received, baaki, quick action tiles, vehicle profit list
 - [x] Report screen tabs: Gaadi, Party, Mahino, Kharcha; per-vehicle profit with income/expense bars
 - [x] Mileage (km/l) from diesel entries
-- [ ] Account balances report (opening balance + payments - expenses per account) — moved to Phase 4 with exports
+- [x] Detail screens: vehicle detail (diesel log with date, liters, rate, odometer; trips; other expenses) and month detail (vehicles, trips, all expenses); tap a vehicle or a month to open
+- [ ] Account balances report — moved to Phase 4a
 Done when: a month's profit and per-vehicle profit match a hand calculation on test data.
 
 Status: backend (110 tests) and Flutter (97 tests) are done. Decisions made while building:
@@ -96,13 +97,18 @@ Status: backend (110 tests) and Flutter (97 tests) are done. Decisions made whil
 - The expense label in Gujarati is "જાવક" so it does not clash with the Kharcha tab name.
 Still to verify by hand on the phone: month numbers against your own books, mileage, empty months.
 
-## Phase 4 — Hardening
+## Phase 4 — Hardening (order decided by the user: finish app features first, deploy last)
+4a Features
 - [ ] Offline queue (drift): entries saved locally, synced when online, safe retry with client-generated ids (no duplicates)
-- [ ] Document expiry local notifications (insurance, PUC, fitness, permit, tax)
 - [ ] PDF and Excel export; share party statement on WhatsApp
-- [ ] Production deploy on Oracle free VM: Docker compose, Caddy HTTPS, DuckDNS domain
-- [ ] Nightly `pg_dump` to Google Drive (rclone), tested restore
-- [ ] Release APK build and signing; install instructions
+- [ ] Account balances report (opening balance + payments - expenses per account)
+- [ ] Anything found in Phase 3 phone testing
+4b Deploy (after 4a is done) — hosting on Render, not Oracle
+- [ ] Render web service from `BE/Dockerfile`, HTTPS included; `DATABASE_URL`, secrets and admin bootstrap as env vars
+- [ ] Postgres: Render Postgres (free one expires after 30 days; paid starter or Neon/Supabase free are the options)
+- [ ] Nightly backup with a Render Cron Job running `pg_dump` to Google Drive (rclone) or object storage; tested restore
+- [ ] Release APK pointing at the Render URL, signed; install instructions
+Later (user's choice, after the above): document expiry notifications (insurance, PUC, fitness, permit, tax)
 Done when: entries made in airplane mode appear on the server after reconnect with no duplicates; a backup restore was tested.
 
 ## Phase 5 — Pilot
@@ -112,6 +118,6 @@ Done when: entries made in airplane mode appear on the server after reconnect wi
 
 ## Risks and notes
 - Flutter SDK and an Android device or emulator are needed on the dev machine (not installed yet).
-- Oracle free tier signup needs a card for verification and can be rejected; fallback is a home PC with Cloudflare Tunnel.
+- Hosting is Render (user's choice). Free web services sleep after idle, so the first request is slow; free Postgres expires after 30 days.
 - Google Input Tools transliteration is unofficial; the seed place list must cover most real use so it stays a fallback.
 - Keep every session short and focused: finish a slice, commit, update the checkboxes here.

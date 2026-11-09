@@ -15,10 +15,16 @@ import '../data/trip_repository.dart';
 
 /// Tag for how much of a trip is still to be received.
 Widget payTag(AppL10n t, Trip trip) => switch (trip.payStatus) {
-      PayStatus.paid => StatusTag(t.payPaid, TagKind.good),
-      PayStatus.partial => StatusTag('${t.payPartial} · ${t.balanceLeft} ${formatRupees(trip.due)}', TagKind.warn),
-      PayStatus.unpaid => StatusTag('${t.payUnpaid} ${formatRupees(trip.due)}', TagKind.bad),
-    };
+  PayStatus.paid => StatusTag(t.payPaid, TagKind.good),
+  PayStatus.partial => StatusTag(
+    '${t.payPartial} · ${t.balanceLeft} ${formatRupees(trip.due)}',
+    TagKind.warn,
+  ),
+  PayStatus.unpaid => StatusTag(
+    '${t.payUnpaid} ${formatRupees(trip.due)}',
+    TagKind.bad,
+  ),
+};
 
 class TripsScreen extends ConsumerStatefulWidget {
   const TripsScreen({super.key});
@@ -30,7 +36,8 @@ class TripsScreen extends ConsumerStatefulWidget {
 class _TripsScreenState extends ConsumerState<TripsScreen> {
   late DateTime _month = DateTime(DateTime.now().year, DateTime.now().month);
 
-  void _shift(int delta) => setState(() => _month = DateTime(_month.year, _month.month + delta));
+  void _shift(int delta) =>
+      setState(() => _month = DateTime(_month.year, _month.month + delta));
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +59,14 @@ class _TripsScreenState extends ConsumerState<TripsScreen> {
                 onPressed: () => _shift(-1),
               ),
               Expanded(
-                child: Text(monthLabel(lang, _month),
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+                child: Text(
+                  monthLabel(lang, _month),
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
               ),
               IconButton(
                 tooltip: t.monthNext,
@@ -66,12 +78,17 @@ class _TripsScreenState extends ConsumerState<TripsScreen> {
         ),
         Expanded(
           child: trips.when(
-            loading: () => const Center(child: CircularProgressIndicator(color: AppColors.gold)),
+            loading: () => const Center(
+              child: CircularProgressIndicator(color: AppColors.gold),
+            ),
             error: (e, _) => Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(errorMessage(t, e), style: const TextStyle(fontSize: 17)),
+                  Text(
+                    errorMessage(t, e),
+                    style: const TextStyle(fontSize: 17),
+                  ),
                   const SizedBox(height: 12),
                   OutlinedButton(
                     onPressed: () => ref.invalidate(tripsProvider(key)),
@@ -83,19 +100,31 @@ class _TripsScreenState extends ConsumerState<TripsScreen> {
             data: (list) => RefreshIndicator(
               onRefresh: () async => ref.refresh(tripsProvider(key).future),
               child: list.isEmpty
-                  ? ListView(children: [
-                      const SizedBox(height: 80),
-                      const Icon(Icons.local_shipping_rounded, size: 56, color: AppColors.gold),
-                      const SizedBox(height: 12),
-                      Text(t.emptyTrips,
+                  ? ListView(
+                      children: [
+                        const SizedBox(height: 80),
+                        const Icon(
+                          Icons.local_shipping_rounded,
+                          size: 56,
+                          color: AppColors.gold,
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          t.emptyTrips,
                           textAlign: TextAlign.center,
-                          style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w500)),
-                    ])
+                          style: const TextStyle(
+                            fontSize: 19,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    )
                   : ListView.separated(
                       padding: const EdgeInsets.all(16),
                       itemCount: list.length,
                       separatorBuilder: (_, _) => const SizedBox(height: 10),
-                      itemBuilder: (c, i) => _TripCard(trip: list[i], lang: lang),
+                      itemBuilder: (c, i) =>
+                          TripCard(trip: list[i], lang: lang),
                     ),
             ),
           ),
@@ -114,8 +143,8 @@ class _TripsScreenState extends ConsumerState<TripsScreen> {
   }
 }
 
-class _TripCard extends StatelessWidget {
-  const _TripCard({required this.trip, required this.lang});
+class TripCard extends StatelessWidget {
+  const TripCard({super.key, required this.trip, required this.lang});
   final Trip trip;
   final String lang;
 
@@ -142,22 +171,37 @@ class _TripCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       '${trip.from.nameFor(lang)} → ${trip.to.nameFor(lang)}',
-                      style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w500),
+                      style: const TextStyle(
+                        fontSize: 19,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 8),
-                  Text(formatRupees(trip.bhada),
-                      style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w500)),
+                  Text(
+                    formatRupees(trip.bhada),
+                    style: const TextStyle(
+                      fontSize: 19,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                 ],
               ),
               const SizedBox(height: 4),
-              Text('${trip.party.name} · ${trip.vehicle.name}',
-                  style: const TextStyle(fontSize: 15, color: AppColors.muted)),
+              Text(
+                '${trip.party.name} · ${trip.vehicle.name}',
+                style: const TextStyle(fontSize: 15, color: AppColors.muted),
+              ),
               const SizedBox(height: 8),
               Row(
                 children: [
-                  Text(formatDay(trip.tripDate),
-                      style: const TextStyle(fontSize: 14, color: AppColors.muted)),
+                  Text(
+                    formatDay(trip.tripDate),
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: AppColors.muted,
+                    ),
+                  ),
                   const SizedBox(width: 10),
                   if (trip.closed) StatusTag(t.statusClosed, TagKind.neutral),
                   const Spacer(),

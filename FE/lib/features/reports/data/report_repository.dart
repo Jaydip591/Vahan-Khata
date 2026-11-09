@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/money.dart';
 import '../../../core/providers.dart';
+import '../../expenses/data/expense_repository.dart';
+import '../../trips/data/trip_repository.dart';
 import 'report.dart';
 
 class ReportRepository {
@@ -45,6 +47,8 @@ class SelectedMonth extends Notifier<DateTime> {
     return DateTime(n.year, n.month);
   }
 
+  void set(DateTime m) => state = DateTime(m.year, m.month);
+
   void shift(int delta) => state = DateTime(state.year, state.month + delta);
 }
 
@@ -63,3 +67,15 @@ final expenseReportProvider = FutureProvider.family<ExpenseReport, String>(
 
 /// Key used by the family providers above.
 String selectedMonthKey(DateTime d) => monthKey(d);
+
+/// Call after any trip, expense or payment changes so Home and Reports show fresh numbers.
+/// Pass `ref` (works with both Ref and WidgetRef).
+void invalidateReports(dynamic ref) {
+  ref.invalidate(summaryProvider);
+  ref.invalidate(vehicleReportProvider);
+  ref.invalidate(partyReportProvider);
+  ref.invalidate(trendProvider);
+  ref.invalidate(expenseReportProvider);
+  ref.invalidate(vehicleTripsProvider);
+  ref.invalidate(monthExpensesProvider);
+}

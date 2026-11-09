@@ -236,5 +236,12 @@
   "vsLastMonth": "ગયા મહિને {amount}",
   "collectedLabel": "મળ્યા",
   "vehicleProfitTitle": "ગાડી પ્રમાણે નફો",
-  "seeAll": "બધું જુઓ"
+  "seeAll": "બધું જુઓ",
+  "otherExpenses": "બીજા ખર્ચ",
+  "litersLabel": "લિટર",
+  "avgRate": "સરેરાશ ભાવ",
+  "entriesLabel": "એન્ટ્રી",
+  "monthDetails": "મહિનાની વિગત",
+  "litersValue": "{value} લિટર",
+  "rateValue": "{rate}/લિટર"
 }

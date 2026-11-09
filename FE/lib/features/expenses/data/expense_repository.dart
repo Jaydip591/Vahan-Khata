@@ -8,9 +8,22 @@ class ExpenseRepository {
   ExpenseRepository(this._dio);
   final Dio _dio;
 
-  Future<List<Expense>> list({String? month, int limit = 200}) async {
-    final r = await _dio.get('/api/v1/expenses', queryParameters: {'month': ?month, 'limit': limit});
-    return (r.data as List).map((e) => Expense.fromJson(e as Map<String, dynamic>)).toList();
+  Future<List<Expense>> list({
+    String? month,
+    String? vehicleId,
+    int limit = 200,
+  }) async {
+    final r = await _dio.get(
+      '/api/v1/expenses',
+      queryParameters: {
+        'month': ?month,
+        'vehicle_id': ?vehicleId,
+        'limit': limit,
+      },
+    );
+    return (r.data as List)
+        .map((e) => Expense.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   Future<Expense> create(ExpenseInput input) async {
@@ -26,9 +39,18 @@ class ExpenseRepository {
   Future<void> delete(String id) => _dio.delete('/api/v1/expenses/$id');
 }
 
-final expenseRepositoryProvider =
-    Provider<ExpenseRepository>((ref) => ExpenseRepository(ref.watch(apiClientProvider).dio));
+final expenseRepositoryProvider = Provider<ExpenseRepository>(
+  (ref) => ExpenseRepository(ref.watch(apiClientProvider).dio),
+);
 
 final expensesProvider = FutureProvider.family<List<Expense>, String>(
   (ref, month) => ref.watch(expenseRepositoryProvider).list(month: month),
 );
+
+/// Every expense of a month, or of one vehicle when [vehicleId] is given.
+final monthExpensesProvider = FutureProvider.autoDispose
+    .family<List<Expense>, ({String month, String? vehicleId})>(
+      (ref, k) => ref
+          .watch(expenseRepositoryProvider)
+          .list(month: k.month, vehicleId: k.vehicleId, limit: 300),
+    );

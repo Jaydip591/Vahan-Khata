@@ -1,3 +1,5 @@
+import '../../reports/data/report_repository.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -30,6 +32,7 @@ class _TripDetailScreenState extends ConsumerState<TripDetailScreen> {
 
   void _refreshLists() {
     ref.invalidate(tripsProvider);
+    invalidateReports(ref);
     ref.invalidate(partyBalancesProvider);
     ref.invalidate(partyLedgerProvider);
   }
@@ -53,7 +56,9 @@ class _TripDetailScreenState extends ConsumerState<TripDetailScreen> {
       _error = null;
     });
     try {
-      final updated = await ref.read(tripRepositoryProvider).setClosed(_trip.id, !_trip.closed);
+      final updated = await ref
+          .read(tripRepositoryProvider)
+          .setClosed(_trip.id, !_trip.closed);
       _refreshLists();
       if (mounted) {
         setState(() {
@@ -73,8 +78,12 @@ class _TripDetailScreenState extends ConsumerState<TripDetailScreen> {
 
   Future<void> _delete() async {
     final t = AppL10n.of(context);
-    final ok = await confirmDialog(context,
-        title: t.deleteConfirmTitle, body: t.deleteConfirmBody, confirmLabel: t.delete);
+    final ok = await confirmDialog(
+      context,
+      title: t.deleteConfirmTitle,
+      body: t.deleteConfirmBody,
+      confirmLabel: t.delete,
+    );
     if (!ok) return;
     try {
       await ref.read(tripRepositoryProvider).delete(_trip.id);
@@ -86,17 +95,25 @@ class _TripDetailScreenState extends ConsumerState<TripDetailScreen> {
     }
   }
 
-  Widget _row(String label, String value, {Color? color, bool bold = false}) => Padding(
+  Widget _row(String label, String value, {Color? color, bool bold = false}) =>
+      Padding(
         padding: const EdgeInsets.symmetric(vertical: 6),
         child: Row(
           children: [
-            Expanded(child: Text(label, style: const TextStyle(fontSize: 16, color: AppColors.muted))),
-            Text(value,
-                style: TextStyle(
-                  fontSize: bold ? 22 : 18,
-                  fontWeight: bold ? FontWeight.w500 : FontWeight.w400,
-                  color: color,
-                )),
+            Expanded(
+              child: Text(
+                label,
+                style: const TextStyle(fontSize: 16, color: AppColors.muted),
+              ),
+            ),
+            Text(
+              value,
+              style: TextStyle(
+                fontSize: bold ? 22 : 18,
+                fontWeight: bold ? FontWeight.w500 : FontWeight.w400,
+                color: color,
+              ),
+            ),
           ],
         ),
       );
@@ -139,28 +156,55 @@ class _TripDetailScreenState extends ConsumerState<TripDetailScreen> {
                     children: [
                       Text(
                         '${trip.from.nameFor(lang)} → ${trip.to.nameFor(lang)}',
-                        style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w500),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                       const SizedBox(height: 6),
-                      Text('${trip.party.name} · ${trip.vehicle.name} (${trip.vehicle.number ?? ''})',
-                          style: const TextStyle(color: AppColors.mutedOnInk, fontSize: 15)),
-                      Text(formatDay(trip.tripDate),
-                          style: const TextStyle(color: AppColors.mutedOnInk, fontSize: 15)),
+                      Text(
+                        '${trip.party.name} · ${trip.vehicle.name} (${trip.vehicle.number ?? ''})',
+                        style: const TextStyle(
+                          color: AppColors.mutedOnInk,
+                          fontSize: 15,
+                        ),
+                      ),
+                      Text(
+                        formatDay(trip.tripDate),
+                        style: const TextStyle(
+                          color: AppColors.mutedOnInk,
+                          fontSize: 15,
+                        ),
+                      ),
                       if (trip.driver != null)
-                        Text('${t.driver}: ${trip.driver!.name}',
-                            style: const TextStyle(color: AppColors.mutedOnInk, fontSize: 15)),
+                        Text(
+                          '${t.driver}: ${trip.driver!.name}',
+                          style: const TextStyle(
+                            color: AppColors.mutedOnInk,
+                            fontSize: 15,
+                          ),
+                        ),
                       const SizedBox(height: 10),
-                      Wrap(spacing: 8, children: [
-                        payTag(t, trip),
-                        StatusTag(trip.closed ? t.statusClosed : t.statusRunning,
-                            trip.closed ? TagKind.neutral : TagKind.good),
-                      ]),
+                      Wrap(
+                        spacing: 8,
+                        children: [
+                          payTag(t, trip),
+                          StatusTag(
+                            trip.closed ? t.statusClosed : t.statusRunning,
+                            trip.closed ? TagKind.neutral : TagKind.good,
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
                 const SizedBox(height: 14),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     border: Border.all(color: AppColors.line),
@@ -170,18 +214,38 @@ class _TripDetailScreenState extends ConsumerState<TripDetailScreen> {
                     children: [
                       _row(t.bhada, formatRupees(trip.bhada), bold: true),
                       const Divider(height: 1),
-                      _row(t.advanceLabel, formatRupees(trip.advance), color: AppColors.income),
-                      _row(t.receivedLabel, formatRupees(trip.paid), color: AppColors.income),
+                      _row(
+                        t.advanceLabel,
+                        formatRupees(trip.advance),
+                        color: AppColors.income,
+                      ),
+                      _row(
+                        t.receivedLabel,
+                        formatRupees(trip.paid),
+                        color: AppColors.income,
+                      ),
                       const Divider(height: 1),
-                      _row(t.balanceLeft, formatRupees(trip.due),
-                          color: trip.due > 0 ? AppColors.expense : AppColors.income, bold: true),
+                      _row(
+                        t.balanceLeft,
+                        formatRupees(trip.due),
+                        color: trip.due > 0
+                            ? AppColors.expense
+                            : AppColors.income,
+                        bold: true,
+                      ),
                     ],
                   ),
                 ),
                 if (_error != null)
                   Padding(
                     padding: const EdgeInsets.only(top: 12),
-                    child: Text(_error!, style: const TextStyle(color: AppColors.expense, fontSize: 15)),
+                    child: Text(
+                      _error!,
+                      style: const TextStyle(
+                        color: AppColors.expense,
+                        fontSize: 15,
+                      ),
+                    ),
                   ),
               ],
             ),
@@ -197,7 +261,11 @@ class _TripDetailScreenState extends ConsumerState<TripDetailScreen> {
                     Expanded(
                       child: OutlinedButton(
                         onPressed: _edit,
-                        child: Text(t.editTrip, maxLines: 1, overflow: TextOverflow.ellipsis),
+                        child: Text(
+                          t.editTrip,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ),
                     const SizedBox(width: 10),

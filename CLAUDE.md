@@ -90,5 +90,5 @@ Selected chip: ink fill, white text. Active tab: gold top border.
 - One phase (or one feature slice) per session. Finish a slice end to end: table -> API -> test -> screen.
 - Commit after each slice. Update `PLAN.md` checkboxes when a task is done.
 - Commit messages: plain, no co-author or tool attribution lines (user's instruction).
-- Hosting target: Oracle Cloud Always Free VM, Docker compose, Caddy for HTTPS, nightly `pg_dump`
-  to Google Drive with rclone. Fallback: home PC with Cloudflare Tunnel.
+- Hosting target: Render (web service from the Dockerfile + Postgres + a Cron Job for nightly `pg_dump`).
+  Deploy only after the offline mode and other Phase 4a features are finished. Document expiry notifications come last.

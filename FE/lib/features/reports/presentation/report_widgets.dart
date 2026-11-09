@@ -27,20 +27,24 @@ class MeterBar extends StatelessWidget {
   }
 }
 
-/// White card used by every report row.
+/// White card used by every report row; tappable when [onTap] is given.
 class ReportCard extends StatelessWidget {
-  const ReportCard({super.key, required this.child});
+  const ReportCard({super.key, required this.child, this.onTap});
   final Widget child;
+  final VoidCallback? onTap;
 
   @override
-  Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(
-          color: Colors.white,
+  Widget build(BuildContext context) => Material(
+        color: Colors.white,
+        shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: AppColors.line),
+          side: const BorderSide(color: AppColors.line),
         ),
-        child: child,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(16),
+          onTap: onTap,
+          child: Padding(padding: const EdgeInsets.all(14), child: child),
+        ),
       );
 }
 

@@ -237,8 +237,10 @@ class FakeApi implements HttpClientAdapter {
     if (o.method == 'GET' && rest.isEmpty) {
       final month = o.queryParameters['month'] as String?;
       final limit = (o.queryParameters['limit'] as int?) ?? 100;
+      final vehicle = o.queryParameters['vehicle_id'] as String?;
       final rows = list
           .where((t) => month == null || (t['trip_date'] as String).startsWith(month))
+          .where((t) => vehicle == null || t['vehicle_id'] == vehicle)
           .toList()
         ..sort((a, b) => (b['trip_date'] as String).compareTo(a['trip_date'] as String));
       return _json(200, rows.take(limit).map(_tripOut).toList());
@@ -328,8 +330,10 @@ class FakeApi implements HttpClientAdapter {
     final list = db['expenses']!;
     if (o.method == 'GET') {
       final month = o.queryParameters['month'] as String?;
+      final vehicle = o.queryParameters['vehicle_id'] as String?;
       final rows = list
           .where((e) => month == null || (e['expense_date'] as String).startsWith(month))
+          .where((e) => vehicle == null || e['vehicle_id'] == vehicle)
           .toList()
         ..sort((a, b) => (b['expense_date'] as String).compareTo(a['expense_date'] as String));
       return _json(200, rows.map(_expenseOut).toList());
@@ -503,6 +507,33 @@ class FakeApi implements HttpClientAdapter {
     };
     db['trips']!.add(t);
     return t;
+  }
+
+  /// Add an expense directly. [amount] is a string like '5520'.
+  Map<String, dynamic> addExpense({
+    required String vehicleId,
+    required String category,
+    required String amount,
+    required String date,
+    String? liters,
+    String? rate,
+    int? odometer,
+  }) {
+    final e = <String, dynamic>{
+      'id': _id(),
+      'vehicle_id': vehicleId,
+      'trip_id': null,
+      'account_id': null,
+      'category': category,
+      'amount': amount,
+      'expense_date': date,
+      'liters': liters,
+      'rate': rate,
+      'odometer': odometer,
+      'repair_kind': null,
+    };
+    db['expenses']!.add(e);
+    return e;
   }
 
   @override
