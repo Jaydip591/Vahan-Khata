@@ -609,4 +609,66 @@ class AppL10nGu extends AppL10n {
 
   @override
   String get chooseAccount => 'ખાતું પસંદ કરો';
+
+  @override
+  String get reportVehicle => 'ગાડી';
+
+  @override
+  String get reportParty => 'પાર્ટી';
+
+  @override
+  String get reportMonths => 'મહિના';
+
+  @override
+  String get reportExpense => 'ખર્ચ';
+
+  @override
+  String get profitLabel => 'નફો';
+
+  @override
+  String get incomeLabel => 'આવક';
+
+  @override
+  String get expenseLabel => 'જાવક';
+
+  @override
+  String get bhadaLabel => 'ભાડું';
+
+  @override
+  String tripsCount(Object count) {
+    return '$count ટ્રીપ';
+  }
+
+  @override
+  String mileageValue(Object value) {
+    return '$value કિમી/લિટર';
+  }
+
+  @override
+  String kmValue(Object km) {
+    return '$km કિમી';
+  }
+
+  @override
+  String get emptyReport => 'આ મહિને કંઈ નોંધાયું નથી';
+
+  @override
+  String get totalExpense => 'કુલ ખર્ચ';
+
+  @override
+  String get homeProfit => 'આ મહિનાનો નફો';
+
+  @override
+  String vsLastMonth(Object amount) {
+    return 'ગયા મહિને $amount';
+  }
+
+  @override
+  String get collectedLabel => 'મળ્યા';
+
+  @override
+  String get vehicleProfitTitle => 'ગાડી પ્રમાણે નફો';
+
+  @override
+  String get seeAll => 'બધું જુઓ';
 }

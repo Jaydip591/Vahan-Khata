@@ -612,4 +612,66 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get chooseAccount => 'Choose an account';
+
+  @override
+  String get reportVehicle => 'Vehicles';
+
+  @override
+  String get reportParty => 'Parties';
+
+  @override
+  String get reportMonths => 'Months';
+
+  @override
+  String get reportExpense => 'Expenses';
+
+  @override
+  String get profitLabel => 'Profit';
+
+  @override
+  String get incomeLabel => 'Income';
+
+  @override
+  String get expenseLabel => 'Expense';
+
+  @override
+  String get bhadaLabel => 'Bhada';
+
+  @override
+  String tripsCount(Object count) {
+    return '$count trips';
+  }
+
+  @override
+  String mileageValue(Object value) {
+    return '$value km/l';
+  }
+
+  @override
+  String kmValue(Object km) {
+    return '$km km';
+  }
+
+  @override
+  String get emptyReport => 'Nothing recorded this month';
+
+  @override
+  String get totalExpense => 'Total expense';
+
+  @override
+  String get homeProfit => 'This month\'s profit';
+
+  @override
+  String vsLastMonth(Object amount) {
+    return 'Last month $amount';
+  }
+
+  @override
+  String get collectedLabel => 'Received';
+
+  @override
+  String get vehicleProfitTitle => 'Vehicle-wise profit';
+
+  @override
+  String get seeAll => 'See all';
 }

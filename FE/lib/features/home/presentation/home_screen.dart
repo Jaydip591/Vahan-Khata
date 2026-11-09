@@ -9,6 +9,10 @@ import '../../../core/money.dart';
 import '../../auth/presentation/auth_controller.dart';
 import '../../ledger/data/ledger_repository.dart';
 import '../../ledger/presentation/payment_sheet.dart';
+import '../../reports/data/report.dart';
+import '../../reports/data/report_repository.dart';
+import '../../reports/presentation/month_switcher.dart';
+import '../../reports/presentation/report_widgets.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -37,6 +41,8 @@ class HomeScreen extends ConsumerWidget {
               if (name.isNotEmpty)
                 Text(t.hello(name),
                     style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w500)),
+              const SizedBox(height: 8),
+              const _MonthHero(),
               const SizedBox(height: 16),
               Row(
                 children: [
@@ -93,6 +99,8 @@ class HomeScreen extends ConsumerWidget {
                   ),
                 ),
               ),
+              const SizedBox(height: 18),
+              const _VehicleProfits(),
             ],
           ),
         ),
@@ -138,6 +146,137 @@ class _QuickTile extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _MonthHero extends ConsumerWidget {
+  const _MonthHero();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final t = AppL10n.of(context);
+    final key = monthKey(ref.watch(selectedMonthProvider));
+    final p = summaryProvider(key);
+    final s = ref.watch(p);
+    return Container(
+      decoration: BoxDecoration(color: AppColors.ink, borderRadius: BorderRadius.circular(18)),
+      padding: const EdgeInsets.fromLTRB(6, 4, 6, 16),
+      child: Column(
+        children: [
+          const MonthSwitcher(onInk: true),
+          s.when(
+            loading: () => const Padding(
+              padding: EdgeInsets.all(24),
+              child: CircularProgressIndicator(color: AppColors.gold),
+            ),
+            error: (e, _) => Padding(
+              padding: const EdgeInsets.all(8),
+              child: TextButton(
+                onPressed: () => ref.invalidate(p),
+                child: Text(t.retry, style: const TextStyle(color: AppColors.gold, fontSize: 17)),
+              ),
+            ),
+            data: (d) => Column(
+              children: [
+                Text(t.homeProfit, style: const TextStyle(color: AppColors.mutedOnInk, fontSize: 15)),
+                const SizedBox(height: 4),
+                Text(formatRupees(d.profit),
+                    style: TextStyle(
+                        color: d.profit < 0 ? AppColors.expenseOnInk : AppColors.incomeOnInk,
+                        fontSize: 38,
+                        fontWeight: FontWeight.w600)),
+                Text(t.vsLastMonth(formatRupees(d.prevProfit)),
+                    style: const TextStyle(color: AppColors.mutedOnInk, fontSize: 14)),
+                const SizedBox(height: 14),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    children: [
+                      _HeroStat(label: t.incomeLabel, value: d.income, color: AppColors.incomeOnInk),
+                      _HeroStat(label: t.expenseLabel, value: d.expense, color: AppColors.expenseOnInk),
+                      _HeroStat(label: t.collectedLabel, value: d.collected, color: Colors.white),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _HeroStat extends StatelessWidget {
+  const _HeroStat({required this.label, required this.value, required this.color});
+  final String label;
+  final double value;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) => Expanded(
+        child: Column(
+          children: [
+            Text(label, style: const TextStyle(color: AppColors.mutedOnInk, fontSize: 14)),
+            const SizedBox(height: 2),
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(formatRupees(value),
+                  style: TextStyle(color: color, fontSize: 19, fontWeight: FontWeight.w600)),
+            ),
+          ],
+        ),
+      );
+}
+
+class _VehicleProfits extends ConsumerWidget {
+  const _VehicleProfits();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final t = AppL10n.of(context);
+    final key = monthKey(ref.watch(selectedMonthProvider));
+    final rows = ref.watch(vehicleReportProvider(key)).asData?.value ?? const <VehicleReport>[];
+    if (rows.isEmpty) return const SizedBox.shrink();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Text(t.vehicleProfitTitle,
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+            ),
+            TextButton(
+              onPressed: () => context.go('/report'),
+              child: Text(t.seeAll, style: const TextStyle(fontSize: 16)),
+            ),
+          ],
+        ),
+        for (final v in rows.take(5)) ...[
+          ReportCard(
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(v.name, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+                      Text(t.tripsCount(v.trips),
+                          style: const TextStyle(fontSize: 14, color: AppColors.muted)),
+                    ],
+                  ),
+                ),
+                Text(formatRupees(v.profit),
+                    style: TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.w600, color: profitColor(v.profit))),
+              ],
+            ),
+          ),
+          const SizedBox(height: 8),
+        ],
+      ],
     );
   }
 }

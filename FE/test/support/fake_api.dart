@@ -89,6 +89,7 @@ class FakeApi implements HttpClientAdapter {
     final rest = parts.skip(1).toList();
     final body = o.data is Map ? Map<String, dynamic>.from(o.data as Map) : <String, dynamic>{};
     if (coll == 'ledger') return _ledger(rest);
+    if (coll == 'reports') return _reports(rest.first, o.queryParameters);
     final list = db[coll];
     if (list == null) return _json(404, {'detail': 'no route'});
 
@@ -349,6 +350,49 @@ class FakeApi implements HttpClientAdapter {
       return _json(204, null);
     }
     return _json(405, {});
+  }
+
+  /// Canned report answers, replaced by tests that need other numbers.
+  Map<String, dynamic> reportData = {
+    'summary': {
+      'month': '', 'income': '20000.00', 'expense': '1500.00', 'profit': '18500.00', 'trips': 2,
+      'collected': '9000.00', 'total_due': '16000.00', 'prev_profit': '4300.00',
+    },
+    'vehicles': {
+      'month': '',
+      'vehicles': [
+        {
+          'vehicle_id': 'v1', 'name': 'Eicher 1', 'number': 'GJ05 AB 1234', 'income': '20000.00',
+          'expense': '1500.00', 'profit': '18500.00', 'trips': 2, 'diesel_liters': '80.00',
+          'km': 600, 'mileage': '7.5',
+        },
+      ],
+    },
+    'parties': {
+      'month': '',
+      'parties': [
+        {'party_id': 'p1', 'name': 'ખોડિયાર', 'bhada': '20000.00', 'received': '9000.00', 'balance': '16000.00', 'trips': 2},
+      ],
+    },
+    'trend': {
+      'points': [
+        {'month': '2026-10', 'income': '5000.00', 'expense': '700.00', 'profit': '4300.00'},
+        {'month': '2026-11', 'income': '20000.00', 'expense': '1500.00', 'profit': '18500.00'},
+      ],
+    },
+    'expenses': {
+      'month': '',
+      'total': '1500.00',
+      'categories': [
+        {'category': 'diesel', 'amount': '1000.00', 'count': 1},
+        {'category': 'toll', 'amount': '500.00', 'count': 2},
+      ],
+    },
+  };
+
+  ResponseBody _reports(String kind, Map<String, dynamic> q) {
+    final data = reportData[kind];
+    return data == null ? _json(404, {'detail': 'no report'}) : _json(200, data);
   }
 
   ResponseBody _ledger(List<String> rest) {

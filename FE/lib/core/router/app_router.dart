@@ -27,10 +27,9 @@ import '../../features/vehicles/presentation/vehicle_form_screen.dart';
 import '../../features/vehicles/presentation/vehicles_screen.dart';
 import '../../features/auth/presentation/login_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
-import '../../features/home/presentation/placeholder_tab.dart';
+import '../../features/reports/presentation/report_screen.dart';
 import '../../features/home/presentation/shell_scaffold.dart';
 import '../../features/more/presentation/more_screen.dart';
-import '../../l10n/app_localizations.dart';
 import '../theme/app_colors.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
@@ -99,8 +98,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           StatefulShellBranch(routes: [
             GoRoute(
               path: '/report',
-              builder: (c, _) => PlaceholderTab(
-                  title: AppL10n.of(c).tabReport, icon: Icons.bar_chart_rounded),
+              builder: (_, _) => const ReportScreen(),
             ),
           ]),
         ],

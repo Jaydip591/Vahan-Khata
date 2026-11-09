@@ -82,11 +82,19 @@ Status: backend (97 tests) and Flutter (93 tests) are done. Decisions made while
 Still to verify by hand on the phone: a full trip entry, a diesel expense, a payment, and the Khata numbers.
 
 ## Phase 3 — Reports and dashboard
-- [ ] Reports API: month summary, vehicle-wise, party-wise, monthly trend, expense-by-category, account balances
-- [ ] Home dashboard: month picker, profit hero card, income, expense, baaki, quick action tiles, vehicle list with status
-- [ ] Report screen tabs: Gaadi, Party, Mahino, Kharcha; per-vehicle profit with income/expense bars
-- [ ] Mileage (km/l) from diesel entries
+- [x] Reports API: month summary, vehicle-wise, party-wise, monthly trend, expense-by-category (`/api/v1/reports/*`)
+- [x] Home dashboard: month picker, profit hero card, income, expense, received, baaki, quick action tiles, vehicle profit list
+- [x] Report screen tabs: Gaadi, Party, Mahino, Kharcha; per-vehicle profit with income/expense bars
+- [x] Mileage (km/l) from diesel entries
+- [ ] Account balances report (opening balance + payments - expenses per account) — moved to Phase 4 with exports
 Done when: a month's profit and per-vehicle profit match a hand calculation on test data.
+
+Status: backend (110 tests) and Flutter (97 tests) are done. Decisions made while building:
+- Income of a month = bhada of trips dated in that month (not money received); "received" is shown separately.
+- Profit = bhada - expenses of the month. "Baaki" counts only parties that owe, all time.
+- Mileage = (last odometer - first odometer) / liters of the later diesel fills in the month; needs two readings.
+- The expense label in Gujarati is "જાવક" so it does not clash with the Kharcha tab name.
+Still to verify by hand on the phone: month numbers against your own books, mileage, empty months.
 
 ## Phase 4 — Hardening
 - [ ] Offline queue (drift): entries saved locally, synced when online, safe retry with client-generated ids (no duplicates)

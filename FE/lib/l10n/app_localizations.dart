@@ -1284,6 +1284,114 @@ abstract class AppL10n {
   /// In gu, this message translates to:
   /// **'ખાતું પસંદ કરો'**
   String get chooseAccount;
+
+  /// No description provided for @reportVehicle.
+  ///
+  /// In gu, this message translates to:
+  /// **'ગાડી'**
+  String get reportVehicle;
+
+  /// No description provided for @reportParty.
+  ///
+  /// In gu, this message translates to:
+  /// **'પાર્ટી'**
+  String get reportParty;
+
+  /// No description provided for @reportMonths.
+  ///
+  /// In gu, this message translates to:
+  /// **'મહિના'**
+  String get reportMonths;
+
+  /// No description provided for @reportExpense.
+  ///
+  /// In gu, this message translates to:
+  /// **'ખર્ચ'**
+  String get reportExpense;
+
+  /// No description provided for @profitLabel.
+  ///
+  /// In gu, this message translates to:
+  /// **'નફો'**
+  String get profitLabel;
+
+  /// No description provided for @incomeLabel.
+  ///
+  /// In gu, this message translates to:
+  /// **'આવક'**
+  String get incomeLabel;
+
+  /// No description provided for @expenseLabel.
+  ///
+  /// In gu, this message translates to:
+  /// **'જાવક'**
+  String get expenseLabel;
+
+  /// No description provided for @bhadaLabel.
+  ///
+  /// In gu, this message translates to:
+  /// **'ભાડું'**
+  String get bhadaLabel;
+
+  /// No description provided for @tripsCount.
+  ///
+  /// In gu, this message translates to:
+  /// **'{count} ટ્રીપ'**
+  String tripsCount(Object count);
+
+  /// No description provided for @mileageValue.
+  ///
+  /// In gu, this message translates to:
+  /// **'{value} કિમી/લિટર'**
+  String mileageValue(Object value);
+
+  /// No description provided for @kmValue.
+  ///
+  /// In gu, this message translates to:
+  /// **'{km} કિમી'**
+  String kmValue(Object km);
+
+  /// No description provided for @emptyReport.
+  ///
+  /// In gu, this message translates to:
+  /// **'આ મહિને કંઈ નોંધાયું નથી'**
+  String get emptyReport;
+
+  /// No description provided for @totalExpense.
+  ///
+  /// In gu, this message translates to:
+  /// **'કુલ ખર્ચ'**
+  String get totalExpense;
+
+  /// No description provided for @homeProfit.
+  ///
+  /// In gu, this message translates to:
+  /// **'આ મહિનાનો નફો'**
+  String get homeProfit;
+
+  /// No description provided for @vsLastMonth.
+  ///
+  /// In gu, this message translates to:
+  /// **'ગયા મહિને {amount}'**
+  String vsLastMonth(Object amount);
+
+  /// No description provided for @collectedLabel.
+  ///
+  /// In gu, this message translates to:
+  /// **'મળ્યા'**
+  String get collectedLabel;
+
+  /// No description provided for @vehicleProfitTitle.
+  ///
+  /// In gu, this message translates to:
+  /// **'ગાડી પ્રમાણે નફો'**
+  String get vehicleProfitTitle;
+
+  /// No description provided for @seeAll.
+  ///
+  /// In gu, this message translates to:
+  /// **'બધું જુઓ'**
+  String get seeAll;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {
