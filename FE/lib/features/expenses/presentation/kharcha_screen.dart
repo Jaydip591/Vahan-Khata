@@ -34,6 +34,7 @@ class KharchaScreen extends ConsumerWidget {
                 Text(t.whatExpense, style: const TextStyle(fontSize: 16, color: AppColors.muted)),
                 const SizedBox(height: 10),
                 GridView.count(
+                  padding: EdgeInsets.zero,
                   crossAxisCount: 3,
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),

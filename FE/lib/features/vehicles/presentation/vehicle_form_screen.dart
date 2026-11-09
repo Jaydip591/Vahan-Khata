@@ -205,6 +205,7 @@ class _VehicleFormScreenState extends ConsumerState<VehicleFormScreen> {
             Text(t.vehicleType, style: const TextStyle(fontSize: 14, color: AppColors.muted)),
             const SizedBox(height: 8),
             GridView.count(
+              padding: EdgeInsets.zero,
               crossAxisCount: 3,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
