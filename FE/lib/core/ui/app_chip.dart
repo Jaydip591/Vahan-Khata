@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../haptics.dart';
 import '../theme/app_colors.dart';
+import 'motion.dart';
 
 /// Selectable chip: ink fill when selected. The main way users "type" in this app.
 class AppChip extends StatelessWidget {
@@ -22,7 +24,9 @@ class AppChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fg = selected ? Colors.white : AppColors.ink;
-    return Material(
+    return PressScale(child: AnimatedContainer(
+      duration: const Duration(milliseconds: 150),
+      child: Material(
       color: selected ? AppColors.ink : Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(14),
@@ -30,7 +34,10 @@ class AppChip extends StatelessWidget {
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(14),
-        onTap: onTap,
+        onTap: () {
+          Haptics.tap();
+          onTap();
+        },
         child: ConstrainedBox(
           constraints: const BoxConstraints(minHeight: 48),
           child: Padding(
@@ -61,6 +68,6 @@ class AppChip extends StatelessWidget {
           ),
         ),
       ),
-    );
+    )));
   }
 }

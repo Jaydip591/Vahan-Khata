@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/ui/motion.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -237,8 +238,8 @@ class _MonthHero extends ConsumerWidget {
                       ),
                     ),
                     const SizedBox(height: 4),
-                    Text(
-                      formatRupees(d.profit),
+                    CountUpRupees(
+                      d.profit,
                       style: TextStyle(
                         color: d.profit < 0
                             ? AppColors.expenseOnInk
@@ -309,8 +310,8 @@ class _HeroStat extends StatelessWidget {
         const SizedBox(height: 2),
         FittedBox(
           fit: BoxFit.scaleDown,
-          child: Text(
-            formatRupees(value),
+          child: CountUpRupees(
+            value,
             style: TextStyle(
               color: color,
               fontSize: 19,

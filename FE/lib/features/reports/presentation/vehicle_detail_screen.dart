@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/ui/motion.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/money.dart';
@@ -72,7 +73,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
             child: const MonthSwitcher(),
           ),
           Expanded(
-            child: RefreshIndicator(
+            child: AppRefresh(
               onRefresh: () async {
                 invalidateReports(ref);
                 await ref.read(vehicleReportProvider(month).future);

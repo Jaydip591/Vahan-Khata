@@ -45,6 +45,9 @@ abstract final class AppTheme {
       fontFamily: fontFamily,
       colorScheme: scheme,
       scaffoldBackgroundColor: AppColors.ivory,
+      pageTransitionsTheme: const PageTransitionsTheme(
+        builders: {TargetPlatform.android: FadeForwardsPageTransitionsBuilder()},
+      ),
       textTheme: const TextTheme(
         titleLarge: TextStyle(
           fontSize: AppSizes.fontTitle,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../haptics.dart';
 import '../theme/app_colors.dart';
+import 'motion.dart';
 
 /// Primary action button: gold with ink text, 56dp high, full width.
 class AppButton extends StatelessWidget {
@@ -19,8 +21,15 @@ class AppButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: loading ? null : onPressed,
+    return PressScale(
+      scale: 0.98,
+      child: ElevatedButton(
+      onPressed: loading || onPressed == null
+          ? null
+          : () {
+              Haptics.press();
+              onPressed!();
+            },
       style: ElevatedButton.styleFrom(
         disabledBackgroundColor: AppColors.gold.withValues(alpha: 0.6),
         disabledForegroundColor: AppColors.ink,
@@ -38,6 +47,7 @@ class AppButton extends StatelessWidget {
                 Flexible(child: Text(label, overflow: TextOverflow.ellipsis)),
               ],
             ),
+      ),
     );
   }
 }

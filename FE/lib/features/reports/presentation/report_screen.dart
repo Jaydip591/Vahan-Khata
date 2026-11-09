@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/ui/motion.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -115,7 +116,7 @@ class _VehicleTab extends ConsumerWidget {
     final p = vehicleReportProvider(month);
     return _async<List<VehicleReport>>(context, ref.watch(p), () => ref.invalidate(p), (rows) {
       final top = rows.fold<double>(0, (m, r) => [m, r.income, r.expense].reduce((a, b) => a > b ? a : b));
-      return RefreshIndicator(
+      return AppRefresh(
         onRefresh: () async => ref.refresh(p.future),
         child: rows.isEmpty
             ? _empty(context, Icons.local_shipping_rounded, t.emptyVehicles)
@@ -221,7 +222,7 @@ class _PartyTab extends ConsumerWidget {
     final p = partyReportProvider(month);
     return _async<List<PartyReport>>(context, ref.watch(p), () => ref.invalidate(p), (rows) {
       final top = rows.fold<double>(0, (m, r) => r.bhada > m ? r.bhada : m);
-      return RefreshIndicator(
+      return AppRefresh(
         onRefresh: () async => ref.refresh(p.future),
         child: rows.isEmpty
             ? _empty(context, Icons.people_alt_rounded, t.emptyReport)
@@ -285,7 +286,7 @@ class _TrendTab extends ConsumerWidget {
     final p = trendProvider(month);
     return _async<List<TrendPoint>>(context, ref.watch(p), () => ref.invalidate(p), (pts) {
       final top = pts.fold<double>(0, (m, r) => [m, r.income, r.expense].reduce((a, b) => a > b ? a : b));
-      return RefreshIndicator(
+      return AppRefresh(
         onRefresh: () async => ref.refresh(p.future),
         child: ListView.separated(
           padding: const EdgeInsets.all(16),
@@ -335,7 +336,7 @@ class _ExpenseTab extends ConsumerWidget {
     final t = AppL10n.of(context);
     final p = expenseReportProvider(month);
     return _async<ExpenseReport>(context, ref.watch(p), () => ref.invalidate(p), (r) {
-      return RefreshIndicator(
+      return AppRefresh(
         onRefresh: () async => ref.refresh(p.future),
         child: r.categories.isEmpty
             ? _empty(context, Icons.receipt_long_rounded, t.emptyReport)

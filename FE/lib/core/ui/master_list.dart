@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../haptics.dart';
+import 'motion.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -29,7 +31,7 @@ class MasterTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Opacity(
+    return PressScale(child: Opacity(
       opacity: dimmed ? 0.55 : 1,
       child: Material(
         color: Colors.white,
@@ -39,7 +41,10 @@ class MasterTile extends StatelessWidget {
         ),
         child: InkWell(
           borderRadius: BorderRadius.circular(16),
-          onTap: onTap,
+          onTap: () {
+            Haptics.tap();
+            onTap();
+          },
           child: Padding(
             padding: const EdgeInsets.all(12),
             child: Row(
@@ -73,7 +78,7 @@ class MasterTile extends StatelessWidget {
           ),
         ),
       ),
-    );
+    ));
   }
 }
 
@@ -118,7 +123,7 @@ class MasterListScreen<T> extends ConsumerWidget {
           ),
           Expanded(
             child: items.when(
-              loading: () => const Center(child: CircularProgressIndicator(color: AppColors.gold)),
+              loading: () => const SkeletonList(),
               error: (e, _) => Center(
                 child: Padding(
                   padding: const EdgeInsets.all(24),
@@ -133,7 +138,7 @@ class MasterListScreen<T> extends ConsumerWidget {
                   ),
                 ),
               ),
-              data: (list) => RefreshIndicator(
+              data: (list) => AppRefresh(
                 onRefresh: onRefresh,
                 child: list.isEmpty
                     ? ListView(
@@ -154,7 +159,7 @@ class MasterListScreen<T> extends ConsumerWidget {
                         padding: const EdgeInsets.all(16),
                         itemCount: list.length,
                         separatorBuilder: (_, _) => const SizedBox(height: 10),
-                        itemBuilder: (c, i) => itemBuilder(c, list[i]),
+                        itemBuilder: (c, i) => EntryFade(index: i, child: itemBuilder(c, list[i])),
                       ),
               ),
             ),

@@ -1,6 +1,7 @@
 import '../../reports/data/report_repository.dart';
 
 import 'package:flutter/material.dart';
+import '../../../core/ui/motion.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -120,7 +121,7 @@ class PartyLedgerScreen extends ConsumerWidget {
                   ],
                 ),
               ),
-              data: (l) => RefreshIndicator(
+              data: (l) => AppRefresh(
                 onRefresh: () async =>
                     ref.refresh(partyLedgerProvider(partyId).future),
                 child: ListView(

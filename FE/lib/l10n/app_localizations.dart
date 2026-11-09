@@ -1728,6 +1728,12 @@ abstract class AppL10n {
   /// In gu, this message translates to:
   /// **'આ ટ્રીપનો ખર્ચ ઉમેરો'**
   String get addTripExpense;
+
+  /// No description provided for @vibration.
+  ///
+  /// In gu, this message translates to:
+  /// **'ટેપ પર વાઇબ્રેશન'**
+  String get vibration;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

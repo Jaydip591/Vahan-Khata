@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import '../../../core/ui/motion.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/money.dart';
 import '../../../core/month_names.dart';
 import '../../../core/network/api_error.dart';
+import '../../../core/haptics.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/ui/swipe_delete.dart';
+import '../../expenses/data/expense_repository.dart';
+import '../../ledger/data/ledger_repository.dart';
+import '../../reports/data/report_repository.dart';
 import '../../../core/ui/app_button.dart';
 import '../../../core/ui/ink_header.dart';
 import '../../../core/ui/status_tag.dart';
@@ -38,9 +44,12 @@ class TripsScreen extends ConsumerStatefulWidget {
 
 class _TripsScreenState extends ConsumerState<TripsScreen> {
   late DateTime _month = DateTime(DateTime.now().year, DateTime.now().month);
+  final _gone = <String>{}; // trips swiped away, hidden until the list reloads
 
   void _shift(int delta) =>
       setState(() => _month = DateTime(_month.year, _month.month + delta));
+
+  List<Trip> shown(List<Trip> all) => all.where((t) => !_gone.contains(t.id)).toList();
 
   @override
   Widget build(BuildContext context) {
@@ -85,9 +94,7 @@ class _TripsScreenState extends ConsumerState<TripsScreen> {
         ),
         Expanded(
           child: trips.when(
-            loading: () => const Center(
-              child: CircularProgressIndicator(color: AppColors.gold),
-            ),
+            loading: () => const SkeletonList(),
             error: (e, _) => ListView(
               padding: const EdgeInsets.all(16),
               children: [
@@ -113,9 +120,9 @@ class _TripsScreenState extends ConsumerState<TripsScreen> {
                 ),
               ],
             ),
-            data: (list) => RefreshIndicator(
+            data: (list) => AppRefresh(
               onRefresh: () async => ref.refresh(tripsProvider(key).future),
-              child: (list.isEmpty && waiting.isEmpty)
+              child: (shown(list).isEmpty && waiting.isEmpty)
                   ? ListView(
                       children: [
                         const SizedBox(height: 80),
@@ -137,14 +144,29 @@ class _TripsScreenState extends ConsumerState<TripsScreen> {
                     )
                   : ListView.separated(
                       padding: const EdgeInsets.all(16),
-                      itemCount: waiting.length + list.length,
+                      itemCount: waiting.length + shown(list).length,
                       separatorBuilder: (_, _) => const SizedBox(height: 10),
-                      itemBuilder: (c, i) => i < waiting.length
-                          ? PendingTile(item: waiting[i])
-                          : TripCard(
-                              trip: list[i - waiting.length],
-                              lang: lang,
-                            ),
+                      itemBuilder: (c, i) {
+                        if (i < waiting.length) return PendingTile(item: waiting[i]);
+                        final trip = shown(list)[i - waiting.length];
+                        return EntryFade(
+                          index: i,
+                          child: SwipeDelete(
+                            key: ValueKey(trip.id),
+                            onDelete: () => ref.read(tripRepositoryProvider).delete(trip.id),
+                            onGone: () {
+                              setState(() => _gone.add(trip.id));
+                              ref.invalidate(tripsProvider);
+                              invalidateReports(ref);
+                              ref.invalidate(partyBalancesProvider);
+                              ref.invalidate(partyLedgerProvider);
+                              ref.invalidate(recentRoutesProvider);
+                              ref.invalidate(expensesProvider);
+                            },
+                            child: TripCard(trip: trip, lang: lang),
+                          ),
+                        );
+                      },
                     ),
             ),
           ),
@@ -171,7 +193,7 @@ class TripCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = AppL10n.of(context);
-    return Material(
+    return PressScale(child: Material(
       color: Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
@@ -179,7 +201,10 @@ class TripCard extends StatelessWidget {
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
-        onTap: () => context.push('/trip/detail', extra: trip),
+        onTap: () {
+          Haptics.tap();
+          context.push('/trip/detail', extra: trip);
+        },
         child: Padding(
           padding: const EdgeInsets.all(14),
           child: Column(
@@ -232,6 +257,6 @@ class TripCard extends StatelessWidget {
           ),
         ),
       ),
-    );
+    ));
   }
 }

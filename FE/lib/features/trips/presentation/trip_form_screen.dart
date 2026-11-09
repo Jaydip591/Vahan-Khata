@@ -1,6 +1,8 @@
 import '../../reports/data/report_repository.dart';
 
 import 'package:flutter/material.dart';
+import '../../../core/haptics.dart';
+import '../../../core/ui/motion.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -169,6 +171,7 @@ class _TripFormScreenState extends ConsumerState<TripFormScreen> {
       problem = noAccounts ? t.needAccountFirst : t.chooseAccount;
     }
     if (problem != null) {
+      Haptics.error();
       setState(() => _error = problem);
       return;
     }
@@ -226,10 +229,13 @@ class _TripFormScreenState extends ConsumerState<TripFormScreen> {
       ref.invalidate(partyLedgerProvider);
       if (!mounted) return;
       final messenger = ScaffoldMessenger.of(context);
+      Haptics.success();
+      showSavedTick(context);
       context.pop();
       messenger.showSnackBar(SnackBar(content: Text(queued ? t.savedOffline : t.tripSaved)));
     } catch (e) {
       if (mounted) {
+        Haptics.error();
         setState(() {
           _saving = false;
           _error = errorMessage(t, e);

@@ -864,4 +864,7 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get addTripExpense => 'Add expense for this trip';
+
+  @override
+  String get vibration => 'Vibration on tap';
 }

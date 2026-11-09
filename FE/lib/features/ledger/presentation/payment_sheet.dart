@@ -1,6 +1,8 @@
 import '../../reports/data/report_repository.dart';
 
 import 'package:flutter/material.dart';
+import '../../../core/haptics.dart';
+import '../../../core/ui/motion.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/defaults_store.dart';
@@ -98,6 +100,7 @@ class _PaymentSheetState extends ConsumerState<PaymentSheet> {
       problem = noAccounts ? t.needAccountFirst : t.chooseAccount;
     }
     if (problem != null) {
+      Haptics.error();
       setState(() => _error = problem);
       return;
     }
@@ -133,10 +136,13 @@ class _PaymentSheetState extends ConsumerState<PaymentSheet> {
       invalidateReports(ref);
       if (!mounted) return;
       final messenger = ScaffoldMessenger.of(context);
+      Haptics.success();
+      showSavedTick(context);
       Navigator.pop(context, true);
       messenger.showSnackBar(SnackBar(content: Text(queued ? t.savedOffline : t.paymentSaved)));
     } catch (e) {
       if (mounted) {
+        Haptics.error();
         setState(() {
           _saving = false;
           _error = errorMessage(t, e);

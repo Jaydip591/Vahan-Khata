@@ -285,5 +285,6 @@
   "tripNet": "Trip profit",
   "noTripExpenses": "No expense on this trip yet",
   "forTrip": "Trip",
-  "addTripExpense": "Add expense for this trip"
+  "addTripExpense": "Add expense for this trip",
+  "vibration": "Vibration on tap"
 }

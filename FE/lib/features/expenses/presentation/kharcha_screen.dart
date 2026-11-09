@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/ui/motion.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/money.dart';
@@ -6,6 +7,8 @@ import '../../../core/network/api_error.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/ui/ink_header.dart';
 import '../../../core/ui/master_list.dart';
+import '../../../core/ui/swipe_delete.dart';
+import '../../reports/data/report_repository.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../outbox/outbox_controller.dart';
 import '../../outbox/outbox_item.dart';
@@ -14,11 +17,18 @@ import '../data/expense.dart';
 import '../data/expense_repository.dart';
 import 'expense_sheet.dart';
 
-class KharchaScreen extends ConsumerWidget {
+class KharchaScreen extends ConsumerStatefulWidget {
   const KharchaScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<KharchaScreen> createState() => _KharchaScreenState();
+}
+
+class _KharchaScreenState extends ConsumerState<KharchaScreen> {
+  final _gone = <String>{}; // swiped away, hidden until the list reloads
+
+  @override
+  Widget build(BuildContext context) {
     final t = AppL10n.of(context);
     final key = monthKey(DateTime.now());
     final expenses = ref.watch(expensesProvider(key));
@@ -26,7 +36,7 @@ class KharchaScreen extends ConsumerWidget {
       children: [
         InkHeader(title: t.tabKharcha),
         Expanded(
-          child: RefreshIndicator(
+          child: AppRefresh(
             onRefresh: () async => ref.refresh(expensesProvider(key).future),
             child: ListView(
               padding: const EdgeInsets.all(16),
@@ -126,8 +136,17 @@ class KharchaScreen extends ConsumerWidget {
                           PendingTile(item: w),
                           const SizedBox(height: 8),
                         ],
-                        for (final e in list) ...[
-                          MasterTile(
+                        for (final (i, e) in list.where((x) => !_gone.contains(x.id)).indexed) ...[
+                          EntryFade(index: i, child: SwipeDelete(
+                            key: ValueKey(e.id),
+                            onDelete: () => ref.read(expenseRepositoryProvider).delete(e.id),
+                            onGone: () {
+                              setState(() => _gone.add(e.id));
+                              ref.invalidate(expensesProvider);
+                              ref.invalidate(tripExpensesProvider);
+                              invalidateReports(ref);
+                            },
+                            child: MasterTile(
                             icon: e.category.icon,
                             title: e.category.label(t),
                             subtitle: '${e.vehicle.name} · ${formatDay(e.date)}${e.tripId != null ? ' · ${t.forTrip}' : ''}',
@@ -141,7 +160,7 @@ class KharchaScreen extends ConsumerWidget {
                                   )),
                             ),
                             onTap: () => showExpenseSheet(context, e.category, existing: e),
-                          ),
+                          ))),
                           const SizedBox(height: 8),
                         ],
                       ],

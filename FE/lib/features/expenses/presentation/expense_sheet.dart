@@ -1,6 +1,8 @@
 import '../../reports/data/report_repository.dart';
 
 import 'package:flutter/material.dart';
+import '../../../core/haptics.dart';
+import '../../../core/ui/motion.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/defaults_store.dart';
@@ -118,10 +120,12 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
     final t = AppL10n.of(context);
     final amount = double.tryParse(_clean(_amount)) ?? 0;
     if (vehicleId == null) {
+      Haptics.error();
       setState(() => _error = t.chooseVehicle);
       return;
     }
     if (amount <= 0) {
+      Haptics.error();
       setState(() => _error = t.enterAmount);
       return;
     }
@@ -171,10 +175,13 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
       invalidateReports(ref);
       if (!mounted) return;
       final messenger = ScaffoldMessenger.of(context);
+      Haptics.success();
+      showSavedTick(context);
       Navigator.pop(context, true);
       messenger.showSnackBar(SnackBar(content: Text(queued ? t.savedOffline : t.expenseSaved)));
     } catch (e) {
       if (mounted) {
+        Haptics.error();
         setState(() {
           _saving = false;
           _error = errorMessage(t, e);
@@ -199,7 +206,8 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
       invalidateReports(ref);
       if (mounted) Navigator.pop(context, true);
     } catch (e) {
-      if (mounted) setState(() => _error = errorMessage(t, e));
+      if (mounted) Haptics.error();
+      setState(() => _error = errorMessage(t, e));
     }
   }
 

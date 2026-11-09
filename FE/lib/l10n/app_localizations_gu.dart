@@ -861,4 +861,7 @@ class AppL10nGu extends AppL10n {
 
   @override
   String get addTripExpense => 'આ ટ્રીપનો ખર્ચ ઉમેરો';
+
+  @override
+  String get vibration => 'ટેપ પર વાઇબ્રેશન';
 }

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app.dart';
+import 'core/haptics.dart';
 import 'core/provider_retry.dart';
 import 'core/providers.dart';
 import 'core/theme/app_theme.dart';
@@ -13,6 +14,7 @@ Future<void> main() async {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   SystemChrome.setSystemUIOverlayStyle(kInkStatusBar);
   final prefs = await SharedPreferences.getInstance();
+  Haptics.load(prefs);
   runApp(
     ProviderScope(
       retry: noAutoRetry,

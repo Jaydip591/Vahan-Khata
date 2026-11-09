@@ -76,6 +76,7 @@ void main() {
       await boot(t, repo);
       await t.tap(find.byIcon(Icons.menu_rounded));
       await t.pumpAndSettle();
+      await t.scrollUntilVisible(find.text('લોગઆઉટ'), 200);
       await t.tap(find.text('લોગઆઉટ'));
       await t.pumpAndSettle();
       expect(find.text('લોગઆઉટ કરવું છે?'), findsOneWidget);
@@ -102,6 +103,7 @@ void main() {
       await t.tap(find.text('English'));
       await t.pumpAndSettle();
       expect(find.text('Language'), findsOneWidget);
+      await t.scrollUntilVisible(find.text('Log out'), 200);
       expect(find.text('Log out'), findsOneWidget);
       final prefs = await SharedPreferences.getInstance();
       expect(prefs.getString('locale'), 'en');

@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../outbox/outbox_controller.dart';
 import '../../outbox/pending_widgets.dart';
 
+import '../../../core/haptics.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../l10n/app_localizations.dart';
 
@@ -19,7 +20,13 @@ class ShellScaffold extends ConsumerStatefulWidget {
 }
 
 class _ShellScaffoldState extends ConsumerState<ShellScaffold>
-    with WidgetsBindingObserver {
+    with WidgetsBindingObserver, SingleTickerProviderStateMixin {
+  late final AnimationController _fade = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 220),
+    value: 1,
+  );
+  int _lastIndex = 0;
   StatefulNavigationShell get navigationShell => widget.navigationShell;
 
   @override
@@ -33,6 +40,7 @@ class _ShellScaffoldState extends ConsumerState<ShellScaffold>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    _fade.dispose();
     super.dispose();
   }
 
@@ -46,6 +54,10 @@ class _ShellScaffoldState extends ConsumerState<ShellScaffold>
   @override
   Widget build(BuildContext context) {
     final t = AppL10n.of(context);
+    if (_lastIndex != navigationShell.currentIndex) {
+      _lastIndex = navigationShell.currentIndex;
+      _fade.forward(from: 0.35);
+    }
     final items = [
       (Icons.home_outlined, Icons.home_rounded, t.tabHome),
       (Icons.local_shipping_outlined, Icons.local_shipping_rounded, t.tabTrips),
@@ -58,7 +70,7 @@ class _ShellScaffoldState extends ConsumerState<ShellScaffold>
       (Icons.bar_chart_outlined, Icons.bar_chart_rounded, t.tabReport),
     ];
     return Scaffold(
-      body: navigationShell,
+      body: FadeTransition(opacity: _fade, child: navigationShell),
       bottomNavigationBar: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -81,10 +93,13 @@ class _ShellScaffoldState extends ConsumerState<ShellScaffold>
                           activeIcon: items[i].$2,
                           label: items[i].$3,
                           active: navigationShell.currentIndex == i,
-                          onTap: () => navigationShell.goBranch(
-                            i,
-                            initialLocation: i == navigationShell.currentIndex,
-                          ),
+                          onTap: () {
+                            Haptics.tap();
+                            navigationShell.goBranch(
+                              i,
+                              initialLocation: i == navigationShell.currentIndex,
+                            );
+                          },
                         ),
                       ),
                   ],

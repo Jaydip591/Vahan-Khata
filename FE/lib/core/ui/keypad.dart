@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import '../../l10n/app_localizations.dart';
 import '../money.dart';
 import '../theme/app_colors.dart';
+import '../haptics.dart';
 import 'app_button.dart';
+import 'motion.dart';
 
 /// Rounded white bottom sheet used for quick entry (amount, expense, payment).
 Future<T?> showAppSheet<T>(BuildContext context, WidgetBuilder builder) {
@@ -49,19 +51,24 @@ class KeypadPad extends StatelessWidget {
       childAspectRatio: 2.3,
       children: [
         for (final k in keys)
-          Material(
+          PressScale(
+            scale: 0.93,
+            child: Material(
             color: AppColors.ivory,
             borderRadius: BorderRadius.circular(14),
             child: InkWell(
               borderRadius: BorderRadius.circular(14),
-              onTap: () => onKey(k),
+              onTap: () {
+                Haptics.tap();
+                onKey(k);
+              },
               child: Center(
                 child: k == '⌫'
                     ? const Icon(Icons.backspace_outlined, size: 24, semanticLabel: 'Backspace')
                     : Text(k, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w500)),
               ),
             ),
-          ),
+          )),
       ],
     );
   }
@@ -137,6 +144,7 @@ class _AmountSheetState extends State<_AmountSheet> {
             label: t.amountOk,
             onPressed: () {
               if (_value <= 0) {
+                Haptics.error();
                 setState(() => _showError = true);
                 return;
               }

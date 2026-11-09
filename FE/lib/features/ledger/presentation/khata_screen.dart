@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/ui/motion.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -30,7 +31,7 @@ class KhataScreen extends ConsumerWidget {
         InkHeader(title: t.khataTitle),
         Expanded(
           child: balances.when(
-            loading: () => const Center(child: CircularProgressIndicator(color: AppColors.gold)),
+            loading: () => const SkeletonList(),
             error: (e, _) => Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -44,7 +45,7 @@ class KhataScreen extends ConsumerWidget {
                 ],
               ),
             ),
-            data: (data) => RefreshIndicator(
+            data: (data) => AppRefresh(
               onRefresh: () async => ref.refresh(partyBalancesProvider.future),
               child: ListView(
                 padding: const EdgeInsets.all(16),

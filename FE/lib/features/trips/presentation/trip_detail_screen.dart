@@ -1,6 +1,7 @@
 import '../../reports/data/report_repository.dart';
 
 import 'package:flutter/material.dart';
+import '../../../core/ui/motion.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -203,8 +204,8 @@ class _TripDetailScreenState extends ConsumerState<TripDetailScreen> {
                   child: Text(t.tripNet,
                       style: const TextStyle(fontSize: 16, color: AppColors.muted)),
                 ),
-                Text(
-                  formatRupees(trip.bhada - total),
+                CountUpRupees(
+                  trip.bhada - total,
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.w500,

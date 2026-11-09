@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/ui/motion.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -87,7 +88,7 @@ class _MonthDetailScreenState extends ConsumerState<MonthDetailScreen> {
             child: const MonthSwitcher(),
           ),
           Expanded(
-            child: RefreshIndicator(
+            child: AppRefresh(
               onRefresh: () async {
                 invalidateReports(ref);
                 await ref.read(summaryProvider(month).future);

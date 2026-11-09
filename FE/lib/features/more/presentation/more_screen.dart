@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/haptics.dart';
 import '../../../core/locale_controller.dart';
+import '../../../core/providers.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/ui/ink_header.dart';
 import '../../../l10n/app_localizations.dart';
@@ -135,6 +137,8 @@ class MoreScreen extends ConsumerWidget {
                     ),
                   ],
                 ),
+                const SizedBox(height: 20),
+                const _VibrationRow(),
                 const SizedBox(height: 32),
                 OutlinedButton.icon(
                   onPressed: () => _confirmLogout(context, ref),
@@ -182,6 +186,47 @@ class _LangChip extends StatelessWidget {
             color: selected ? Colors.white : AppColors.ink,
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// Switch for the vibration on taps and saves.
+class _VibrationRow extends ConsumerStatefulWidget {
+  const _VibrationRow();
+
+  @override
+  ConsumerState<_VibrationRow> createState() => _VibrationRowState();
+}
+
+class _VibrationRowState extends ConsumerState<_VibrationRow> {
+  @override
+  Widget build(BuildContext context) {
+    final t = AppL10n.of(context);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: AppColors.line),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Row(
+        children: [
+          const Icon(Icons.vibration_rounded, color: AppColors.ink),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(t.vibration, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+          ),
+          Switch(
+            value: Haptics.enabled,
+            activeTrackColor: AppColors.ink,
+            activeThumbColor: AppColors.gold,
+            onChanged: (on) async {
+              await Haptics.setEnabled(ref.read(sharedPreferencesProvider), on);
+              if (mounted) setState(() {});
+            },
+          ),
+        ],
       ),
     );
   }
