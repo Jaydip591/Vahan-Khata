@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/providers.dart';
+import '../../outbox/outbox_controller.dart';
 import '../data/app_user.dart';
 import '../data/auth_repository.dart';
 
@@ -69,6 +70,8 @@ class AuthController extends Notifier<AuthState> {
 
   Future<void> logout() async {
     await _repo.logout();
+    await ref.read(responseCacheProvider).clear();
+    await ref.read(outboxProvider.notifier).clear();
     state = const Unauthenticated();
   }
 

@@ -8,17 +8,22 @@ import '../../../core/ui/ink_header.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../core/ui/master_list.dart';
 import '../../auth/presentation/auth_controller.dart';
+import '../../outbox/outbox_controller.dart';
 
 class MoreScreen extends ConsumerWidget {
   const MoreScreen({super.key});
 
   Future<void> _confirmLogout(BuildContext context, WidgetRef ref) async {
     final t = AppL10n.of(context);
+    final pending = ref.read(outboxProvider).length;
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
         title: Text(t.logoutConfirmTitle),
-        content: Text(t.logoutConfirmBody, style: const TextStyle(fontSize: 16)),
+        content: Text(
+          pending > 0 ? '${t.logoutConfirmBody}\n\n${t.logoutPendingWarning(pending)}' : t.logoutConfirmBody,
+          style: const TextStyle(fontSize: 16),
+        ),
         actionsPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
         actions: [
           TextButton(

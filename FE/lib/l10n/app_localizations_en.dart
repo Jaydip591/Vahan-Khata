@@ -699,4 +699,48 @@ class AppL10nEn extends AppL10n {
   String rateValue(Object rate) {
     return '$rate/L';
   }
+
+  @override
+  String pendingStrip(Object count) {
+    return '$count entries not sent yet';
+  }
+
+  @override
+  String get pendingTitle => 'Waiting to send';
+
+  @override
+  String get allSent => 'Everything is sent';
+
+  @override
+  String get pendingHelp =>
+      'These entries are safe on your phone. They are sent automatically when the internet is back.';
+
+  @override
+  String get sendNow => 'Send now';
+
+  @override
+  String get notSentYet => 'Not sent yet';
+
+  @override
+  String get notSentFailed => 'Rejected';
+
+  @override
+  String get notSentFailedHelp =>
+      'The server did not accept this entry. Delete it and enter it again.';
+
+  @override
+  String get deletePendingTitle => 'Delete this entry?';
+
+  @override
+  String get deletePendingBody =>
+      'This entry has not reached the server. If you delete it, it is gone for good.';
+
+  @override
+  String get savedOffline =>
+      'No internet. Saved on the phone, it will be sent when you are online.';
+
+  @override
+  String logoutPendingWarning(Object count) {
+    return '$count entries are not sent yet. They will be lost if you log out.';
+  }
 }

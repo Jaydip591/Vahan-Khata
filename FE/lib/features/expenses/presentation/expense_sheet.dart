@@ -17,6 +17,9 @@ import '../../accounts/data/account_repository.dart';
 import '../../pickers/account_chips.dart';
 import '../../pickers/vehicle_chips.dart';
 import '../../vehicles/data/vehicle_repository.dart';
+import '../../outbox/outbox_controller.dart';
+import '../../outbox/outbox_item.dart';
+import '../../../core/ids.dart';
 import '../data/expense.dart';
 import '../data/expense_repository.dart';
 
@@ -133,12 +136,22 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
           : null,
       repairKind: _isRepair ? _repairKind : null,
     );
+    var queued = false;
     try {
       final repo = ref.read(expenseRepositoryProvider);
       if (_editing) {
         await repo.update(widget.existing!.id, input);
       } else {
-        await repo.create(input);
+        final vehicle = ref.read(vehiclesProvider).asData?.value.where((v) => v.id == vehicleId).firstOrNull;
+        final out = await ref.read(outboxProvider.notifier).save(OutboxItem(
+              kind: OutboxKind.expense,
+              body: {...input.toJson(), 'id': newId()},
+              title: widget.category.label(t),
+              subtitle: vehicle?.name ?? '',
+              amount: amount,
+              date: _date,
+            ));
+        queued = out == SaveOutcome.queued;
       }
       final defaults = ref.read(defaultsProvider);
       await defaults.setVehicle(vehicleId);
@@ -148,7 +161,7 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
       if (!mounted) return;
       final messenger = ScaffoldMessenger.of(context);
       Navigator.pop(context, true);
-      messenger.showSnackBar(SnackBar(content: Text(t.expenseSaved)));
+      messenger.showSnackBar(SnackBar(content: Text(queued ? t.savedOffline : t.expenseSaved)));
     } catch (e) {
       if (mounted) {
         setState(() {

@@ -99,13 +99,13 @@ Still to verify by hand on the phone: month numbers against your own books, mile
 
 ## Phase 4 — Hardening (order decided by the user: finish app features first, deploy last)
 4a Features
-- [ ] Offline queue (drift): entries saved locally, synced when online, safe retry with client-generated ids (no duplicates)
+- [x] Offline queue: new trips, expenses and payments are kept on the phone when there is no internet, shown as "not sent", and sent automatically (app open, app resume, every 30 s, or "Send now") with client-made ids so a retry never duplicates. Kept in SharedPreferences (a few entries, no need for drift). Last GET answers are cached so lists and pickers open offline.
 - [ ] PDF and Excel export; share party statement on WhatsApp
 - [ ] Account balances report (opening balance + payments - expenses per account)
 - [ ] Anything found in Phase 3 phone testing
-4b Deploy (after 4a is done) — hosting on Render, not Oracle
+4b Deploy (after 4a is done) — hosting on Render, not Oracle. Database: Neon (free). Keep-awake: a free pinger site (cron-job.org) calls `/health` every 13 minutes so the free web service does not sleep.
 - [ ] Render web service from `BE/Dockerfile`, HTTPS included; `DATABASE_URL`, secrets and admin bootstrap as env vars
-- [ ] Postgres: Render Postgres (free one expires after 30 days; paid starter or Neon/Supabase free are the options)
+- [ ] Postgres on Neon (`DATABASE_URL` with SSL); check the async driver URL form
 - [ ] Nightly backup with a Render Cron Job running `pg_dump` to Google Drive (rclone) or object storage; tested restore
 - [ ] Release APK pointing at the Render URL, signed; install instructions
 Later (user's choice, after the above): document expiry notifications (insurance, PUC, fitness, permit, tax)

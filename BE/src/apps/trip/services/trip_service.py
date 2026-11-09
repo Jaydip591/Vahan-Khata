@@ -1,7 +1,7 @@
 from collections import defaultdict
 from datetime import datetime, timezone
 from decimal import Decimal
-from uuid import UUID
+from uuid import UUID, uuid5
 
 from fastapi import HTTPException, status
 from sqlalchemy import select, update
@@ -25,7 +25,7 @@ from apps.trip.schemas.trip import (
 from apps.user.models.user import User
 from apps.vehicle.models.vehicle import Vehicle
 from core.briefs import DriverBrief, PartyBrief, PlaceBrief, VehicleBrief
-from core.crud import fetch_map, get_scoped
+from core.crud import fetch_map, find_by_client_id, get_scoped
 from core.dates import month_range
 
 ZERO = Decimal("0")
@@ -138,6 +138,9 @@ class TripService:
     # ───────────────────────── operations ─────────────────────────
     @classmethod
     async def create(cls, db: AsyncSession, actor: User, payload: TripCreateRequest) -> TripResponse:
+        existing = await find_by_client_id(db, Trip, actor.company_id, payload.id)
+        if existing is not None:  # a retried save: already stored, with its advance
+            return (await cls.to_responses(db, actor.company_id, [existing]))[0]
         adv = payload.advance
         await cls._check_refs(
             db,
@@ -154,13 +157,14 @@ class TripService:
         trip = Trip(
             company_id=actor.company_id,
             created_by=actor.id,
-            **payload.model_dump(exclude={"advance"}),
+            **payload.model_dump(exclude={"advance"} | ({"id"} if payload.id is None else set())),
         )
         db.add(trip)
         await db.flush()
         if adv:
             db.add(
                 Payment(
+                    id=uuid5(trip.id, "advance"),  # fixed id, so a retry can never add a second advance
                     company_id=actor.company_id,
                     created_by=actor.id,
                     received_by=actor.id,

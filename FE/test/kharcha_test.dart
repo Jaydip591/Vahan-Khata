@@ -44,7 +44,12 @@ void main() {
   Map<String, dynamic> vehicle(String name) =>
       api.db['vehicles']!.firstWhere((v) => v['name'] == name);
 
-  Map<String, dynamic> sent() => api.where('POST', '/api/v1/expenses').single.data as Map<String, dynamic>;
+  /// The posted body without the id the phone makes for safe retries.
+  Map<String, dynamic> sent() {
+    final body = Map<String, dynamic>.from(api.where('POST', '/api/v1/expenses').single.data as Map);
+    expect(body['id'], isA<String>());
+    return body..remove('id');
+  }
 
   testWidgets('the tab shows the six categories and an invitation when empty', (t) async {
     await boot(t);

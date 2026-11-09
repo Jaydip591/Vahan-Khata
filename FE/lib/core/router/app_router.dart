@@ -27,6 +27,7 @@ import '../../features/vehicles/presentation/vehicle_form_screen.dart';
 import '../../features/vehicles/presentation/vehicles_screen.dart';
 import '../../features/auth/presentation/login_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
+import '../../features/outbox/pending_widgets.dart';
 import '../../features/reports/presentation/month_detail_screen.dart';
 import '../../features/reports/presentation/report_screen.dart';
 import '../../features/reports/presentation/vehicle_detail_screen.dart';
@@ -60,6 +61,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/party/:id',
         builder: (_, s) => PartyLedgerScreen(partyId: s.pathParameters['id']!),
       ),
+      GoRoute(path: '/pending', builder: (_, _) => const PendingScreen()),
       GoRoute(
         path: '/report/month',
         builder: (_, _) => const MonthDetailScreen(),

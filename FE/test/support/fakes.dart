@@ -6,6 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vahan_khata/app.dart';
 import 'package:vahan_khata/core/network/api_client.dart';
+import 'package:vahan_khata/core/network/response_cache.dart';
 import 'package:vahan_khata/core/provider_retry.dart';
 import 'package:vahan_khata/core/providers.dart';
 import 'package:vahan_khata/core/storage/token_storage.dart';
@@ -74,6 +75,7 @@ Future<Widget> appWith(
         storage: TokenStorage(),
         onSessionExpired: () {},
         adapter: fake,
+        cache: ResponseCache(sp),
       )),
     ],
     child: const VahanKhataApp(),

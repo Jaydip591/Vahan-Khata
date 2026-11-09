@@ -22,6 +22,8 @@ class AdvanceInput(BaseModel):
 
 
 class TripCreateRequest(BaseModel):
+    # Optional client-made id: lets the app retry a save (e.g. after being offline) without making a duplicate.
+    id: uuid.UUID | None = None
     vehicle_id: uuid.UUID
     driver_id: uuid.UUID | None = None
     party_id: uuid.UUID

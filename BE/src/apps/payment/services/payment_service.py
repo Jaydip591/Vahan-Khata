@@ -11,7 +11,7 @@ from apps.payment.models.payment import Payment
 from apps.payment.schemas.payment import PaymentCreateRequest, PaymentResponse
 from apps.user.models.user import User
 from core.briefs import AccountBrief, PartyBrief
-from core.crud import fetch_map, get_scoped
+from core.crud import fetch_map, find_by_client_id, get_scoped
 from core.dates import month_range
 
 
@@ -37,6 +37,9 @@ class PaymentService:
 
     @classmethod
     async def create(cls, db: AsyncSession, actor: User, payload: PaymentCreateRequest) -> PaymentResponse:
+        existing = await find_by_client_id(db, Payment, actor.company_id, payload.id)
+        if existing is not None:
+            return (await cls.to_responses(db, [existing]))[0]
         await get_scoped(db, Party, actor.company_id, payload.party_id, "Party")
         account = await get_scoped(db, Account, actor.company_id, payload.account_id, "Account")
         if not account.is_active:
@@ -45,7 +48,7 @@ class PaymentService:
             company_id=actor.company_id,
             created_by=actor.id,
             received_by=actor.id,
-            **payload.model_dump(),
+            **payload.model_dump(exclude={"id"} if payload.id is None else set()),
         )
         db.add(payment)
         await db.commit()

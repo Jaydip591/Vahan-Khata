@@ -68,6 +68,9 @@ class FakeApi implements HttpClientAdapter {
         'is_active': true,
       });
 
+  /// When true every request fails like a phone without signal.
+  bool offline = false;
+
   Iterable<RequestOptions> where(String method, String path) =>
       calls.where((c) => c.method == method && c.path == path);
 
@@ -80,6 +83,9 @@ class FakeApi implements HttpClientAdapter {
   @override
   Future<ResponseBody> fetch(RequestOptions o, Stream<Uint8List>? s, Future<void>? c) async {
     calls.add(o);
+    if (offline) {
+      throw DioException(requestOptions: o, type: DioExceptionType.connectionError, message: 'offline');
+    }
     final key = '${o.method} ${o.path}';
     final fail = failNext.remove(key);
     if (fail != null) return _json(fail, {'detail': 'error'});
@@ -246,7 +252,9 @@ class FakeApi implements HttpClientAdapter {
       return _json(200, rows.take(limit).map(_tripOut).toList());
     }
     if (o.method == 'POST') {
-      final id = _id();
+      final id = (body['id'] as String?) ?? _id();
+      final already = _find('trips', id);
+      if (already != null) return _json(201, _tripOut(already));
       final trip = {
         'id': id,
         'status': 'running',
@@ -300,6 +308,8 @@ class FakeApi implements HttpClientAdapter {
     final list = db['payments']!;
     if (o.method == 'GET') return _json(200, list.map(_paymentOut).toList());
     if (o.method == 'POST') {
+      final already = _find('payments', body['id']);
+      if (already != null) return _json(201, _paymentOut(already));
       final p = {'id': _id(), 'trip_id': null, ...body};
       list.add(p);
       return _json(201, _paymentOut(p));
@@ -339,6 +349,8 @@ class FakeApi implements HttpClientAdapter {
       return _json(200, rows.map(_expenseOut).toList());
     }
     if (o.method == 'POST') {
+      final already = _find('expenses', body['id']);
+      if (already != null) return _json(201, _expenseOut(already));
       final e = {'id': _id(), 'trip_id': null, ...body};
       list.add(e);
       return _json(201, _expenseOut(e));

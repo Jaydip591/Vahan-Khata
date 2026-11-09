@@ -88,3 +88,16 @@ async def fetch_map(db: AsyncSession, model: type[T], ids: Any) -> dict[UUID, T]
         return {}
     rows = await db.execute(select(model).where(model.id.in_(ids)))
     return {r.id: r for r in rows.scalars().all()}
+
+
+async def find_by_client_id(db: AsyncSession, model: type[T], company_id: UUID, obj_id: UUID | None) -> T | None:
+    """The row a client already created with this id, so a retried save returns it instead of
+    making a duplicate. An id that belongs to another company is refused."""
+    if obj_id is None:
+        return None
+    obj = (await db.execute(select(model).where(model.id == obj_id))).scalars().first()
+    if obj is None:
+        return None
+    if obj.company_id != company_id:
+        raise HTTPException(status.HTTP_409_CONFLICT, "This id is already used.")
+    return obj

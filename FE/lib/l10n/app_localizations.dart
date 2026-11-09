@@ -1434,6 +1434,78 @@ abstract class AppL10n {
   /// In gu, this message translates to:
   /// **'{rate}/લિટર'**
   String rateValue(Object rate);
+
+  /// No description provided for @pendingStrip.
+  ///
+  /// In gu, this message translates to:
+  /// **'{count} એન્ટ્રી મોકલવાની બાકી'**
+  String pendingStrip(Object count);
+
+  /// No description provided for @pendingTitle.
+  ///
+  /// In gu, this message translates to:
+  /// **'મોકલવાની બાકી'**
+  String get pendingTitle;
+
+  /// No description provided for @allSent.
+  ///
+  /// In gu, this message translates to:
+  /// **'બધું મોકલાઈ ગયું'**
+  String get allSent;
+
+  /// No description provided for @pendingHelp.
+  ///
+  /// In gu, this message translates to:
+  /// **'આ એન્ટ્રી ફોનમાં સલામત છે. ઇન્ટરનેટ મળતાં જ આપમેળે મોકલાશે.'**
+  String get pendingHelp;
+
+  /// No description provided for @sendNow.
+  ///
+  /// In gu, this message translates to:
+  /// **'હમણાં મોકલો'**
+  String get sendNow;
+
+  /// No description provided for @notSentYet.
+  ///
+  /// In gu, this message translates to:
+  /// **'મોકલવાની બાકી'**
+  String get notSentYet;
+
+  /// No description provided for @notSentFailed.
+  ///
+  /// In gu, this message translates to:
+  /// **'સર્વરે ના પાડી'**
+  String get notSentFailed;
+
+  /// No description provided for @notSentFailedHelp.
+  ///
+  /// In gu, this message translates to:
+  /// **'સર્વરે આ એન્ટ્રી સ્વીકારી નથી. કાઢીને ફરી લખો.'**
+  String get notSentFailedHelp;
+
+  /// No description provided for @deletePendingTitle.
+  ///
+  /// In gu, this message translates to:
+  /// **'આ એન્ટ્રી કાઢી નાખવી?'**
+  String get deletePendingTitle;
+
+  /// No description provided for @deletePendingBody.
+  ///
+  /// In gu, this message translates to:
+  /// **'આ એન્ટ્રી હજી સર્વર પર ગઈ નથી. કાઢી નાખશો તો કાયમ માટે જશે.'**
+  String get deletePendingBody;
+
+  /// No description provided for @savedOffline.
+  ///
+  /// In gu, this message translates to:
+  /// **'ઇન્ટરનેટ નથી. એન્ટ્રી ફોનમાં સાચવી, નેટ આવતાં મોકલાશે.'**
+  String get savedOffline;
+
+  /// No description provided for @logoutPendingWarning.
+  ///
+  /// In gu, this message translates to:
+  /// **'{count} એન્ટ્રી હજી મોકલાઈ નથી. લૉગઆઉટ કરશો તો તે જતી રહેશે.'**
+  String logoutPendingWarning(Object count);
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

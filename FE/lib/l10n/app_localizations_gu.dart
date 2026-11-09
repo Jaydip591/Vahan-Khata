@@ -696,4 +696,48 @@ class AppL10nGu extends AppL10n {
   String rateValue(Object rate) {
     return '$rate/લિટર';
   }
+
+  @override
+  String pendingStrip(Object count) {
+    return '$count એન્ટ્રી મોકલવાની બાકી';
+  }
+
+  @override
+  String get pendingTitle => 'મોકલવાની બાકી';
+
+  @override
+  String get allSent => 'બધું મોકલાઈ ગયું';
+
+  @override
+  String get pendingHelp =>
+      'આ એન્ટ્રી ફોનમાં સલામત છે. ઇન્ટરનેટ મળતાં જ આપમેળે મોકલાશે.';
+
+  @override
+  String get sendNow => 'હમણાં મોકલો';
+
+  @override
+  String get notSentYet => 'મોકલવાની બાકી';
+
+  @override
+  String get notSentFailed => 'સર્વરે ના પાડી';
+
+  @override
+  String get notSentFailedHelp =>
+      'સર્વરે આ એન્ટ્રી સ્વીકારી નથી. કાઢીને ફરી લખો.';
+
+  @override
+  String get deletePendingTitle => 'આ એન્ટ્રી કાઢી નાખવી?';
+
+  @override
+  String get deletePendingBody =>
+      'આ એન્ટ્રી હજી સર્વર પર ગઈ નથી. કાઢી નાખશો તો કાયમ માટે જશે.';
+
+  @override
+  String get savedOffline =>
+      'ઇન્ટરનેટ નથી. એન્ટ્રી ફોનમાં સાચવી, નેટ આવતાં મોકલાશે.';
+
+  @override
+  String logoutPendingWarning(Object count) {
+    return '$count એન્ટ્રી હજી મોકલાઈ નથી. લૉગઆઉટ કરશો તો તે જતી રહેશે.';
+  }
 }

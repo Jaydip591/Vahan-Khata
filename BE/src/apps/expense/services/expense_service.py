@@ -16,7 +16,7 @@ from apps.trip.models.trip import Trip
 from apps.user.models.user import User
 from apps.vehicle.models.vehicle import Vehicle
 from core.briefs import AccountBrief, VehicleBrief
-from core.crud import fetch_map, get_scoped
+from core.crud import fetch_map, find_by_client_id, get_scoped
 from core.dates import month_range
 
 
@@ -67,6 +67,9 @@ class ExpenseService:
 
     @classmethod
     async def create(cls, db: AsyncSession, actor: User, payload: ExpenseCreateRequest) -> ExpenseResponse:
+        existing = await find_by_client_id(db, Expense, actor.company_id, payload.id)
+        if existing is not None:
+            return (await cls.to_responses(db, [existing]))[0]
         await cls._check_refs(
             db,
             actor.company_id,
@@ -74,7 +77,7 @@ class ExpenseService:
             trip_id=payload.trip_id,
             account_id=payload.account_id,
         )
-        data = _drop_irrelevant(payload.model_dump())
+        data = _drop_irrelevant(payload.model_dump(exclude={"id"} if payload.id is None else set()))
         expense = Expense(company_id=actor.company_id, created_by=actor.id, **data)
         db.add(expense)
         await db.commit()

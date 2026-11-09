@@ -10,6 +10,9 @@ import '../../../core/ui/app_button.dart';
 import '../../../core/ui/ink_header.dart';
 import '../../../core/ui/status_tag.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../outbox/outbox_controller.dart';
+import '../../outbox/outbox_item.dart';
+import '../../outbox/pending_widgets.dart';
 import '../data/trip.dart';
 import '../data/trip_repository.dart';
 
@@ -45,6 +48,10 @@ class _TripsScreenState extends ConsumerState<TripsScreen> {
     final lang = Localizations.localeOf(context).languageCode;
     final key = monthKey(_month);
     final trips = ref.watch(tripsProvider(key));
+    final waiting = ref
+        .watch(outboxProvider)
+        .where((i) => i.kind == OutboxKind.trip && monthKey(i.date) == key)
+        .toList();
     return Column(
       children: [
         InkHeader(title: t.tabTrips),
@@ -81,25 +88,34 @@ class _TripsScreenState extends ConsumerState<TripsScreen> {
             loading: () => const Center(
               child: CircularProgressIndicator(color: AppColors.gold),
             ),
-            error: (e, _) => Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    errorMessage(t, e),
-                    style: const TextStyle(fontSize: 17),
-                  ),
-                  const SizedBox(height: 12),
-                  OutlinedButton(
-                    onPressed: () => ref.invalidate(tripsProvider(key)),
-                    child: Text(t.retry),
-                  ),
+            error: (e, _) => ListView(
+              padding: const EdgeInsets.all(16),
+              children: [
+                for (final w in waiting) ...[
+                  PendingTile(item: w),
+                  const SizedBox(height: 10),
                 ],
-              ),
+                Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        errorMessage(t, e),
+                        style: const TextStyle(fontSize: 17),
+                      ),
+                      const SizedBox(height: 12),
+                      OutlinedButton(
+                        onPressed: () => ref.invalidate(tripsProvider(key)),
+                        child: Text(t.retry),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
             data: (list) => RefreshIndicator(
               onRefresh: () async => ref.refresh(tripsProvider(key).future),
-              child: list.isEmpty
+              child: (list.isEmpty && waiting.isEmpty)
                   ? ListView(
                       children: [
                         const SizedBox(height: 80),
@@ -121,10 +137,14 @@ class _TripsScreenState extends ConsumerState<TripsScreen> {
                     )
                   : ListView.separated(
                       padding: const EdgeInsets.all(16),
-                      itemCount: list.length,
+                      itemCount: waiting.length + list.length,
                       separatorBuilder: (_, _) => const SizedBox(height: 10),
-                      itemBuilder: (c, i) =>
-                          TripCard(trip: list[i], lang: lang),
+                      itemBuilder: (c, i) => i < waiting.length
+                          ? PendingTile(item: waiting[i])
+                          : TripCard(
+                              trip: list[i - waiting.length],
+                              lang: lang,
+                            ),
                     ),
             ),
           ),

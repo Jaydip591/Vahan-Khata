@@ -23,6 +23,9 @@ import '../../pickers/vehicle_chips.dart';
 import '../../places/data/place.dart';
 import '../../places/presentation/place_picker.dart';
 import '../../vehicles/data/vehicle_repository.dart';
+import '../../outbox/outbox_controller.dart';
+import '../../outbox/outbox_item.dart';
+import '../../../core/ids.dart';
 import '../data/trip.dart';
 import '../data/trip_repository.dart';
 
@@ -190,12 +193,24 @@ class _TripFormScreenState extends ConsumerState<TripFormScreen> {
       bhada: _bhada,
       advance: advance,
     );
+    var queued = false;
     try {
       final repo = ref.read(tripRepositoryProvider);
       if (_editing) {
         await repo.update(widget.trip!.id, input);
       } else {
-        await repo.create(input);
+        final lang = Localizations.localeOf(context).languageCode;
+        final vehicle = ref.read(vehiclesProvider).asData?.value.where((v) => v.id == vehicleId).firstOrNull;
+        final party = ref.read(partiesProvider).asData?.value.where((p) => p.id == partyId).firstOrNull;
+        final out = await ref.read(outboxProvider.notifier).save(OutboxItem(
+              kind: OutboxKind.trip,
+              body: {...input.toJson(), 'id': newId()},
+              title: '${_from!.nameFor(lang)} → ${_to!.nameFor(lang)}',
+              subtitle: '${party?.name ?? ''} · ${vehicle?.name ?? ''}',
+              amount: _bhada.toDouble(),
+              date: _date,
+            ));
+        queued = out == SaveOutcome.queued;
       }
       final defaults = ref.read(defaultsProvider);
       await defaults.setVehicle(vehicleId);
@@ -212,7 +227,7 @@ class _TripFormScreenState extends ConsumerState<TripFormScreen> {
       if (!mounted) return;
       final messenger = ScaffoldMessenger.of(context);
       context.pop();
-      messenger.showSnackBar(SnackBar(content: Text(t.tripSaved)));
+      messenger.showSnackBar(SnackBar(content: Text(queued ? t.savedOffline : t.tripSaved)));
     } catch (e) {
       if (mounted) {
         setState(() {

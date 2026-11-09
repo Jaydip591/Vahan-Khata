@@ -15,6 +15,10 @@ import '../../../l10n/app_localizations.dart';
 import '../../accounts/data/account_repository.dart';
 import '../../pickers/account_chips.dart';
 import '../../trips/data/trip_repository.dart';
+import '../../parties/data/party_repository.dart';
+import '../../outbox/outbox_controller.dart';
+import '../../outbox/outbox_item.dart';
+import '../../../core/ids.dart';
 import '../data/ledger.dart';
 import '../data/ledger_repository.dart';
 
@@ -102,19 +106,27 @@ class _PaymentSheetState extends ConsumerState<PaymentSheet> {
       _error = null;
     });
     try {
-      await ref
-          .read(ledgerRepositoryProvider)
-          .addPayment(
-            partyId: partyId!,
-            amount: amount,
-            mode: _mode,
-            accountId: accountId!,
-            paidOn: _date,
-          );
+      final party = ref.read(partiesProvider).asData?.value.where((p) => p.id == partyId).firstOrNull;
+      final out = await ref.read(outboxProvider.notifier).save(OutboxItem(
+            kind: OutboxKind.payment,
+            body: {
+              'id': newId(),
+              'party_id': partyId,
+              'amount': amount.toString(),
+              'mode': _mode,
+              'account_id': accountId,
+              'paid_on': dateKey(_date),
+            },
+            title: party?.name ?? '',
+            subtitle: t.receivePayment,
+            amount: amount.toDouble(),
+            date: _date,
+          ));
+      final queued = out == SaveOutcome.queued;
       final defaults = ref.read(defaultsProvider);
-      await defaults.setAccount(accountId);
+      await defaults.setAccount(accountId!);
       await defaults.setPayMode(_mode);
-      await defaults.setParty(partyId);
+      await defaults.setParty(partyId!);
       ref.invalidate(partyBalancesProvider);
       ref.invalidate(partyLedgerProvider);
       ref.invalidate(tripsProvider);
@@ -122,7 +134,7 @@ class _PaymentSheetState extends ConsumerState<PaymentSheet> {
       if (!mounted) return;
       final messenger = ScaffoldMessenger.of(context);
       Navigator.pop(context, true);
-      messenger.showSnackBar(SnackBar(content: Text(t.paymentSaved)));
+      messenger.showSnackBar(SnackBar(content: Text(queued ? t.savedOffline : t.paymentSaved)));
     } catch (e) {
       if (mounted) {
         setState(() {

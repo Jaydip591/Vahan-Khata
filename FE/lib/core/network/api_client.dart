@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 
 import '../storage/token_storage.dart';
+import 'response_cache.dart';
 
 const _retriedKey = 'retried_after_refresh';
 
@@ -15,26 +16,31 @@ class ApiClient {
     required this.storage,
     required this.onSessionExpired,
     HttpClientAdapter? adapter,
-  })  : dio = Dio(BaseOptions(
-          baseUrl: baseUrl,
-          connectTimeout: const Duration(seconds: 15),
-          receiveTimeout: const Duration(seconds: 20),
-          contentType: Headers.jsonContentType,
-        )),
-        _plain = Dio(BaseOptions(
-          baseUrl: baseUrl,
-          connectTimeout: const Duration(seconds: 15),
-          receiveTimeout: const Duration(seconds: 20),
-          contentType: Headers.jsonContentType,
-        )) {
+    ResponseCache? cache,
+  }) : dio = Dio(
+         BaseOptions(
+           baseUrl: baseUrl,
+           connectTimeout: const Duration(seconds: 15),
+           receiveTimeout: const Duration(seconds: 20),
+           contentType: Headers.jsonContentType,
+         ),
+       ),
+       _plain = Dio(
+         BaseOptions(
+           baseUrl: baseUrl,
+           connectTimeout: const Duration(seconds: 15),
+           receiveTimeout: const Duration(seconds: 20),
+           contentType: Headers.jsonContentType,
+         ),
+       ) {
     if (adapter != null) {
       dio.httpClientAdapter = adapter;
       _plain.httpClientAdapter = adapter;
     }
-    dio.interceptors.add(InterceptorsWrapper(
-      onRequest: _attachToken,
-      onError: _handleError,
-    ));
+    dio.interceptors.add(
+      InterceptorsWrapper(onRequest: _attachToken, onError: _handleError),
+    );
+    if (cache != null) dio.interceptors.add(cache);
   }
 
   final Dio dio;
@@ -46,7 +52,10 @@ class ApiClient {
   /// For login / logout / refresh calls that must not go through the retry logic.
   Dio get plain => _plain;
 
-  Future<void> _attachToken(RequestOptions o, RequestInterceptorHandler h) async {
+  Future<void> _attachToken(
+    RequestOptions o,
+    RequestInterceptorHandler h,
+  ) async {
     final token = await storage.readAccess();
     if (token != null) o.headers['Authorization'] = 'Bearer $token';
     h.next(o);
@@ -80,7 +89,10 @@ class ApiClient {
       return null;
     }
     try {
-      final r = await _plain.post('/api/v1/auth/refresh', data: {'refresh_token': refresh});
+      final r = await _plain.post(
+        '/api/v1/auth/refresh',
+        data: {'refresh_token': refresh},
+      );
       final access = r.data['access_token'] as String;
       await storage.saveAccess(access);
       return access;

@@ -44,8 +44,12 @@ void main() {
     await t.pumpAndSettle();
   }
 
-  Map<String, dynamic> sentPayment() =>
-      api.where('POST', '/api/v1/payments').single.data as Map<String, dynamic>;
+  /// The posted body without the id the phone makes for safe retries.
+  Map<String, dynamic> sentPayment() {
+    final body = Map<String, dynamic>.from(api.where('POST', '/api/v1/payments').single.data as Map);
+    expect(body['id'], isA<String>());
+    return body..remove('id');
+  }
 
   testWidgets('shows the total owed and parties, oldest unpaid first, with age tags', (t) async {
     trip('રમેશભાઈ', ago(1), '12000');

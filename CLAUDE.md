@@ -72,6 +72,7 @@ Selected chip: ink fill, white text. Active tab: gold top border.
 - Riverpod providers do not auto-retry (`core/provider_retry.dart`): failures show an error with a Retry button.
 - Quick entry uses bottom sheets (`showAppSheet`, `showAmountSheet`, `showExpenseSheet`, `showPaymentSheet`);
   amounts are whole rupees from `KeypadPad`; remembered choices live in `core/defaults_store.dart`.
+- Offline: saves of new trips, expenses and payments go through `features/outbox` (client-made `id` in the body, backend returns the existing row on a retry). Edits and deletes need internet. GET answers are cached by `core/network/response_cache.dart`.
 - Tests use `test/support/fake_api.dart` (in-memory backend over Dio) and `appWith(...)` from `fakes.dart`.
 - Reusable entry widgets: `AppChip`, `AppTextField`, `FormShell`, `MasterListScreen`, `showPlacePicker`,
   `VehicleChips`, `PartyChips` (use these in Phase 2 forms instead of new widgets).
@@ -90,5 +91,5 @@ Selected chip: ink fill, white text. Active tab: gold top border.
 - One phase (or one feature slice) per session. Finish a slice end to end: table -> API -> test -> screen.
 - Commit after each slice. Update `PLAN.md` checkboxes when a task is done.
 - Commit messages: plain, no co-author or tool attribution lines (user's instruction).
-- Hosting target: Render (web service from the Dockerfile + Postgres + a Cron Job for nightly `pg_dump`).
+- Hosting target: Render web service from the Dockerfile + Neon Postgres + a free pinger on `/health` every 13 min + a nightly `pg_dump` job.
   Deploy only after the offline mode and other Phase 4a features are finished. Document expiry notifications come last.

@@ -243,5 +243,17 @@
   "entriesLabel": "એન્ટ્રી",
   "monthDetails": "મહિનાની વિગત",
   "litersValue": "{value} લિટર",
-  "rateValue": "{rate}/લિટર"
+  "rateValue": "{rate}/લિટર",
+  "pendingStrip": "{count} એન્ટ્રી મોકલવાની બાકી",
+  "pendingTitle": "મોકલવાની બાકી",
+  "allSent": "બધું મોકલાઈ ગયું",
+  "pendingHelp": "આ એન્ટ્રી ફોનમાં સલામત છે. ઇન્ટરનેટ મળતાં જ આપમેળે મોકલાશે.",
+  "sendNow": "હમણાં મોકલો",
+  "notSentYet": "મોકલવાની બાકી",
+  "notSentFailed": "સર્વરે ના પાડી",
+  "notSentFailedHelp": "સર્વરે આ એન્ટ્રી સ્વીકારી નથી. કાઢીને ફરી લખો.",
+  "deletePendingTitle": "આ એન્ટ્રી કાઢી નાખવી?",
+  "deletePendingBody": "આ એન્ટ્રી હજી સર્વર પર ગઈ નથી. કાઢી નાખશો તો કાયમ માટે જશે.",
+  "savedOffline": "ઇન્ટરનેટ નથી. એન્ટ્રી ફોનમાં સાચવી, નેટ આવતાં મોકલાશે.",
+  "logoutPendingWarning": "{count} એન્ટ્રી હજી મોકલાઈ નથી. લૉગઆઉટ કરશો તો તે જતી રહેશે."
 }

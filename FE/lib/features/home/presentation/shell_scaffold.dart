@@ -1,14 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+
+import '../../outbox/outbox_controller.dart';
+import '../../outbox/pending_widgets.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../l10n/app_localizations.dart';
 
 /// Bottom bar with the five main tabs. Active tab has a gold top border.
-class ShellScaffold extends StatelessWidget {
+class ShellScaffold extends ConsumerStatefulWidget {
   const ShellScaffold({super.key, required this.navigationShell});
 
   final StatefulNavigationShell navigationShell;
+
+  @override
+  ConsumerState<ShellScaffold> createState() => _ShellScaffoldState();
+}
+
+class _ShellScaffoldState extends ConsumerState<ShellScaffold>
+    with WidgetsBindingObserver {
+  StatefulNavigationShell get navigationShell => widget.navigationShell;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    // Anything saved without internet last time is sent as soon as the app opens.
+    Future.microtask(() => ref.read(outboxProvider.notifier).syncNow());
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      ref.read(outboxProvider.notifier).syncNow();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,40 +49,50 @@ class ShellScaffold extends StatelessWidget {
     final items = [
       (Icons.home_outlined, Icons.home_rounded, t.tabHome),
       (Icons.local_shipping_outlined, Icons.local_shipping_rounded, t.tabTrips),
-      (Icons.local_gas_station_outlined, Icons.local_gas_station_rounded, t.tabKharcha),
+      (
+        Icons.local_gas_station_outlined,
+        Icons.local_gas_station_rounded,
+        t.tabKharcha,
+      ),
       (Icons.menu_book_outlined, Icons.menu_book_rounded, t.tabKhata),
       (Icons.bar_chart_outlined, Icons.bar_chart_rounded, t.tabReport),
     ];
     return Scaffold(
       body: navigationShell,
-      bottomNavigationBar: Material(
-        color: Colors.white,
-        child: SafeArea(
-          top: false,
-          child: Container(
-            height: 66,
-            decoration: const BoxDecoration(
-              border: Border(top: BorderSide(color: AppColors.line)),
-            ),
-            child: Row(
-              children: [
-                for (var i = 0; i < items.length; i++)
-                  Expanded(
-                    child: _BarItem(
-                      icon: items[i].$1,
-                      activeIcon: items[i].$2,
-                      label: items[i].$3,
-                      active: navigationShell.currentIndex == i,
-                      onTap: () => navigationShell.goBranch(
-                        i,
-                        initialLocation: i == navigationShell.currentIndex,
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const PendingStrip(),
+          Material(
+            color: Colors.white,
+            child: SafeArea(
+              top: false,
+              child: Container(
+                height: 66,
+                decoration: const BoxDecoration(
+                  border: Border(top: BorderSide(color: AppColors.line)),
+                ),
+                child: Row(
+                  children: [
+                    for (var i = 0; i < items.length; i++)
+                      Expanded(
+                        child: _BarItem(
+                          icon: items[i].$1,
+                          activeIcon: items[i].$2,
+                          label: items[i].$3,
+                          active: navigationShell.currentIndex == i,
+                          onTap: () => navigationShell.goBranch(
+                            i,
+                            initialLocation: i == navigationShell.currentIndex,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-              ],
+                  ],
+                ),
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -78,7 +121,10 @@ class _BarItem extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           border: Border(
-            top: BorderSide(color: active ? AppColors.gold : Colors.transparent, width: 3),
+            top: BorderSide(
+              color: active ? AppColors.gold : Colors.transparent,
+              width: 3,
+            ),
           ),
         ),
         child: Column(

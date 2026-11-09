@@ -7,6 +7,9 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/ui/ink_header.dart';
 import '../../../core/ui/master_list.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../outbox/outbox_controller.dart';
+import '../../outbox/outbox_item.dart';
+import '../../outbox/pending_widgets.dart';
 import '../data/expense.dart';
 import '../data/expense_repository.dart';
 import 'expense_sheet.dart';
@@ -80,7 +83,11 @@ class KharchaScreen extends ConsumerWidget {
                     ],
                   ),
                   data: (list) {
-                    if (list.isEmpty) {
+                    final waiting = ref
+                        .watch(outboxProvider)
+                        .where((i) => i.kind == OutboxKind.expense && monthKey(i.date) == key)
+                        .toList();
+                    if (list.isEmpty && waiting.isEmpty) {
                       return Padding(
                         padding: const EdgeInsets.only(top: 12),
                         child: Text(t.emptyExpenses,
@@ -114,6 +121,10 @@ class KharchaScreen extends ConsumerWidget {
                           ),
                         ),
                         const SizedBox(height: 10),
+                        for (final w in waiting) ...[
+                          PendingTile(item: w),
+                          const SizedBox(height: 8),
+                        ],
                         for (final e in list) ...[
                           MasterTile(
                             icon: e.category.icon,

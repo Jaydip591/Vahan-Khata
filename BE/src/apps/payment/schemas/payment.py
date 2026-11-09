@@ -12,6 +12,8 @@ PaymentMode = Literal["cash", "online"]
 
 
 class PaymentCreateRequest(BaseModel):
+    # Optional client-made id: lets the app retry a save (e.g. after being offline) without making a duplicate.
+    id: uuid.UUID | None = None
     party_id: uuid.UUID
     amount: Money
     mode: PaymentMode
