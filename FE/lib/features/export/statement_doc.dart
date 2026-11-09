@@ -94,8 +94,8 @@ StatementDoc partyStatementDoc(
       DocTable(
         title: t.tabTrips,
         columns: [
-          DocColumn(t.colDate, CellKind.date, flex: 1.3),
-          DocColumn(t.colRoute, CellKind.text, flex: 3),
+          DocColumn(t.colDate, CellKind.date, flex: 1.8),
+          DocColumn(t.colRoute, CellKind.text, flex: 2.6),
           DocColumn(t.vehicle, CellKind.text, flex: 1.6),
           DocColumn(t.bhadaLabel, CellKind.money, flex: 1.4),
           DocColumn(t.receivedLabel, CellKind.money, flex: 1.4),
@@ -117,7 +117,7 @@ StatementDoc partyStatementDoc(
       DocTable(
         title: t.paymentsHeading,
         columns: [
-          DocColumn(t.colDate, CellKind.date, flex: 1.3),
+          DocColumn(t.colDate, CellKind.date, flex: 1.8),
           DocColumn(t.colAmount, CellKind.money, flex: 1.4),
           DocColumn(t.colMode, CellKind.text, flex: 1.4),
           DocColumn(t.colAccount, CellKind.text, flex: 2.4),
@@ -190,8 +190,8 @@ StatementDoc monthDoc(
       DocTable(
         title: t.tabTrips,
         columns: [
-          DocColumn(t.colDate, CellKind.date, flex: 1.3),
-          DocColumn(t.colRoute, CellKind.text, flex: 2.8),
+          DocColumn(t.colDate, CellKind.date, flex: 1.8),
+          DocColumn(t.colRoute, CellKind.text, flex: 2.4),
           DocColumn(t.colParty, CellKind.text, flex: 1.8),
           DocColumn(t.vehicle, CellKind.text, flex: 1.5),
           DocColumn(t.bhadaLabel, CellKind.money, flex: 1.3),
@@ -217,8 +217,8 @@ StatementDoc monthDoc(
       DocTable(
         title: t.tabKharcha,
         columns: [
-          DocColumn(t.colDate, CellKind.date, flex: 1.3),
-          DocColumn(t.colCategory, CellKind.text, flex: 1.5),
+          DocColumn(t.colDate, CellKind.date, flex: 1.8),
+          DocColumn(t.colCategory, CellKind.text, flex: 1.2),
           DocColumn(t.vehicle, CellKind.text, flex: 1.7),
           DocColumn(t.colQty, CellKind.text, flex: 1.2),
           DocColumn(t.colOdometer, CellKind.number, flex: 1.3),
