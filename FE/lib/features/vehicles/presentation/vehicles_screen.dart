@@ -24,7 +24,7 @@ class VehiclesScreen extends ConsumerWidget {
       itemBuilder: (c, v) => MasterTile(
         icon: v.type.icon,
         title: v.name,
-        subtitle: v.number,
+        subtitle: '${v.number} · ${v.fuelType.label(AppL10n.of(context))}',
         onTap: () => context.push('/vehicles/edit', extra: v),
       ),
     );

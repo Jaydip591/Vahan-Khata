@@ -1506,6 +1506,66 @@ abstract class AppL10n {
   /// In gu, this message translates to:
   /// **'{count} એન્ટ્રી હજી મોકલાઈ નથી. લૉગઆઉટ કરશો તો તે જતી રહેશે.'**
   String logoutPendingWarning(Object count);
+
+  /// No description provided for @fuelLabel.
+  ///
+  /// In gu, this message translates to:
+  /// **'ઇંધણ'**
+  String get fuelLabel;
+
+  /// No description provided for @fuelType.
+  ///
+  /// In gu, this message translates to:
+  /// **'ઇંધણનો પ્રકાર'**
+  String get fuelType;
+
+  /// No description provided for @catPetrol.
+  ///
+  /// In gu, this message translates to:
+  /// **'પેટ્રોલ'**
+  String get catPetrol;
+
+  /// No description provided for @catCng.
+  ///
+  /// In gu, this message translates to:
+  /// **'CNG'**
+  String get catCng;
+
+  /// No description provided for @fuelCngPetrol.
+  ///
+  /// In gu, this message translates to:
+  /// **'CNG + પેટ્રોલ'**
+  String get fuelCngPetrol;
+
+  /// No description provided for @kgLabel.
+  ///
+  /// In gu, this message translates to:
+  /// **'કિગ્રા'**
+  String get kgLabel;
+
+  /// No description provided for @kgValue.
+  ///
+  /// In gu, this message translates to:
+  /// **'{value} કિગ્રા'**
+  String kgValue(Object value);
+
+  /// No description provided for @mileageKg.
+  ///
+  /// In gu, this message translates to:
+  /// **'{value} કિમી/કિગ્રા'**
+  String mileageKg(Object value);
+
+  /// No description provided for @whichFuel.
+  ///
+  /// In gu, this message translates to:
+  /// **'કયું ઇંધણ?'**
+  String get whichFuel;
+
+  /// No description provided for @rateKg.
+  ///
+  /// In gu, this message translates to:
+  /// **'{rate}/કિગ્રા'**
+  String rateKg(Object rate);
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

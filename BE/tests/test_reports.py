@@ -66,7 +66,7 @@ async def test_mileage_from_diesel_odometer(client, auth):
     row = (await client.get(R + "/vehicles", params={"month": "2026-11"}, headers=auth)).json()["vehicles"][0]
     # 600 km over the 80 liters burned after the first fill
     assert row["km"] == 600 and Decimal(row["mileage"]) == Decimal("7.5")
-    assert Decimal(row["diesel_liters"]) == 130
+    assert [(f["category"], Decimal(f["quantity"]), f["entries"]) for f in row["fuels"]] == [("diesel", 130, 3)]
 
 
 async def test_mileage_needs_two_readings(client, auth):
@@ -130,3 +130,23 @@ async def test_reports_are_company_isolated(client, auth, other_auth, seeded):
 
 async def test_reports_need_login(client):
     assert (await client.get(R + "/summary")).status_code in (401, 403)
+
+
+async def test_cng_and_petrol_are_fuel_too(client, auth):
+    v = await make_vehicle(client, auth)
+    await spend(client, auth, v, 800, "2026-11-01", category="cng", liters="10", odometer=2000)
+    await spend(client, auth, v, 1000, "2026-11-10", category="cng", liters="12", odometer=2120)
+    row = (await client.get(R + "/vehicles", params={"month": "2026-11"}, headers=auth)).json()["vehicles"][0]
+    assert row["km"] == 120 and Decimal(row["mileage"]) == 10  # 120 km on the 12 kg of the second fill
+    assert [(f["category"], Decimal(f["amount"])) for f in row["fuels"]] == [("cng", 1800)]
+
+
+async def test_two_fuels_give_totals_but_no_mileage(client, auth):
+    v = await make_vehicle(client, auth)
+    await spend(client, auth, v, 800, "2026-11-01", category="cng", liters="10", odometer=2000)
+    await spend(client, auth, v, 1000, "2026-11-05", category="petrol", liters="10", odometer=2100)
+    await spend(client, auth, v, 900, "2026-11-10", category="cng", liters="11", odometer=2200)
+    row = (await client.get(R + "/vehicles", params={"month": "2026-11"}, headers=auth)).json()["vehicles"][0]
+    assert row["km"] == 200 and row["mileage"] is None
+    assert [(f["category"], Decimal(f["amount"]), f["entries"]) for f in row["fuels"]] == [
+        ("cng", 1700, 2), ("petrol", 1000, 1)]

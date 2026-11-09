@@ -16,6 +16,8 @@ class Vehicle(Base, TimestampMixin, SoftDeleteMixin, CompanyOwnedMixin):
     vehicle_type: Mapped[str] = mapped_column(String(20), nullable=False)
     name: Mapped[str] = mapped_column(String(60), nullable=False)
     number: Mapped[str] = mapped_column(String(20), nullable=False)
+    # diesel / petrol / cng / cng_petrol (runs on both). Chooses the default in the fuel entry.
+    fuel_type: Mapped[str] = mapped_column(String(12), default="diesel", server_default="diesel", nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
 
     # Document expiry dates (all optional; used for reminders in Phase 4)

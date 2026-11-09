@@ -8,7 +8,8 @@ from pydantic import BaseModel, Field
 from core.briefs import AccountBrief, VehicleBrief
 from core.schema_types import Money
 
-ExpenseCategory = Literal["diesel", "toll", "repair", "allowance", "challan", "other"]
+ExpenseCategory = Literal["diesel", "petrol", "cng", "toll", "repair", "allowance", "challan", "other"]
+FUEL_CATEGORIES = ("diesel", "petrol", "cng")
 RepairKind = Literal["tyre", "oil", "engine", "battery", "service", "other"]
 
 

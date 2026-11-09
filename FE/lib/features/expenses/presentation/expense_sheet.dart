@@ -59,7 +59,10 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
   String? _error;
 
   bool get _editing => widget.existing != null;
-  bool get _isDiesel => widget.category == ExpenseCategory.diesel;
+  late ExpenseCategory _category = widget.existing?.category ?? widget.category;
+  bool _fuelPicked = false; // the user chose a fuel chip, so stop following the vehicle's default
+  bool get _isFuel => _category.isFuel;
+  bool get _isFuelSheet => widget.category.isFuel;
   bool get _isRepair => widget.category == ExpenseCategory.repair;
 
   String _trimNumber(num n) =>
@@ -123,15 +126,15 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
     });
     final input = ExpenseInput(
       vehicleId: vehicleId,
-      category: widget.category,
+      category: _category,
       amount: _clean(_amount),
       date: _date,
       accountId: _accountId,
-      liters: _isDiesel && liters > 0 ? _clean(_liters) : null,
-      rate: _isDiesel && liters > 0
+      liters: _isFuel && liters > 0 ? _clean(_liters) : null,
+      rate: _isFuel && liters > 0
           ? (amount / liters).toStringAsFixed(2)
           : null,
-      odometer: _isDiesel && _odometer.isNotEmpty
+      odometer: _isFuel && _odometer.isNotEmpty
           ? int.tryParse(_odometer)
           : null,
       repairKind: _isRepair ? _repairKind : null,
@@ -146,7 +149,7 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
         final out = await ref.read(outboxProvider.notifier).save(OutboxItem(
               kind: OutboxKind.expense,
               body: {...input.toJson(), 'id': newId()},
-              title: widget.category.label(t),
+              title: _category.label(t),
               subtitle: vehicle?.name ?? '',
               amount: amount,
               date: _date,
@@ -267,6 +270,17 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
         : null;
     if (accountId != _accountId) _accountId = accountId;
 
+    // Fuel: one choice if the vehicle takes one fuel, CNG first when it takes CNG and petrol.
+    final vehicle = vehicles?.where((v) => v.id == vehicleId).firstOrNull;
+    final fuelChoices = <ExpenseCategory>[
+      ...(vehicle?.fuelType.categories ?? const [ExpenseCategory.diesel, ExpenseCategory.petrol, ExpenseCategory.cng]),
+      if (_editing && !(vehicle?.fuelType.categories.contains(widget.existing!.category) ?? true))
+        widget.existing!.category,
+    ];
+    if (_isFuelSheet && !_editing && !_fuelPicked && vehicle != null) {
+      _category = vehicle.fuelType.defaultCategory;
+    }
+
     return ConstrainedBox(
       constraints: BoxConstraints(
         maxHeight: MediaQuery.sizeOf(context).height * 0.94,
@@ -288,12 +302,12 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
                     color: AppColors.ink,
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(widget.category.icon, color: AppColors.gold),
+                  child: Icon(_category.icon, color: AppColors.gold),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    widget.category.label(t),
+                    _isFuelSheet ? t.fuelLabel : _category.label(t),
                     style: const TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.w500,
@@ -317,8 +331,29 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
                     _label(t.vehicle),
                     VehicleChips(
                       selectedId: vehicleId,
-                      onChanged: (v) => setState(() => _vehicleId = v.id),
+                      onChanged: (v) => setState(() {
+                        _vehicleId = v.id;
+                        _fuelPicked = false; // fuel follows the new vehicle's default
+                      }),
                     ),
+                    if (_isFuelSheet) ...[
+                      _label(t.whichFuel),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: [
+                          for (final c in fuelChoices)
+                            AppChip(
+                              label: c.label(t),
+                              selected: _category == c,
+                              onTap: () => setState(() {
+                                _category = c;
+                                _fuelPicked = true;
+                              }),
+                            ),
+                        ],
+                      ),
+                    ],
                     if (_isRepair) ...[
                       _label(t.repairKind),
                       Wrap(
@@ -345,9 +380,9 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
                           _amount,
                           big: true,
                         ),
-                        if (_isDiesel) ...[
+                        if (_isFuel) ...[
                           const SizedBox(width: 8),
-                          _fieldBox(_Field.liters, t.liters, _liters),
+                          _fieldBox(_Field.liters, _category == ExpenseCategory.cng ? t.kgLabel : t.liters, _liters),
                           const SizedBox(width: 8),
                           _fieldBox(_Field.odometer, t.odometer, _odometer),
                         ],

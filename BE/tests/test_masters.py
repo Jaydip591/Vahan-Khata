@@ -162,3 +162,15 @@ async def test_masters_require_login_and_are_company_isolated(client, auth, othe
     assert (await client.post(url, json=body, headers=other_auth)).status_code == 201
     # and the original is untouched
     assert (await client.get(f"{url}/{item['id']}", headers=auth)).json()["id"] == item["id"]
+
+
+async def test_vehicle_fuel_type_defaults_to_diesel_and_can_change(client, auth):
+    r = await client.post(V, json=VEHICLE, headers=auth)
+    assert r.json()["fuel_type"] == "diesel"
+    vid = r.json()["id"]
+    r = await client.patch(f"{V}/{vid}", json={"fuel_type": "cng_petrol"}, headers=auth)
+    assert r.status_code == 200 and r.json()["fuel_type"] == "cng_petrol"
+    made = await client.post(V, json=VEHICLE | {"name": "Carry", "number": "GJ05 CD 5678", "fuel_type": "cng"}, headers=auth)
+    assert made.json()["fuel_type"] == "cng"
+    bad = await client.post(V, json=VEHICLE | {"name": "X", "number": "GJ05 EF 9999", "fuel_type": "water"}, headers=auth)
+    assert bad.status_code == 422

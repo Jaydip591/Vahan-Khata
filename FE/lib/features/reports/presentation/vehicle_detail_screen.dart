@@ -92,7 +92,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
                             child: AppChip(
                               label: switch (p) {
                                 _Part.trips => t.tabTrips,
-                                _Part.diesel => t.catDiesel,
+                                _Part.diesel => t.fuelLabel,
                                 _Part.other => t.otherExpenses,
                               },
                               selected: _part == p,
@@ -142,11 +142,12 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
       error: (e, _) => [_error(t, e, () => invalidateReports(ref))],
       data: (list) {
         final rows = list
-            .where((e) => (e.category == ExpenseCategory.diesel) == diesel)
+            .where((e) => e.category.isFuel == diesel)
             .toList();
         if (rows.isEmpty) return [_empty(t.emptyReport)];
         final total = rows.fold<double>(0, (s, e) => s + e.amount);
         final liters = rows.fold<double>(0, (s, e) => s + (e.liters ?? 0));
+        final kinds = rows.map((e) => e.category).toSet();
         return [
           ReportCard(
             child: Row(
@@ -156,9 +157,10 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
                   value: formatRupees(total),
                   color: AppColors.expense,
                 ),
-                if (diesel) ...[
+                if (diesel && kinds.length == 1) ...[
+                  // one fuel only: quantity and average rate make sense
                   MiniStat(
-                    label: t.litersLabel,
+                    label: kinds.first == ExpenseCategory.cng ? t.kgLabel : t.litersLabel,
                     value: liters == 0 ? '—' : liters.toStringAsFixed(1),
                   ),
                   MiniStat(
@@ -255,7 +257,7 @@ class _Summary extends StatelessWidget {
           if (r.mileage != null) ...[
             const SizedBox(height: 10),
             Text(
-              '${t.mileageValue(r.mileage!.toStringAsFixed(1))}${r.km != null ? '  ·  ${t.kmValue(r.km!)}' : ''}',
+              '${r.mileageIsKg ? t.mileageKg(r.mileage!.toStringAsFixed(1)) : t.mileageValue(r.mileage!.toStringAsFixed(1))}${r.km != null ? '  ·  ${t.kmValue(r.km!)}' : ''}',
               style: const TextStyle(color: AppColors.gold, fontSize: 16),
             ),
           ],

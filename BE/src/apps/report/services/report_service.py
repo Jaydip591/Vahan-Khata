@@ -9,8 +9,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from apps.expense.models.expense import Expense
 from apps.party.models.party import Party
 from apps.payment.models.payment import Payment
+from apps.expense.schemas.expense import FUEL_CATEGORIES
 from apps.report.schemas.report import (
     CategoryTotal,
+    FuelTotal,
     ExpenseReport,
     MonthSummary,
     PartyReport,
@@ -111,7 +113,7 @@ class ReportService:
             await db.execute(
                 select(Expense).where(
                     *_live(Expense, company_id),
-                    Expense.category == "diesel",
+                    Expense.category.in_(FUEL_CATEGORIES),
                     Expense.expense_date >= start,
                     Expense.expense_date < end,
                 )
@@ -122,7 +124,7 @@ class ReportService:
         for v in vehicles:
             income, trips = inc.get(v.id, (ZERO, 0))
             expense = exp.get(v.id, ZERO)
-            liters, km, mileage = _mileage(diesel[v.id])
+            fuels, km, mileage = _fuel_summary(diesel[v.id])
             rows.append(
                 VehicleReport(
                     vehicle_id=v.id,
@@ -132,7 +134,7 @@ class ReportService:
                     expense=expense,
                     profit=income - expense,
                     trips=trips,
-                    diesel_liters=liters,
+                    fuels=fuels,
                     km=km,
                     mileage=mileage,
                 )
@@ -217,17 +219,33 @@ async def _party_balances(db: AsyncSession, company_id: UUID) -> tuple[dict, Dec
     return bal, sum((b for b in bal.values() if b > ZERO), ZERO)
 
 
-def _mileage(entries: list) -> tuple[Decimal, int | None, Decimal | None]:
-    """Km per liter from diesel fills with an odometer reading.
+def _fuel_summary(entries: list) -> tuple[list[FuelTotal], int | None, Decimal | None]:
+    """Fuel used per kind, plus km and mileage from odometer readings.
 
-    Distance is last odometer minus first; the first fill's liters only filled the
-    tank before the measured stretch, so they are left out of the divisor."""
-    liters = sum((e.liters for e in entries if e.liters), ZERO)
+    Distance is last odometer minus first; the first fill's liters only filled the tank before
+    the measured stretch, so they are left out of the divisor. Mileage is only given when a
+    single fuel was used: with two fuels mixed the distance cannot be split between them."""
+    by_cat: dict[str, list] = defaultdict(list)
+    for e in entries:
+        by_cat[e.category].append(e)
+    fuels = [
+        FuelTotal(
+            category=cat,
+            amount=sum((e.amount for e in rows), ZERO),
+            quantity=sum((e.liters for e in rows if e.liters), ZERO),
+            entries=len(rows),
+        )
+        for cat, rows in sorted(by_cat.items())
+    ]
     marked = sorted((e for e in entries if e.odometer is not None), key=lambda e: e.odometer)
     if len(marked) < 2:
-        return liters, None, None
+        return fuels, None, None
     km = marked[-1].odometer - marked[0].odometer
+    if km <= 0:
+        return fuels, None, None
+    if len(by_cat) != 1:
+        return fuels, km, None
     used = sum((e.liters for e in marked[1:] if e.liters), ZERO)
-    if km <= 0 or used <= 0:
-        return liters, None, None
-    return liters, km, (Decimal(km) / used).quantize(Decimal("0.1"))
+    if used <= 0:
+        return fuels, km, None
+    return fuels, km, (Decimal(km) / used).quantize(Decimal("0.1"))

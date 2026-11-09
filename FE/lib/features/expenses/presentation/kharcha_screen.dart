@@ -42,7 +42,7 @@ class KharchaScreen extends ConsumerWidget {
                   crossAxisSpacing: 10,
                   childAspectRatio: 0.95,
                   children: [
-                    for (final c in ExpenseCategory.values)
+                    for (final c in ExpenseCategory.tiles)
                       Material(
                         color: Colors.white,
                         shape: RoundedRectangleBorder(
@@ -62,7 +62,7 @@ class KharchaScreen extends ConsumerWidget {
                                 child: Icon(c.icon, color: AppColors.gold, size: 28),
                               ),
                               const SizedBox(height: 8),
-                              Text(c.label(t),
+                              Text(c.tileLabel(t),
                                   style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500)),
                             ],
                           ),

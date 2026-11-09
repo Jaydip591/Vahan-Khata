@@ -174,3 +174,12 @@ async def test_expenses_are_company_isolated(client, auth, other_auth):
     assert (await client.patch(f"{EXP}/{e['id']}", json={"amount": "1"}, headers=other_auth)).status_code == 404
     assert (await client.delete(f"{EXP}/{e['id']}", headers=other_auth)).status_code == 404
     assert (await client.post(EXP, json=exp_body(v), headers=other_auth)).status_code == 404
+
+
+async def test_petrol_and_cng_keep_fuel_details_other_categories_drop_them(client, auth):
+    v = await make_vehicle(client, auth)
+    for cat in ("petrol", "cng"):
+        r = await client.post(EXP, json=exp_body(v, category=cat, amount="900", liters="9", rate="100", odometer=500), headers=auth)
+        assert r.status_code == 201 and r.json()["liters"] == "9.00" and r.json()["odometer"] == 500
+    r = await client.post(EXP, json=exp_body(v, category="toll", liters="9", odometer=500), headers=auth)
+    assert r.json()["liters"] is None and r.json()["odometer"] is None

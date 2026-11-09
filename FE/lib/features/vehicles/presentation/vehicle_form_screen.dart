@@ -33,6 +33,7 @@ class _VehicleFormScreenState extends ConsumerState<VehicleFormScreen> {
   final _name = TextEditingController();
   final _number = TextEditingController();
   VehicleType _type = VehicleType.eicher;
+  FuelType _fuel = FuelType.diesel;
   bool _nameEdited = false;
   bool _saving = false;
   bool _docsOpen = false;
@@ -47,6 +48,7 @@ class _VehicleFormScreenState extends ConsumerState<VehicleFormScreen> {
     final v = widget.vehicle;
     if (v != null) {
       _type = v.type;
+      _fuel = v.fuelType;
       _name.text = v.name;
       _number.text = v.number;
       _insurance = v.insuranceExp;
@@ -86,6 +88,7 @@ class _VehicleFormScreenState extends ConsumerState<VehicleFormScreen> {
     });
     final input = VehicleInput(
       type: _type,
+      fuelType: _fuel,
       name: _name.text.trim(),
       number: _number.text.trim().toUpperCase(),
       insuranceExp: _insurance,
@@ -223,6 +226,21 @@ class _VehicleFormScreenState extends ConsumerState<VehicleFormScreen> {
                       setState(() => _type = type);
                       if (!_editing) _suggestName();
                     },
+                  ),
+              ],
+            ),
+            const SizedBox(height: 18),
+            Text(t.fuelType, style: const TextStyle(fontSize: 14, color: AppColors.muted)),
+            const SizedBox(height: 8),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                for (final f in FuelType.values)
+                  AppChip(
+                    label: f.label(t),
+                    selected: _fuel == f,
+                    onTap: () => setState(() => _fuel = f),
                   ),
               ],
             ),

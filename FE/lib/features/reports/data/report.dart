@@ -30,6 +30,22 @@ class MonthSummary {
       );
 }
 
+class FuelTotal {
+  const FuelTotal({required this.category, required this.amount, required this.quantity, required this.entries});
+
+  final String category; // diesel / petrol / cng
+  final double amount;
+  final double quantity; // liters, kg for CNG
+  final int entries;
+
+  factory FuelTotal.fromJson(Map<String, dynamic> j) => FuelTotal(
+        category: j['category'] as String,
+        amount: parseMoney(j['amount']),
+        quantity: parseMoney(j['quantity']),
+        entries: j['entries'] as int,
+      );
+}
+
 class VehicleReport {
   const VehicleReport({
     required this.id,
@@ -39,6 +55,7 @@ class VehicleReport {
     required this.expense,
     required this.profit,
     required this.trips,
+    this.fuels = const [],
     this.km,
     this.mileage,
   });
@@ -50,8 +67,11 @@ class VehicleReport {
   final double expense;
   final double profit;
   final int trips;
+  final List<FuelTotal> fuels;
   final int? km;
-  final double? mileage; // km per liter
+  final double? mileage; // km per liter (km per kg when the only fuel is CNG)
+
+  bool get mileageIsKg => fuels.length == 1 && fuels.first.category == 'cng';
 
   factory VehicleReport.fromJson(Map<String, dynamic> j) => VehicleReport(
         id: j['vehicle_id'] as String,
@@ -61,6 +81,7 @@ class VehicleReport {
         expense: parseMoney(j['expense']),
         profit: parseMoney(j['profit']),
         trips: j['trips'] as int,
+        fuels: [for (final f in (j['fuels'] as List? ?? const [])) FuelTotal.fromJson(f as Map<String, dynamic>)],
         km: j['km'] as int?,
         mileage: j['mileage'] == null ? null : parseMoney(j['mileage']),
       );

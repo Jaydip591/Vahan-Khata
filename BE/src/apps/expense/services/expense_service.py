@@ -8,6 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from apps.account.models.account import Account
 from apps.expense.models.expense import Expense
 from apps.expense.schemas.expense import (
+    FUEL_CATEGORIES,
     ExpenseCreateRequest,
     ExpenseResponse,
     ExpenseUpdateRequest,
@@ -21,9 +22,9 @@ from core.dates import month_range
 
 
 def _drop_irrelevant(data: dict) -> dict:
-    """Diesel details only belong to diesel, repair kind only to repair."""
+    """Liters, rate and odometer only belong to fuel (diesel, petrol, CNG); repair kind only to repair."""
     category = data.get("category")
-    if category is not None and category != "diesel":
+    if category is not None and category not in FUEL_CATEGORIES:
         data["liters"] = data["rate"] = data["odometer"] = None
     if category is not None and category != "repair":
         data["repair_kind"] = None

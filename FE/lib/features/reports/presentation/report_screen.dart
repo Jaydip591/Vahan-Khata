@@ -176,7 +176,7 @@ class _VehicleCard extends StatelessWidget {
             children: [
               Text(t.tripsCount(row.trips), style: const TextStyle(fontSize: 15, color: AppColors.muted)),
               if (row.mileage != null)
-                Text(t.mileageValue(row.mileage!.toStringAsFixed(1)),
+                Text(row.mileageIsKg ? t.mileageKg(row.mileage!.toStringAsFixed(1)) : t.mileageValue(row.mileage!.toStringAsFixed(1)),
                     style: const TextStyle(fontSize: 15, color: AppColors.muted)),
               if (row.km != null)
                 Text(t.kmValue(row.km!), style: const TextStyle(fontSize: 15, color: AppColors.muted)),

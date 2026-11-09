@@ -255,5 +255,15 @@
   "deletePendingTitle": "આ એન્ટ્રી કાઢી નાખવી?",
   "deletePendingBody": "આ એન્ટ્રી હજી સર્વર પર ગઈ નથી. કાઢી નાખશો તો કાયમ માટે જશે.",
   "savedOffline": "ઇન્ટરનેટ નથી. એન્ટ્રી ફોનમાં સાચવી, નેટ આવતાં મોકલાશે.",
-  "logoutPendingWarning": "{count} એન્ટ્રી હજી મોકલાઈ નથી. લૉગઆઉટ કરશો તો તે જતી રહેશે."
+  "logoutPendingWarning": "{count} એન્ટ્રી હજી મોકલાઈ નથી. લૉગઆઉટ કરશો તો તે જતી રહેશે.",
+  "fuelLabel": "ઇંધણ",
+  "fuelType": "ઇંધણનો પ્રકાર",
+  "catPetrol": "પેટ્રોલ",
+  "catCng": "CNG",
+  "fuelCngPetrol": "CNG + પેટ્રોલ",
+  "kgLabel": "કિગ્રા",
+  "kgValue": "{value} કિગ્રા",
+  "mileageKg": "{value} કિમી/કિગ્રા",
+  "whichFuel": "કયું ઇંધણ?",
+  "rateKg": "{rate}/કિગ્રા"
 }

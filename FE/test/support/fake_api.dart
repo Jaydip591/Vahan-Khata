@@ -46,12 +46,13 @@ class FakeApi implements HttpClientAdapter {
     }
   }
 
-  void addVehicle(String name, String number, {String type = 'eicher'}) =>
+  void addVehicle(String name, String number, {String type = 'eicher', String fuel = 'diesel'}) =>
       db['vehicles']!.add({
         'id': _id(),
         'vehicle_type': type,
         'name': name,
         'number': number,
+        'fuel_type': fuel,
         'is_active': true,
         'insurance_exp': null,
         'puc_exp': null,

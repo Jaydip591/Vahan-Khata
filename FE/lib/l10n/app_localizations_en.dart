@@ -743,4 +743,40 @@ class AppL10nEn extends AppL10n {
   String logoutPendingWarning(Object count) {
     return '$count entries are not sent yet. They will be lost if you log out.';
   }
+
+  @override
+  String get fuelLabel => 'Fuel';
+
+  @override
+  String get fuelType => 'Fuel type';
+
+  @override
+  String get catPetrol => 'Petrol';
+
+  @override
+  String get catCng => 'CNG';
+
+  @override
+  String get fuelCngPetrol => 'CNG + Petrol';
+
+  @override
+  String get kgLabel => 'Kg';
+
+  @override
+  String kgValue(Object value) {
+    return '$value kg';
+  }
+
+  @override
+  String mileageKg(Object value) {
+    return '$value km/kg';
+  }
+
+  @override
+  String get whichFuel => 'Which fuel?';
+
+  @override
+  String rateKg(Object rate) {
+    return '$rate/kg';
+  }
 }

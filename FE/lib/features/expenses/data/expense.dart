@@ -6,6 +6,8 @@ import '../../trips/data/trip.dart';
 
 enum ExpenseCategory {
   diesel('diesel', Icons.local_gas_station_rounded),
+  petrol('petrol', Icons.local_gas_station_rounded),
+  cng('cng', Icons.propane_tank_rounded),
   toll('toll', Icons.add_road_rounded),
   repair('repair', Icons.build_rounded),
   allowance('allowance', Icons.payments_outlined),
@@ -16,11 +18,22 @@ enum ExpenseCategory {
   final String key;
   final IconData icon;
 
+  /// Diesel, petrol and CNG are all "fuel": they carry liters (kg for CNG), rate and odometer.
+  bool get isFuel => this == diesel || this == petrol || this == cng;
+
+  /// The tiles on the Kharcha tab: one Fuel tile instead of one per fuel.
+  static const tiles = [diesel, toll, repair, allowance, challan, other];
+
+  /// Name on the Kharcha tile (diesel's tile is the general Fuel tile).
+  String tileLabel(AppL10n t) => this == diesel ? t.fuelLabel : label(t);
+
   static ExpenseCategory fromKey(String key) =>
       ExpenseCategory.values.firstWhere((c) => c.key == key, orElse: () => ExpenseCategory.other);
 
   String label(AppL10n t) => switch (this) {
         diesel => t.catDiesel,
+        petrol => t.catPetrol,
+        cng => t.catCng,
         toll => t.catToll,
         repair => t.catRepair,
         allowance => t.catAllowance,

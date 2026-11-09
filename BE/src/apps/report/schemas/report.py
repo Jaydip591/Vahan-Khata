@@ -15,6 +15,13 @@ class MonthSummary(BaseModel):
     prev_profit: Decimal  # last month's profit, for the comparison
 
 
+class FuelTotal(BaseModel):
+    category: str  # diesel / petrol / cng
+    amount: Decimal
+    quantity: Decimal  # liters (kg for CNG)
+    entries: int
+
+
 class VehicleReport(BaseModel):
     vehicle_id: uuid.UUID
     name: str
@@ -23,9 +30,9 @@ class VehicleReport(BaseModel):
     expense: Decimal
     profit: Decimal
     trips: int
-    diesel_liters: Decimal
-    km: int | None  # odometer distance covered by the diesel entries
-    mileage: Decimal | None  # km per liter
+    fuels: list[FuelTotal]
+    km: int | None  # odometer distance covered by the fuel entries
+    mileage: Decimal | None  # km per liter (per kg for CNG); only when one fuel was used
 
 
 class VehicleReports(BaseModel):

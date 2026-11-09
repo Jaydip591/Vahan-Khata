@@ -51,7 +51,7 @@ void main() {
       await boot(t);
       await openMore(t, 'ગાડીઓ');
       expect(find.text('Eicher 1'), findsOneWidget);
-      expect(find.text('GJ05 AB 1234'), findsOneWidget);
+      expect(find.textContaining('GJ05 AB 1234'), findsOneWidget);
     });
 
     testWidgets('add: name is filled automatically from the chosen type, then saved', (t) async {
@@ -76,7 +76,7 @@ void main() {
       expect(sent['insurance_exp'], isNull);
       // back on the list, showing the new vehicle
       expect(find.text('Bolero 1'), findsOneWidget);
-      expect(find.text('GJ05 CD 5678'), findsOneWidget);
+      expect(find.textContaining('GJ05 CD 5678'), findsOneWidget);
     });
 
     testWidgets('a name the user typed is not overwritten when the type changes', (t) async {
@@ -156,10 +156,8 @@ void main() {
       await t.tap(find.text('Eicher 1'));
       await t.pumpAndSettle();
       expect(find.text('05/03/2027'), findsOneWidget); // opens by itself when a date exists
-      await t.tap(find.byIcon(Icons.close_rounded));
-      await t.pumpAndSettle();
-      await t.tap(find.text('સેવ કરો'));
-      await t.pumpAndSettle();
+      await tapIt(t, find.byIcon(Icons.close_rounded)); // scrolls the date into view first
+      await tapIt(t, find.text('સેવ કરો'));
       expect((api.where('PATCH', '/api/v1/vehicles/${firstVehicleId()}').single.data as Map)['puc_exp'], isNull);
     });
   });

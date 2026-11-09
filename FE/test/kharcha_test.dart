@@ -53,7 +53,7 @@ void main() {
 
   testWidgets('the tab shows the six categories and an invitation when empty', (t) async {
     await boot(t);
-    for (final c in ['ડીઝલ', 'ટોલ', 'રિપેર', 'ભથ્થું', 'ચલણ', 'બીજું']) {
+    for (final c in ['ઇંધણ', 'ટોલ', 'રિપેર', 'ભથ્થું', 'ચલણ', 'બીજું']) {
       expect(find.text(c), findsOneWidget);
     }
     expect(find.text('આ મહિને કોઈ ખર્ચ નથી'), findsOneWidget);
@@ -85,7 +85,7 @@ void main() {
 
   testWidgets('diesel keeps liters, computed rate and odometer', (t) async {
     await boot(t);
-    await openCategory(t, 'ડીઝલ');
+    await openCategory(t, 'ઇંધણ');
     await tapIt(t, find.text('Bolero'));
     await press(t, '5520');
     await t.tap(find.text('લિટર'));
@@ -106,7 +106,7 @@ void main() {
 
   testWidgets('liters accept a decimal point', (t) async {
     await boot(t);
-    await openCategory(t, 'ડીઝલ');
+    await openCategory(t, 'ઇંધણ');
     await tapIt(t, find.text('Eicher 1'));
     await press(t, '1000');
     await t.tap(find.text('લિટર'));

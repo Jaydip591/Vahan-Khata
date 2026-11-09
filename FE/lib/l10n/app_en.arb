@@ -248,5 +248,15 @@
   "deletePendingTitle": "Delete this entry?",
   "deletePendingBody": "This entry has not reached the server. If you delete it, it is gone for good.",
   "savedOffline": "No internet. Saved on the phone, it will be sent when you are online.",
-  "logoutPendingWarning": "{count} entries are not sent yet. They will be lost if you log out."
+  "logoutPendingWarning": "{count} entries are not sent yet. They will be lost if you log out.",
+  "fuelLabel": "Fuel",
+  "fuelType": "Fuel type",
+  "catPetrol": "Petrol",
+  "catCng": "CNG",
+  "fuelCngPetrol": "CNG + Petrol",
+  "kgLabel": "Kg",
+  "kgValue": "{value} kg",
+  "mileageKg": "{value} km/kg",
+  "whichFuel": "Which fuel?",
+  "rateKg": "{rate}/kg"
 }

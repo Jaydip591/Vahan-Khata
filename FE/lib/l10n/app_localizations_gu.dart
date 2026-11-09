@@ -740,4 +740,40 @@ class AppL10nGu extends AppL10n {
   String logoutPendingWarning(Object count) {
     return '$count એન્ટ્રી હજી મોકલાઈ નથી. લૉગઆઉટ કરશો તો તે જતી રહેશે.';
   }
+
+  @override
+  String get fuelLabel => 'ઇંધણ';
+
+  @override
+  String get fuelType => 'ઇંધણનો પ્રકાર';
+
+  @override
+  String get catPetrol => 'પેટ્રોલ';
+
+  @override
+  String get catCng => 'CNG';
+
+  @override
+  String get fuelCngPetrol => 'CNG + પેટ્રોલ';
+
+  @override
+  String get kgLabel => 'કિગ્રા';
+
+  @override
+  String kgValue(Object value) {
+    return '$value કિગ્રા';
+  }
+
+  @override
+  String mileageKg(Object value) {
+    return '$value કિમી/કિગ્રા';
+  }
+
+  @override
+  String get whichFuel => 'કયું ઇંધણ?';
+
+  @override
+  String rateKg(Object rate) {
+    return '$rate/કિગ્રા';
+  }
 }

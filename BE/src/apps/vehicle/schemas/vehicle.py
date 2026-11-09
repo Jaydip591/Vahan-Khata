@@ -9,6 +9,8 @@ from core.schema_types import Name
 
 VehicleType = Literal["eicher", "bolero", "tata_ace", "truck", "tempo", "other"]
 
+FuelType = Literal["diesel", "petrol", "cng", "cng_petrol"]
+
 _NUMBER_RE = re.compile(r"^[A-Z0-9][A-Z0-9 -]{3,18}[A-Z0-9]$")
 
 
@@ -27,6 +29,7 @@ class VehicleCreateRequest(BaseModel):
     vehicle_type: VehicleType
     name: Name = Field(max_length=60)
     number: str
+    fuel_type: FuelType = "diesel"
     insurance_exp: date | None = None
     puc_exp: date | None = None
     fitness_exp: date | None = None
@@ -43,6 +46,7 @@ class VehicleUpdateRequest(BaseModel):
     vehicle_type: VehicleType | None = None
     name: Name | None = Field(default=None, max_length=60)
     number: str | None = None
+    fuel_type: FuelType | None = None
     is_active: bool | None = None
     insurance_exp: date | None = None
     puc_exp: date | None = None
@@ -63,6 +67,7 @@ class VehicleResponse(BaseModel):
     vehicle_type: str
     name: str
     number: str
+    fuel_type: str
     is_active: bool
     insurance_exp: date | None
     puc_exp: date | None

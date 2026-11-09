@@ -8,7 +8,7 @@ import '../../expenses/data/expense.dart';
 
 export 'report_widgets.dart' show ReportCard, MeterBar, profitColor, ErrorRetry;
 
-/// One expense in a report list. Diesel shows liters, rate and odometer.
+/// One expense in a report list. Fuel (diesel, petrol, CNG) shows quantity, rate and odometer.
 class ExpenseRow extends StatelessWidget {
   const ExpenseRow({super.key, required this.expense, this.showVehicle = false, this.onTap});
   final Expense expense;
@@ -20,8 +20,10 @@ class ExpenseRow extends StatelessWidget {
     final t = AppL10n.of(context);
     final e = expense;
     final extras = <String>[
-      if (e.liters != null) t.litersValue(_trim(e.liters!)),
-      if (e.rate != null) t.rateValue(formatRupees(e.rate!)),
+      if (e.liters != null)
+        e.category == ExpenseCategory.cng ? t.kgValue(_trim(e.liters!)) : t.litersValue(_trim(e.liters!)),
+      if (e.rate != null)
+        e.category == ExpenseCategory.cng ? t.rateKg(formatRupees(e.rate!)) : t.rateValue(formatRupees(e.rate!)),
       if (e.odometer != null) t.kmValue(e.odometer!),
     ];
     return Material(
