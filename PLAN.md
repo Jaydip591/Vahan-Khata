@@ -103,7 +103,7 @@ Still to verify by hand on the phone: month numbers against your own books, mile
 - [ ] PDF and Excel export; share party statement on WhatsApp
 - [ ] Account balances report (opening balance + payments - expenses per account)
 - [ ] Anything found in Phase 3 phone testing
-- [ ] Fuel type per vehicle (diesel, petrol, CNG, CNG+petrol): chosen when adding a vehicle; the fuel expense uses it as the default (one fuel = preselected; CNG+petrol = CNG preselected, petrol one tap away); reports and mileage per fuel
+- [x] Fuel type per vehicle (diesel, petrol, CNG, CNG+petrol): chosen when adding or editing a vehicle; the Fuel tile on Kharcha preselects the vehicle's fuel (one fuel = only that chip; CNG+petrol = CNG preselected, petrol one tap away; CNG counted in kg). Expense categories are now diesel / petrol / cng. Reports: fuel totals per vehicle; mileage only when one fuel was used (km/l, km/kg for CNG). Existing vehicles became diesel and can be edited.
 - [ ] Payment rows in the party khata should show cash/online and the account
 4b Deploy (after 4a is done) — hosting on Render, not Oracle. Database: Neon (free). Keep-awake: a free pinger site (cron-job.org) calls `/health` every 13 minutes so the free web service does not sleep.
 - [ ] Render web service from `BE/Dockerfile`, HTTPS included; `DATABASE_URL`, secrets and admin bootstrap as env vars
