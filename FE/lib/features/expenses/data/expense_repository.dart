@@ -11,6 +11,7 @@ class ExpenseRepository {
   Future<List<Expense>> list({
     String? month,
     String? vehicleId,
+    String? tripId,
     int limit = 200,
   }) async {
     final r = await _dio.get(
@@ -18,6 +19,7 @@ class ExpenseRepository {
       queryParameters: {
         'month': ?month,
         'vehicle_id': ?vehicleId,
+        'trip_id': ?tripId,
         'limit': limit,
       },
     );
@@ -54,3 +56,8 @@ final monthExpensesProvider = FutureProvider.autoDispose
           .watch(expenseRepositoryProvider)
           .list(month: k.month, vehicleId: k.vehicleId, limit: 300),
     );
+
+/// Everything spent on one trip (fuel, toll, food...).
+final tripExpensesProvider = FutureProvider.autoDispose.family<List<Expense>, String>(
+  (ref, tripId) => ref.watch(expenseRepositoryProvider).list(tripId: tripId, limit: 100),
+);

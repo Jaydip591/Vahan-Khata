@@ -12,6 +12,9 @@ import '../../../core/ui/ink_header.dart';
 import '../../../core/ui/master_list.dart';
 import '../../../core/ui/status_tag.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../expenses/data/expense.dart';
+import '../../expenses/data/expense_repository.dart';
+import '../../expenses/presentation/expense_sheet.dart';
 import '../../ledger/data/ledger_repository.dart';
 import '../data/trip.dart';
 import '../data/trip_repository.dart';
@@ -117,6 +120,104 @@ class _TripDetailScreenState extends ConsumerState<TripDetailScreen> {
           ],
         ),
       );
+
+  /// Fuel, toll, food... spent on this trip, with the profit left after them.
+  Widget _expensesCard(AppL10n t, Trip trip) {
+    final expenses = ref.watch(tripExpensesProvider(trip.id));
+    final list = expenses.asData?.value ?? const <Expense>[];
+    final total = list.fold<double>(0, (s, e) => s + e.amount);
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: AppColors.line),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(t.tripExpenses,
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+              ),
+              Text(formatRupees(total),
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.w500, color: AppColors.expense)),
+            ],
+          ),
+          const SizedBox(height: 10),
+          if (expenses.hasError)
+            Align(
+              alignment: Alignment.centerLeft,
+              child: OutlinedButton(
+                onPressed: () => ref.invalidate(tripExpensesProvider(trip.id)),
+                child: Text(t.retry),
+              ),
+            )
+          else if (list.isEmpty && expenses.hasValue)
+            Text(t.noTripExpenses, style: const TextStyle(fontSize: 15, color: AppColors.muted)),
+          for (final e in list)
+            InkWell(
+              borderRadius: BorderRadius.circular(10),
+              onTap: () => showExpenseSheet(context, e.category, existing: e, trip: trip),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Row(
+                  children: [
+                    Icon(e.category.icon, size: 22, color: AppColors.ink),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(e.category.label(t), style: const TextStyle(fontSize: 17)),
+                    ),
+                    Text(formatRupees(e.amount),
+                        style: const TextStyle(fontSize: 17, color: AppColors.expense)),
+                  ],
+                ),
+              ),
+            ),
+          const SizedBox(height: 8),
+          Text(t.addTripExpense, style: const TextStyle(fontSize: 14, color: AppColors.muted)),
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              for (final c in ExpenseCategory.tiles)
+                ActionChip(
+                  avatar: Icon(c.icon, size: 18, color: AppColors.gold),
+                  backgroundColor: AppColors.ink,
+                  side: BorderSide.none,
+                  label: Text(c.tileLabel(t),
+                      style: const TextStyle(color: Colors.white, fontSize: 15)),
+                  onPressed: () => showExpenseSheet(context, c, trip: trip),
+                ),
+            ],
+          ),
+          if (list.isNotEmpty) ...[
+            const Divider(height: 24),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(t.tripNet,
+                      style: const TextStyle(fontSize: 16, color: AppColors.muted)),
+                ),
+                Text(
+                  formatRupees(trip.bhada - total),
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w500,
+                    color: trip.bhada - total >= 0 ? AppColors.income : AppColors.expense,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -236,6 +337,8 @@ class _TripDetailScreenState extends ConsumerState<TripDetailScreen> {
                     ],
                   ),
                 ),
+                const SizedBox(height: 14),
+                _expensesCard(t, trip),
                 if (_error != null)
                   Padding(
                     padding: const EdgeInsets.only(top: 12),

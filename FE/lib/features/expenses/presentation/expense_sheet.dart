@@ -20,6 +20,7 @@ import '../../vehicles/data/vehicle_repository.dart';
 import '../../outbox/outbox_controller.dart';
 import '../../outbox/outbox_item.dart';
 import '../../../core/ids.dart';
+import '../../trips/data/trip.dart';
 import '../data/expense.dart';
 import '../data/expense_repository.dart';
 
@@ -30,17 +31,21 @@ Future<bool?> showExpenseSheet(
   BuildContext context,
   ExpenseCategory category, {
   Expense? existing,
+  Trip? trip,
 }) {
   return showAppSheet<bool>(
     context,
-    (_) => ExpenseSheet(category: category, existing: existing),
+    (_) => ExpenseSheet(category: category, existing: existing, trip: trip),
   );
 }
 
 class ExpenseSheet extends ConsumerStatefulWidget {
-  const ExpenseSheet({super.key, required this.category, this.existing});
+  const ExpenseSheet({super.key, required this.category, this.existing, this.trip});
   final ExpenseCategory category;
   final Expense? existing;
+
+  /// When set, the expense belongs to this trip: its vehicle and date are used.
+  final Trip? trip;
 
   @override
   ConsumerState<ExpenseSheet> createState() => _ExpenseSheetState();
@@ -82,8 +87,9 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
       _liters = e.liters == null ? '' : _trimNumber(e.liters!);
       _odometer = e.odometer?.toString() ?? '';
     } else {
-      _vehicleId = d.vehicleId;
+      _vehicleId = widget.trip?.vehicle.id ?? d.vehicleId;
       _accountId = d.accountId;
+      if (widget.trip != null) _date = widget.trip!.tripDate.isAfter(today()) ? today() : widget.trip!.tripDate;
     }
   }
 
@@ -129,6 +135,7 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
       category: _category,
       amount: _clean(_amount),
       date: _date,
+      tripId: widget.trip?.id ?? widget.existing?.tripId,
       accountId: _accountId,
       liters: _isFuel && liters > 0 ? _clean(_liters) : null,
       rate: _isFuel && liters > 0
@@ -160,6 +167,7 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
       await defaults.setVehicle(vehicleId);
       if (_accountId != null) await defaults.setAccount(_accountId!);
       ref.invalidate(expensesProvider);
+      ref.invalidate(tripExpensesProvider);
       invalidateReports(ref);
       if (!mounted) return;
       final messenger = ScaffoldMessenger.of(context);
@@ -187,6 +195,7 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
     try {
       await ref.read(expenseRepositoryProvider).delete(widget.existing!.id);
       ref.invalidate(expensesProvider);
+      ref.invalidate(tripExpensesProvider);
       invalidateReports(ref);
       if (mounted) Navigator.pop(context, true);
     } catch (e) {
@@ -257,6 +266,7 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
   @override
   Widget build(BuildContext context) {
     final t = AppL10n.of(context);
+    final lang = Localizations.localeOf(context).languageCode;
     final vehicles = ref.watch(vehiclesProvider).asData?.value;
     final accounts = ref.watch(accountsProvider).asData?.value;
     final vehicleId = vehicles == null
@@ -328,14 +338,22 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    _label(t.vehicle),
-                    VehicleChips(
-                      selectedId: vehicleId,
-                      onChanged: (v) => setState(() {
-                        _vehicleId = v.id;
-                        _fuelPicked = false; // fuel follows the new vehicle's default
-                      }),
-                    ),
+                    if (widget.trip != null) ...[
+                      _label(t.forTrip),
+                      Text(
+                        '${widget.trip!.from.nameFor(lang)} → ${widget.trip!.to.nameFor(lang)} · ${widget.trip!.vehicle.name}',
+                        style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                      ),
+                    ] else ...[
+                      _label(t.vehicle),
+                      VehicleChips(
+                        selectedId: vehicleId,
+                        onChanged: (v) => setState(() {
+                          _vehicleId = v.id;
+                          _fuelPicked = false; // fuel follows the new vehicle's default
+                        }),
+                      ),
+                    ],
                     if (_isFuelSheet) ...[
                       _label(t.whichFuel),
                       Wrap(

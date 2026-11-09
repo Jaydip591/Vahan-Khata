@@ -342,7 +342,9 @@ class FakeApi implements HttpClientAdapter {
     if (o.method == 'GET') {
       final month = o.queryParameters['month'] as String?;
       final vehicle = o.queryParameters['vehicle_id'] as String?;
+      final trip = o.queryParameters['trip_id'] as String?;
       final rows = list
+          .where((e) => trip == null || e['trip_id'] == trip)
           .where((e) => month == null || (e['expense_date'] as String).startsWith(month))
           .where((e) => vehicle == null || e['vehicle_id'] == vehicle)
           .toList()

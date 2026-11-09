@@ -162,7 +162,7 @@
   "catDiesel": "Diesel",
   "catToll": "Toll",
   "catRepair": "Repair",
-  "catAllowance": "Allowance",
+  "catAllowance": "Food / allowance",
   "catChallan": "Challan",
   "catOther": "Other",
   "liters": "Liters",
@@ -280,5 +280,10 @@
   "colParty": "Party",
   "pageOf": "Page {n} of {total}",
   "generatedOn": "Made on {date}",
-  "sheetSummary": "Summary"
+  "sheetSummary": "Summary",
+  "tripExpenses": "Trip expenses",
+  "tripNet": "Trip profit",
+  "noTripExpenses": "No expense on this trip yet",
+  "forTrip": "Trip",
+  "addTripExpense": "Add expense for this trip"
 }

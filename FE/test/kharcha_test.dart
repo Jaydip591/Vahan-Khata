@@ -53,7 +53,7 @@ void main() {
 
   testWidgets('the tab shows the six categories and an invitation when empty', (t) async {
     await boot(t);
-    for (final c in ['ઇંધણ', 'ટોલ', 'રિપેર', 'ભથ્થું', 'ચલણ', 'બીજું']) {
+    for (final c in ['ઇંધણ', 'ટોલ', 'રિપેર', 'ખાવા-પીવા / ભથ્થું', 'ચલણ', 'બીજું']) {
       expect(find.text(c), findsOneWidget);
     }
     expect(find.text('આ મહિને કોઈ ખર્ચ નથી'), findsOneWidget);
@@ -72,6 +72,7 @@ void main() {
       'category': 'toll',
       'amount': '340',
       'expense_date': today,
+      'trip_id': null,
       'account_id': null,
       'liters': null,
       'rate': null,
@@ -135,7 +136,7 @@ void main() {
 
   testWidgets('non-diesel categories do not show liters or odometer', (t) async {
     await boot(t);
-    await openCategory(t, 'ભથ્થું');
+    await openCategory(t, 'ખાવા-પીવા / ભથ્થું');
     expect(find.text('લિટર'), findsNothing);
     expect(find.text('ઓડોમીટર (કિમી)'), findsNothing);
     expect(find.text('શું રિપેર કર્યું?'), findsNothing);

@@ -1030,7 +1030,7 @@ abstract class AppL10n {
   /// No description provided for @catAllowance.
   ///
   /// In gu, this message translates to:
-  /// **'ભથ્થું'**
+  /// **'ખાવા-પીવા / ભથ્થું'**
   String get catAllowance;
 
   /// No description provided for @catChallan.
@@ -1698,6 +1698,36 @@ abstract class AppL10n {
   /// In gu, this message translates to:
   /// **'સારાંશ'**
   String get sheetSummary;
+
+  /// No description provided for @tripExpenses.
+  ///
+  /// In gu, this message translates to:
+  /// **'ટ્રીપનો ખર્ચ'**
+  String get tripExpenses;
+
+  /// No description provided for @tripNet.
+  ///
+  /// In gu, this message translates to:
+  /// **'આ ટ્રીપનો નફો'**
+  String get tripNet;
+
+  /// No description provided for @noTripExpenses.
+  ///
+  /// In gu, this message translates to:
+  /// **'આ ટ્રીપમાં હજી ખર્ચ નથી'**
+  String get noTripExpenses;
+
+  /// No description provided for @forTrip.
+  ///
+  /// In gu, this message translates to:
+  /// **'ટ્રીપ'**
+  String get forTrip;
+
+  /// No description provided for @addTripExpense.
+  ///
+  /// In gu, this message translates to:
+  /// **'આ ટ્રીપનો ખર્ચ ઉમેરો'**
+  String get addTripExpense;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

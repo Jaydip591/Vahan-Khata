@@ -480,7 +480,7 @@ class AppL10nGu extends AppL10n {
   String get catRepair => 'રિપેર';
 
   @override
-  String get catAllowance => 'ભથ્થું';
+  String get catAllowance => 'ખાવા-પીવા / ભથ્થું';
 
   @override
   String get catChallan => 'ચલણ';
@@ -846,4 +846,19 @@ class AppL10nGu extends AppL10n {
 
   @override
   String get sheetSummary => 'સારાંશ';
+
+  @override
+  String get tripExpenses => 'ટ્રીપનો ખર્ચ';
+
+  @override
+  String get tripNet => 'આ ટ્રીપનો નફો';
+
+  @override
+  String get noTripExpenses => 'આ ટ્રીપમાં હજી ખર્ચ નથી';
+
+  @override
+  String get forTrip => 'ટ્રીપ';
+
+  @override
+  String get addTripExpense => 'આ ટ્રીપનો ખર્ચ ઉમેરો';
 }

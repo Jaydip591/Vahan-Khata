@@ -130,7 +130,7 @@ class KharchaScreen extends ConsumerWidget {
                           MasterTile(
                             icon: e.category.icon,
                             title: e.category.label(t),
-                            subtitle: '${e.vehicle.name} · ${formatDay(e.date)}',
+                            subtitle: '${e.vehicle.name} · ${formatDay(e.date)}${e.tripId != null ? ' · ${t.forTrip}' : ''}',
                             trailing: Padding(
                               padding: const EdgeInsets.only(right: 4),
                               child: Text(formatRupees(e.amount),

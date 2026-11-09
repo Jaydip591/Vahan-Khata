@@ -77,6 +77,7 @@ class Expense {
     required this.category,
     required this.amount,
     required this.date,
+    this.tripId,
     this.accountId,
     this.liters,
     this.rate,
@@ -89,6 +90,7 @@ class Expense {
   final ExpenseCategory category;
   final double amount;
   final DateTime date;
+  final String? tripId; // set when the expense belongs to a trip
   final String? accountId;
   final double? liters;
   final double? rate;
@@ -101,6 +103,7 @@ class Expense {
         category: ExpenseCategory.fromKey(j['category'] as String),
         amount: parseMoney(j['amount']),
         date: DateTime.parse(j['expense_date'] as String),
+        tripId: j['trip_id'] as String?,
         accountId: (j['account'] as Map<String, dynamic>?)?['id'] as String?,
         liters: j['liters'] == null ? null : parseMoney(j['liters']),
         rate: j['rate'] == null ? null : parseMoney(j['rate']),
@@ -115,6 +118,7 @@ class ExpenseInput {
     required this.category,
     required this.amount,
     required this.date,
+    this.tripId,
     this.accountId,
     this.liters,
     this.rate,
@@ -126,6 +130,7 @@ class ExpenseInput {
   final ExpenseCategory category;
   final String amount; // exact text from the keypad, e.g. "5520" or "5520.50"
   final DateTime date;
+  final String? tripId;
   final String? accountId;
   final String? liters;
   final String? rate;
@@ -137,6 +142,7 @@ class ExpenseInput {
         'category': category.key,
         'amount': amount,
         'expense_date': dateKey(date),
+        'trip_id': tripId,
         'account_id': accountId,
         'liters': liters,
         'rate': rate,

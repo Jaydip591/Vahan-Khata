@@ -483,7 +483,7 @@ class AppL10nEn extends AppL10n {
   String get catRepair => 'Repair';
 
   @override
-  String get catAllowance => 'Allowance';
+  String get catAllowance => 'Food / allowance';
 
   @override
   String get catChallan => 'Challan';
@@ -849,4 +849,19 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get sheetSummary => 'Summary';
+
+  @override
+  String get tripExpenses => 'Trip expenses';
+
+  @override
+  String get tripNet => 'Trip profit';
+
+  @override
+  String get noTripExpenses => 'No expense on this trip yet';
+
+  @override
+  String get forTrip => 'Trip';
+
+  @override
+  String get addTripExpense => 'Add expense for this trip';
 }

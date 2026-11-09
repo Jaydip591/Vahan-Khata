@@ -169,7 +169,7 @@
   "catDiesel": "ડીઝલ",
   "catToll": "ટોલ",
   "catRepair": "રિપેર",
-  "catAllowance": "ભથ્થું",
+  "catAllowance": "ખાવા-પીવા / ભથ્થું",
   "catChallan": "ચલણ",
   "catOther": "બીજું",
   "liters": "લિટર",
@@ -287,5 +287,10 @@
   "colParty": "પાર્ટી",
   "pageOf": "પાનું {n} / {total}",
   "generatedOn": "બનાવ્યું {date}",
-  "sheetSummary": "સારાંશ"
+  "sheetSummary": "સારાંશ",
+  "tripExpenses": "ટ્રીપનો ખર્ચ",
+  "tripNet": "આ ટ્રીપનો નફો",
+  "noTripExpenses": "આ ટ્રીપમાં હજી ખર્ચ નથી",
+  "forTrip": "ટ્રીપ",
+  "addTripExpense": "આ ટ્રીપનો ખર્ચ ઉમેરો"
 }
