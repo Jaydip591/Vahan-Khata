@@ -14,6 +14,7 @@ from apps.company.services.bootstrap import bootstrap_admin
 from apps.driver.controllers.driver_controller import router as driver_router
 from apps.expense.controllers.expense_controller import router as expense_router
 from apps.ledger.controllers.ledger_controller import router as ledger_router
+from apps.report.controllers.report_controller import router as report_router
 from apps.payment.controllers.payment_controller import router as payment_router
 from apps.party.controllers.party_controller import router as party_router
 from apps.place.controllers.place_controller import router as place_router
@@ -64,6 +65,7 @@ for _router in (
     payment_router,
     expense_router,
     ledger_router,
+    report_router,
 ):
     app.include_router(_router, prefix="/api/v1")
 
