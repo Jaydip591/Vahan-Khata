@@ -776,4 +776,74 @@ class AppL10nGu extends AppL10n {
   String rateKg(Object rate) {
     return '$rate/કિગ્રા';
   }
+
+  @override
+  String get exportTitle => 'શેર / એક્સપોર્ટ';
+
+  @override
+  String get exportPdf => 'PDF';
+
+  @override
+  String get exportPdfHelp => 'વોટ્સએપ માટે સૌથી સારું';
+
+  @override
+  String get exportExcel => 'Excel';
+
+  @override
+  String get exportExcelHelp => 'Excel કે Google Sheets માં ખોલવા માટે';
+
+  @override
+  String get exporting => 'ફાઇલ તૈયાર થાય છે…';
+
+  @override
+  String get exportFailed => 'ફાઇલ બની શકી નહીં. ફરી પ્રયત્ન કરો.';
+
+  @override
+  String get docParty => 'પાર્ટી સ્ટેટમેન્ટ';
+
+  @override
+  String get docMonth => 'માસિક રિપોર્ટ';
+
+  @override
+  String get colDate => 'તારીખ';
+
+  @override
+  String get colRoute => 'રૂટ';
+
+  @override
+  String get colDue => 'બાકી';
+
+  @override
+  String get colMode => 'રીત';
+
+  @override
+  String get colAccount => 'ખાતું';
+
+  @override
+  String get colCategory => 'પ્રકાર';
+
+  @override
+  String get colAmount => 'રકમ';
+
+  @override
+  String get colQty => 'જથ્થો';
+
+  @override
+  String get colOdometer => 'ઓડોમીટર';
+
+  @override
+  String get colParty => 'પાર્ટી';
+
+  @override
+  String pageOf(Object n, Object total) {
+    return 'પાનું $n / $total';
+  }
+
+  @override
+  String generatedOn(Object date) {
+    return 'બનાવ્યું $date';
+  }
+
+  @override
+  String get sheetSummary => 'સારાંશ';
 }

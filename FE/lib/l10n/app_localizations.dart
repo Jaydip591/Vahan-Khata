@@ -1566,6 +1566,138 @@ abstract class AppL10n {
   /// In gu, this message translates to:
   /// **'{rate}/કિગ્રા'**
   String rateKg(Object rate);
+
+  /// No description provided for @exportTitle.
+  ///
+  /// In gu, this message translates to:
+  /// **'શેર / એક્સપોર્ટ'**
+  String get exportTitle;
+
+  /// No description provided for @exportPdf.
+  ///
+  /// In gu, this message translates to:
+  /// **'PDF'**
+  String get exportPdf;
+
+  /// No description provided for @exportPdfHelp.
+  ///
+  /// In gu, this message translates to:
+  /// **'વોટ્સએપ માટે સૌથી સારું'**
+  String get exportPdfHelp;
+
+  /// No description provided for @exportExcel.
+  ///
+  /// In gu, this message translates to:
+  /// **'Excel'**
+  String get exportExcel;
+
+  /// No description provided for @exportExcelHelp.
+  ///
+  /// In gu, this message translates to:
+  /// **'Excel કે Google Sheets માં ખોલવા માટે'**
+  String get exportExcelHelp;
+
+  /// No description provided for @exporting.
+  ///
+  /// In gu, this message translates to:
+  /// **'ફાઇલ તૈયાર થાય છે…'**
+  String get exporting;
+
+  /// No description provided for @exportFailed.
+  ///
+  /// In gu, this message translates to:
+  /// **'ફાઇલ બની શકી નહીં. ફરી પ્રયત્ન કરો.'**
+  String get exportFailed;
+
+  /// No description provided for @docParty.
+  ///
+  /// In gu, this message translates to:
+  /// **'પાર્ટી સ્ટેટમેન્ટ'**
+  String get docParty;
+
+  /// No description provided for @docMonth.
+  ///
+  /// In gu, this message translates to:
+  /// **'માસિક રિપોર્ટ'**
+  String get docMonth;
+
+  /// No description provided for @colDate.
+  ///
+  /// In gu, this message translates to:
+  /// **'તારીખ'**
+  String get colDate;
+
+  /// No description provided for @colRoute.
+  ///
+  /// In gu, this message translates to:
+  /// **'રૂટ'**
+  String get colRoute;
+
+  /// No description provided for @colDue.
+  ///
+  /// In gu, this message translates to:
+  /// **'બાકી'**
+  String get colDue;
+
+  /// No description provided for @colMode.
+  ///
+  /// In gu, this message translates to:
+  /// **'રીત'**
+  String get colMode;
+
+  /// No description provided for @colAccount.
+  ///
+  /// In gu, this message translates to:
+  /// **'ખાતું'**
+  String get colAccount;
+
+  /// No description provided for @colCategory.
+  ///
+  /// In gu, this message translates to:
+  /// **'પ્રકાર'**
+  String get colCategory;
+
+  /// No description provided for @colAmount.
+  ///
+  /// In gu, this message translates to:
+  /// **'રકમ'**
+  String get colAmount;
+
+  /// No description provided for @colQty.
+  ///
+  /// In gu, this message translates to:
+  /// **'જથ્થો'**
+  String get colQty;
+
+  /// No description provided for @colOdometer.
+  ///
+  /// In gu, this message translates to:
+  /// **'ઓડોમીટર'**
+  String get colOdometer;
+
+  /// No description provided for @colParty.
+  ///
+  /// In gu, this message translates to:
+  /// **'પાર્ટી'**
+  String get colParty;
+
+  /// No description provided for @pageOf.
+  ///
+  /// In gu, this message translates to:
+  /// **'પાનું {n} / {total}'**
+  String pageOf(Object n, Object total);
+
+  /// No description provided for @generatedOn.
+  ///
+  /// In gu, this message translates to:
+  /// **'બનાવ્યું {date}'**
+  String generatedOn(Object date);
+
+  /// No description provided for @sheetSummary.
+  ///
+  /// In gu, this message translates to:
+  /// **'સારાંશ'**
+  String get sheetSummary;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

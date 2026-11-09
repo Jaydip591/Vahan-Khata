@@ -779,4 +779,74 @@ class AppL10nEn extends AppL10n {
   String rateKg(Object rate) {
     return '$rate/kg';
   }
+
+  @override
+  String get exportTitle => 'Share / Export';
+
+  @override
+  String get exportPdf => 'PDF';
+
+  @override
+  String get exportPdfHelp => 'Best for WhatsApp';
+
+  @override
+  String get exportExcel => 'Excel';
+
+  @override
+  String get exportExcelHelp => 'Open in Excel or Google Sheets';
+
+  @override
+  String get exporting => 'Preparing the file…';
+
+  @override
+  String get exportFailed => 'Could not create the file. Try again.';
+
+  @override
+  String get docParty => 'Party statement';
+
+  @override
+  String get docMonth => 'Monthly report';
+
+  @override
+  String get colDate => 'Date';
+
+  @override
+  String get colRoute => 'Route';
+
+  @override
+  String get colDue => 'Due';
+
+  @override
+  String get colMode => 'Mode';
+
+  @override
+  String get colAccount => 'Account';
+
+  @override
+  String get colCategory => 'Category';
+
+  @override
+  String get colAmount => 'Amount';
+
+  @override
+  String get colQty => 'Qty';
+
+  @override
+  String get colOdometer => 'Odometer';
+
+  @override
+  String get colParty => 'Party';
+
+  @override
+  String pageOf(Object n, Object total) {
+    return 'Page $n of $total';
+  }
+
+  @override
+  String generatedOn(Object date) {
+    return 'Made on $date';
+  }
+
+  @override
+  String get sheetSummary => 'Summary';
 }

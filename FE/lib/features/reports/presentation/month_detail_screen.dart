@@ -8,10 +8,16 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/ui/app_chip.dart';
 import '../../../core/ui/ink_header.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../core/month_names.dart';
+import '../../expenses/data/expense.dart';
 import '../../expenses/data/expense_repository.dart';
+import '../../export/export_sheet.dart';
+import '../../export/statement_doc.dart';
 import '../../expenses/presentation/expense_sheet.dart';
 import '../../trips/data/trip_repository.dart';
 import '../../trips/presentation/trips_screen.dart';
+import '../../trips/data/trip.dart';
+import '../data/report.dart';
 import '../data/report_repository.dart';
 import 'expense_row.dart';
 import 'month_switcher.dart';
@@ -45,6 +51,34 @@ class _MonthDetailScreenState extends ConsumerState<MonthDetailScreen> {
               color: Colors.white,
               icon: const Icon(Icons.arrow_back_rounded),
               onPressed: () => Navigator.of(context).maybePop(),
+            ),
+            trailing: IconButton(
+              tooltip: t.exportTitle,
+              color: AppColors.gold,
+              iconSize: 26,
+              icon: const Icon(Icons.ios_share_rounded),
+              onPressed: () => showExportSheet(context, () async {
+                final selected = ref.read(selectedMonthProvider);
+                final key = monthKey(selected);
+                final results = await Future.wait<Object>([
+                  ref.read(summaryProvider(key).future),
+                  ref.read(vehicleReportProvider(key).future),
+                  ref.read(tripsProvider(key).future),
+                  ref.read(
+                    monthExpensesProvider((month: key, vehicleId: null)).future,
+                  ),
+                ]);
+                return monthDoc(
+                  t,
+                  lang,
+                  monthLabelText: monthLabel(lang, selected),
+                  monthKeyText: key,
+                  summary: results[0] as MonthSummary,
+                  vehicles: results[1] as List<VehicleReport>,
+                  trips: results[2] as List<Trip>,
+                  expenses: results[3] as List<Expense>,
+                );
+              }),
             ),
           ),
           Container(

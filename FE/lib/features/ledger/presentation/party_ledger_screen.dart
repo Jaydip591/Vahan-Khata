@@ -14,6 +14,8 @@ import '../../../core/ui/status_tag.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../trips/data/trip.dart';
 import '../../trips/data/trip_repository.dart';
+import '../../export/export_sheet.dart';
+import '../../export/statement_doc.dart';
 import '../data/ledger.dart';
 import '../data/ledger_repository.dart';
 import 'payment_sheet.dart';
@@ -78,6 +80,23 @@ class PartyLedgerScreen extends ConsumerWidget {
               icon: const Icon(Icons.arrow_back_rounded),
               onPressed: () => context.pop(),
             ),
+            trailing: ledger.asData?.value == null
+                ? null
+                : IconButton(
+                    tooltip: t.exportTitle,
+                    color: AppColors.gold,
+                    iconSize: 26,
+                    icon: const Icon(Icons.ios_share_rounded),
+                    onPressed: () {
+                      final lang = Localizations.localeOf(context).languageCode;
+                      final data = ledger.asData!.value;
+                      showExportSheet(
+                        context,
+                        () async =>
+                            partyStatementDoc(t, lang, data, DateTime.now()),
+                      );
+                    },
+                  ),
           ),
           Expanded(
             child: ledger.when(

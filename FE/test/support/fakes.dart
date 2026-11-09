@@ -1,7 +1,9 @@
+
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vahan_khata/app.dart';
@@ -12,6 +14,7 @@ import 'package:vahan_khata/core/providers.dart';
 import 'package:vahan_khata/core/storage/token_storage.dart';
 import 'package:vahan_khata/features/auth/data/app_user.dart';
 import 'package:vahan_khata/features/auth/data/auth_repository.dart';
+import 'package:vahan_khata/features/export/export_service.dart';
 
 import 'fake_api.dart';
 
@@ -60,6 +63,7 @@ Future<Widget> appWith(
   FakeAuthRepository repo, {
   Map<String, Object> prefs = const {},
   FakeApi? api,
+  List<Override> overrides = const [],
 }) async {
   SharedPreferences.setMockInitialValues(prefs);
   FlutterSecureStorage.setMockInitialValues({});
@@ -68,6 +72,7 @@ Future<Widget> appWith(
   return ProviderScope(
     retry: noAutoRetry,
     overrides: [
+      ...overrides,
       sharedPreferencesProvider.overrideWithValue(sp),
       authRepositoryProvider.overrideWithValue(repo),
       apiClientProvider.overrideWithValue(ApiClient(
@@ -88,4 +93,19 @@ Future<void> tapIt(WidgetTester t, Finder f, {bool settle = true}) async {
   await t.pump();
   await t.tap(f);
   if (settle) await t.pumpAndSettle();
+}
+
+/// Records what would be handed to the share sheet.
+class FakeExportService implements ExportService {
+  final shared = <({String fileName, String mimeType, Uint8List bytes, String text})>[];
+
+  @override
+  Future<void> shareBytes({
+    required Uint8List bytes,
+    required String fileName,
+    required String mimeType,
+    required String text,
+  }) async {
+    shared.add((fileName: fileName, mimeType: mimeType, bytes: bytes, text: text));
+  }
 }
