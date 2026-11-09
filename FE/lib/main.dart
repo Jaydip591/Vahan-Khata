@@ -6,14 +6,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'app.dart';
 import 'core/provider_retry.dart';
 import 'core/providers.dart';
+import 'core/theme/app_theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  SystemChrome.setSystemUIOverlayStyle(kInkStatusBar);
   final prefs = await SharedPreferences.getInstance();
-  runApp(ProviderScope(
-    retry: noAutoRetry,
-    overrides: [sharedPreferencesProvider.overrideWithValue(prefs)],
-    child: const VahanKhataApp(),
-  ));
+  runApp(
+    ProviderScope(
+      retry: noAutoRetry,
+      overrides: [sharedPreferencesProvider.overrideWithValue(prefs)],
+      child: const VahanKhataApp(),
+    ),
+  );
 }

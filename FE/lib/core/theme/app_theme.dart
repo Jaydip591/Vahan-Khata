@@ -1,6 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'app_colors.dart';
+
+/// Every screen starts with a dark ink header, so the phone's status bar (time, signal,
+/// battery) must use light icons on a see-through bar.
+const kInkStatusBar = SystemUiOverlayStyle(
+  statusBarColor: Colors.transparent,
+  statusBarIconBrightness: Brightness.light, // Android
+  statusBarBrightness: Brightness.dark, // iOS
+  systemNavigationBarColor: Colors.white,
+  systemNavigationBarIconBrightness: Brightness.dark,
+);
 
 abstract final class AppSizes {
   static const buttonHeight = 56.0;
@@ -35,7 +46,10 @@ abstract final class AppTheme {
       colorScheme: scheme,
       scaffoldBackgroundColor: AppColors.ivory,
       textTheme: const TextTheme(
-        titleLarge: TextStyle(fontSize: AppSizes.fontTitle, fontWeight: FontWeight.w500),
+        titleLarge: TextStyle(
+          fontSize: AppSizes.fontTitle,
+          fontWeight: FontWeight.w500,
+        ),
         titleMedium: TextStyle(fontSize: 19, fontWeight: FontWeight.w500),
         bodyLarge: TextStyle(fontSize: AppSizes.fontBody),
         bodyMedium: TextStyle(fontSize: 16),
