@@ -79,6 +79,7 @@ class MoreScreen extends ConsumerWidget {
                   (Icons.badge_rounded, t.drivers, '/drivers'),
                   (Icons.groups_rounded, t.parties, '/parties'),
                   (Icons.account_balance_wallet_rounded, t.accounts, '/accounts'),
+                  (Icons.qr_code_2_rounded, t.payees, '/payees'),
                   (Icons.people_alt_rounded, t.users, '/users'),
                 ]) ...[
                   MasterTile(

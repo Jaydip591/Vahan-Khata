@@ -38,3 +38,6 @@ class Expense(Base, TimestampMixin, SoftDeleteMixin, CompanyOwnedMixin):
     odometer: Mapped[int | None] = mapped_column(Integer, nullable=True)
     repair_kind: Mapped[str | None] = mapped_column(String(12), nullable=True)
     note: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    # Paid by UPI from the app: who was paid and the bank reference (UTR) the UPI app returned.
+    payee_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), ForeignKey("payees.id"), nullable=True)
+    upi_ref: Mapped[str | None] = mapped_column(String(40), nullable=True)

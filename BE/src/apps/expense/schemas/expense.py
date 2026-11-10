@@ -5,7 +5,7 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
-from core.briefs import AccountBrief, VehicleBrief
+from core.briefs import AccountBrief, PayeeBrief, VehicleBrief
 from core.schema_types import Money
 
 ExpenseCategory = Literal["diesel", "petrol", "cng", "toll", "repair", "allowance", "challan", "other"]
@@ -28,6 +28,8 @@ class ExpenseCreateRequest(BaseModel):
     odometer: int | None = Field(default=None, ge=0, le=9_999_999)
     repair_kind: RepairKind | None = None
     note: str | None = Field(default=None, max_length=500)
+    payee_id: uuid.UUID | None = None
+    upi_ref: str | None = Field(default=None, max_length=40)
 
 
 class ExpenseUpdateRequest(BaseModel):
@@ -57,4 +59,6 @@ class ExpenseResponse(BaseModel):
     odometer: int | None
     repair_kind: str | None
     note: str | None
+    payee: PayeeBrief | None = None
+    upi_ref: str | None = None
     created_at: datetime

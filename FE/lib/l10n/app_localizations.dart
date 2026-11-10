@@ -2100,6 +2100,150 @@ abstract class AppL10n {
   /// In gu, this message translates to:
   /// **'આખા વર્ષની PDF / Excel'**
   String get shareYear;
+
+  /// No description provided for @payByUpi.
+  ///
+  /// In gu, this message translates to:
+  /// **'UPI થી ચૂકવો'**
+  String get payByUpi;
+
+  /// No description provided for @payWhom.
+  ///
+  /// In gu, this message translates to:
+  /// **'કોને ચૂકવવા?'**
+  String get payWhom;
+
+  /// No description provided for @scanQr.
+  ///
+  /// In gu, this message translates to:
+  /// **'QR સ્કેન કરો'**
+  String get scanQr;
+
+  /// No description provided for @typeUpiId.
+  ///
+  /// In gu, this message translates to:
+  /// **'UPI ID લખો'**
+  String get typeUpiId;
+
+  /// No description provided for @scanHint.
+  ///
+  /// In gu, this message translates to:
+  /// **'પંપ કે દુકાનનો UPI QR ચોરસમાં રાખો'**
+  String get scanHint;
+
+  /// No description provided for @notUpiQr.
+  ///
+  /// In gu, this message translates to:
+  /// **'આ UPI QR નથી'**
+  String get notUpiQr;
+
+  /// No description provided for @payeeName.
+  ///
+  /// In gu, this message translates to:
+  /// **'નામ (દા.ત. પંપ - કામરેજ)'**
+  String get payeeName;
+
+  /// No description provided for @upiIdLabel.
+  ///
+  /// In gu, this message translates to:
+  /// **'UPI ID'**
+  String get upiIdLabel;
+
+  /// No description provided for @upiIdHint.
+  ///
+  /// In gu, this message translates to:
+  /// **'દા.ત. kamrejpump@okaxis'**
+  String get upiIdHint;
+
+  /// No description provided for @upiIdInvalid.
+  ///
+  /// In gu, this message translates to:
+  /// **'UPI ID આવું હોય: નામ@બેંક'**
+  String get upiIdInvalid;
+
+  /// No description provided for @savePayee.
+  ///
+  /// In gu, this message translates to:
+  /// **'સાચવીને આગળ'**
+  String get savePayee;
+
+  /// No description provided for @payees.
+  ///
+  /// In gu, this message translates to:
+  /// **'UPI થી ચૂકવવાના'**
+  String get payees;
+
+  /// No description provided for @emptyPayees.
+  ///
+  /// In gu, this message translates to:
+  /// **'હજી કોઈ UPI ID સાચવી નથી'**
+  String get emptyPayees;
+
+  /// No description provided for @addPayee.
+  ///
+  /// In gu, this message translates to:
+  /// **'UPI ID ઉમેરો'**
+  String get addPayee;
+
+  /// No description provided for @editPayee.
+  ///
+  /// In gu, this message translates to:
+  /// **'UPI ID બદલો'**
+  String get editPayee;
+
+  /// No description provided for @upiOpening.
+  ///
+  /// In gu, this message translates to:
+  /// **'Google Pay ખુલે છે…'**
+  String get upiOpening;
+
+  /// No description provided for @upiFailed.
+  ///
+  /// In gu, this message translates to:
+  /// **'પેમેન્ટ થયું નથી. ખર્ચ સાચવ્યો નથી.'**
+  String get upiFailed;
+
+  /// No description provided for @upiNoApp.
+  ///
+  /// In gu, this message translates to:
+  /// **'આ ફોનમાં કોઈ UPI એપ નથી'**
+  String get upiNoApp;
+
+  /// No description provided for @upiAskTitle.
+  ///
+  /// In gu, this message translates to:
+  /// **'પેમેન્ટ થયું?'**
+  String get upiAskTitle;
+
+  /// No description provided for @upiAskBody.
+  ///
+  /// In gu, this message translates to:
+  /// **'UPI એપે સાફ જવાબ આપ્યો નથી. પૈસા કપાયા હોય તો જ \"હા\" દબાવો.'**
+  String get upiAskBody;
+
+  /// No description provided for @yes.
+  ///
+  /// In gu, this message translates to:
+  /// **'હા'**
+  String get yes;
+
+  /// No description provided for @no.
+  ///
+  /// In gu, this message translates to:
+  /// **'ના'**
+  String get no;
+
+  /// No description provided for @upiPaidTo.
+  ///
+  /// In gu, this message translates to:
+  /// **'UPI · {name}'**
+  String upiPaidTo(Object name);
+
+  /// No description provided for @upiNeedsInternet.
+  ///
+  /// In gu, this message translates to:
+  /// **'UPI માટે ઇન્ટરનેટ જોઈએ'**
+  String get upiNeedsInternet;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

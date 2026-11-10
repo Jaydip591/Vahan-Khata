@@ -25,6 +25,7 @@ class ExpenseRow extends StatelessWidget {
       if (e.rate != null)
         e.category == ExpenseCategory.cng ? t.rateKg(formatRupees(e.rate!)) : t.rateValue(formatRupees(e.rate!)),
       if (e.odometer != null) t.kmValue(e.odometer!),
+      if (e.payeeName != null) t.upiPaidTo(e.payeeName!),
     ];
     return Material(
       color: AppColors.card,

@@ -100,6 +100,9 @@ void main() {
       await boot(t, FakeAuthRepository(session: true));
       await t.tap(find.byIcon(Icons.menu_rounded));
       await t.pumpAndSettle();
+      await t.scrollUntilVisible(find.text('English'), 200, scrollable: find.byType(Scrollable).first);
+      await t.drag(find.byType(Scrollable).first, const Offset(0, -200));
+      await t.pumpAndSettle();
       await t.tap(find.text('English'));
       await t.pumpAndSettle();
       expect(find.text('Language'), findsOneWidget);

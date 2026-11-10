@@ -83,6 +83,8 @@ class Expense {
     this.rate,
     this.odometer,
     this.repairKind,
+    this.payeeName,
+    this.upiRef,
   });
 
   final String id;
@@ -97,6 +99,10 @@ class Expense {
   final int? odometer;
   final RepairKind? repairKind;
 
+  /// Set when it was paid by UPI from the app.
+  final String? payeeName;
+  final String? upiRef;
+
   factory Expense.fromJson(Map<String, dynamic> j) => Expense(
         id: j['id'] as String,
         vehicle: NamedRef.fromJson(j['vehicle'] as Map<String, dynamic>),
@@ -109,6 +115,8 @@ class Expense {
         rate: j['rate'] == null ? null : parseMoney(j['rate']),
         odometer: j['odometer'] as int?,
         repairKind: RepairKind.fromKey(j['repair_kind'] as String?),
+        payeeName: (j['payee'] as Map<String, dynamic>?)?['name'] as String?,
+        upiRef: j['upi_ref'] as String?,
       );
 }
 
@@ -124,6 +132,8 @@ class ExpenseInput {
     this.rate,
     this.odometer,
     this.repairKind,
+    this.payeeId,
+    this.upiRef,
   });
 
   final String vehicleId;
@@ -136,6 +146,8 @@ class ExpenseInput {
   final String? rate;
   final int? odometer;
   final RepairKind? repairKind;
+  final String? payeeId;
+  final String? upiRef;
 
   Map<String, dynamic> toJson() => {
         'vehicle_id': vehicleId,
@@ -148,5 +160,7 @@ class ExpenseInput {
         'rate': rate,
         'odometer': odometer,
         'repair_kind': repairKind?.key,
+        'payee_id': ?payeeId,
+        'upi_ref': ?upiRef,
       };
 }

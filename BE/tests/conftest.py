@@ -27,6 +27,7 @@ import apps.vehicle.models  # noqa: E402,F401
 import apps.driver.models  # noqa: E402,F401
 import apps.party.models  # noqa: E402,F401
 import apps.account.models  # noqa: E402,F401
+import apps.payee.models  # noqa: E402,F401
 import apps.place.models  # noqa: E402,F401
 import apps.trip.models  # noqa: E402,F401
 import apps.payment.models  # noqa: E402,F401

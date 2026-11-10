@@ -28,6 +28,7 @@ import apps.vehicle.models  # noqa: F401
 import apps.driver.models  # noqa: F401
 import apps.party.models  # noqa: F401
 import apps.account.models  # noqa: F401
+import apps.payee.models  # noqa: F401
 import apps.place.models  # noqa: F401
 import apps.trip.models  # noqa: F401
 import apps.payment.models  # noqa: F401

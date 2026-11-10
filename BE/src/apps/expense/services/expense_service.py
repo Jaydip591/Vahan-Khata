@@ -7,6 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from apps.account.models.account import Account
 from apps.expense.models.expense import Expense
+from apps.payee.models.payee import Payee
 from apps.expense.schemas.expense import (
     FUEL_CATEGORIES,
     ExpenseCreateRequest,
@@ -16,7 +17,7 @@ from apps.expense.schemas.expense import (
 from apps.trip.models.trip import Trip
 from apps.user.models.user import User
 from apps.vehicle.models.vehicle import Vehicle
-from core.briefs import AccountBrief, VehicleBrief
+from core.briefs import AccountBrief, PayeeBrief, VehicleBrief
 from core.crud import fetch_map, find_by_client_id, get_scoped
 from core.dates import month_range
 
@@ -36,6 +37,7 @@ class ExpenseService:
     async def to_responses(db: AsyncSession, expenses: list[Expense]) -> list[ExpenseResponse]:
         vehicles = await fetch_map(db, Vehicle, [e.vehicle_id for e in expenses])
         accounts = await fetch_map(db, Account, [e.account_id for e in expenses])
+        payees = await fetch_map(db, Payee, [e.payee_id for e in expenses])
         return [
             ExpenseResponse(
                 id=e.id,
@@ -50,13 +52,17 @@ class ExpenseService:
                 odometer=e.odometer,
                 repair_kind=e.repair_kind,
                 note=e.note,
+                payee=PayeeBrief.model_validate(payees[e.payee_id]) if e.payee_id else None,
+                upi_ref=e.upi_ref,
                 created_at=e.created_at,
             )
             for e in expenses
         ]
 
     @staticmethod
-    async def _check_refs(db, company_id, *, vehicle_id=None, trip_id=None, account_id=None) -> None:
+    async def _check_refs(db, company_id, *, vehicle_id=None, trip_id=None, account_id=None, payee_id=None) -> None:
+        if payee_id:
+            await get_scoped(db, Payee, company_id, payee_id, "Payee")
         if vehicle_id:
             await get_scoped(db, Vehicle, company_id, vehicle_id, "Vehicle")
         if trip_id:
@@ -77,6 +83,7 @@ class ExpenseService:
             vehicle_id=payload.vehicle_id,
             trip_id=payload.trip_id,
             account_id=payload.account_id,
+            payee_id=payload.payee_id,
         )
         data = _drop_irrelevant(payload.model_dump(exclude={"id"} if payload.id is None else set()))
         expense = Expense(company_id=actor.company_id, created_by=actor.id, **data)

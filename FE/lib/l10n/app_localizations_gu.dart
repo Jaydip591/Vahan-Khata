@@ -1054,4 +1054,79 @@ class AppL10nGu extends AppL10n {
 
   @override
   String get shareYear => 'આખા વર્ષની PDF / Excel';
+
+  @override
+  String get payByUpi => 'UPI થી ચૂકવો';
+
+  @override
+  String get payWhom => 'કોને ચૂકવવા?';
+
+  @override
+  String get scanQr => 'QR સ્કેન કરો';
+
+  @override
+  String get typeUpiId => 'UPI ID લખો';
+
+  @override
+  String get scanHint => 'પંપ કે દુકાનનો UPI QR ચોરસમાં રાખો';
+
+  @override
+  String get notUpiQr => 'આ UPI QR નથી';
+
+  @override
+  String get payeeName => 'નામ (દા.ત. પંપ - કામરેજ)';
+
+  @override
+  String get upiIdLabel => 'UPI ID';
+
+  @override
+  String get upiIdHint => 'દા.ત. kamrejpump@okaxis';
+
+  @override
+  String get upiIdInvalid => 'UPI ID આવું હોય: નામ@બેંક';
+
+  @override
+  String get savePayee => 'સાચવીને આગળ';
+
+  @override
+  String get payees => 'UPI થી ચૂકવવાના';
+
+  @override
+  String get emptyPayees => 'હજી કોઈ UPI ID સાચવી નથી';
+
+  @override
+  String get addPayee => 'UPI ID ઉમેરો';
+
+  @override
+  String get editPayee => 'UPI ID બદલો';
+
+  @override
+  String get upiOpening => 'Google Pay ખુલે છે…';
+
+  @override
+  String get upiFailed => 'પેમેન્ટ થયું નથી. ખર્ચ સાચવ્યો નથી.';
+
+  @override
+  String get upiNoApp => 'આ ફોનમાં કોઈ UPI એપ નથી';
+
+  @override
+  String get upiAskTitle => 'પેમેન્ટ થયું?';
+
+  @override
+  String get upiAskBody =>
+      'UPI એપે સાફ જવાબ આપ્યો નથી. પૈસા કપાયા હોય તો જ \"હા\" દબાવો.';
+
+  @override
+  String get yes => 'હા';
+
+  @override
+  String get no => 'ના';
+
+  @override
+  String upiPaidTo(Object name) {
+    return 'UPI · $name';
+  }
+
+  @override
+  String get upiNeedsInternet => 'UPI માટે ઇન્ટરનેટ જોઈએ';
 }

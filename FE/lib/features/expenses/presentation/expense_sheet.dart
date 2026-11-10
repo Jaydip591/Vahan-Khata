@@ -15,7 +15,11 @@ import '../../../core/ui/date_chips.dart';
 import '../../../core/ui/keypad.dart';
 import '../../../core/ui/master_list.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../accounts/data/account.dart';
 import '../../accounts/data/account_repository.dart';
+import '../../upi/data/payee.dart';
+import '../../upi/data/upi_service.dart';
+import '../../upi/presentation/payee_picker.dart';
 import '../../pickers/account_chips.dart';
 import '../../pickers/vehicle_chips.dart';
 import '../../vehicles/data/vehicle_repository.dart';
@@ -116,19 +120,70 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
 
   String _clean(String s) => s.endsWith('.') ? s.substring(0, s.length - 1) : s;
 
-  Future<void> _save(String? vehicleId) async {
+  /// Checks vehicle and amount; shows the problem and returns false when something is missing.
+  bool _ready(String? vehicleId) {
     final t = AppL10n.of(context);
     final amount = double.tryParse(_clean(_amount)) ?? 0;
     if (vehicleId == null) {
       Haptics.error();
       setState(() => _error = t.chooseVehicle);
-      return;
+      return false;
     }
     if (amount <= 0) {
       Haptics.error();
       setState(() => _error = t.enterAmount);
+      return false;
+    }
+    return true;
+  }
+
+  /// Pay by UPI: choose who, open Google Pay with the amount, and save the expense only when
+  /// the payment went through (or the person confirms it did).
+  Future<void> _payByUpi(String? vehicleId) async {
+    if (!_ready(vehicleId)) return;
+    final t = AppL10n.of(context);
+    final payee = await showPayeePicker(context);
+    if (payee == null || !mounted) return;
+    final id = newId();
+    setState(() {
+      _saving = true;
+      _error = null;
+    });
+    final result = await ref.read(upiServiceProvider).pay(upiPayUri(
+          upiId: payee.upiId,
+          name: payee.name,
+          amount: _clean(_amount),
+          note: 'Vahan Khata - ${_category.label(t)}',
+          txnRef: id.replaceAll('-', ''),
+        ));
+    if (!mounted) return;
+    var paid = result.status == UpiStatus.success;
+    if (result.status == UpiStatus.pending || result.status == UpiStatus.unknown) {
+      paid = await confirmDialog(context, title: t.upiAskTitle, body: t.upiAskBody, confirmLabel: t.yes);
+      if (!mounted) return;
+    }
+    if (!paid) {
+      Haptics.error();
+      setState(() {
+        _saving = false;
+        _error = result.status == UpiStatus.noApp ? t.upiNoApp : t.upiFailed;
+      });
       return;
     }
+    final accounts = ref.read(accountsProvider).asData?.value ?? const [];
+    final current = accounts.where((a) => a.id == _accountId).firstOrNull;
+    if (current?.kind != AccountKind.upi) {
+      final upi = accounts.where((a) => a.kind == AccountKind.upi && a.isActive).firstOrNull;
+      if (upi != null) _accountId = upi.id;
+    }
+    await _save(vehicleId, upi: (id: id, payee: payee, ref: result.ref));
+  }
+
+  Future<void> _save(String? vehicleId, {({String id, Payee payee, String? ref})? upi}) async {
+    final t = AppL10n.of(context);
+    if (!_ready(vehicleId)) return;
+    if (vehicleId == null) return;
+    final amount = double.tryParse(_clean(_amount)) ?? 0;
     final liters = double.tryParse(_clean(_liters)) ?? 0;
     setState(() {
       _saving = true;
@@ -149,6 +204,8 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
           ? int.tryParse(_odometer)
           : null,
       repairKind: _isRepair ? _repairKind : null,
+      payeeId: upi?.payee.id,
+      upiRef: upi?.ref,
     );
     var queued = false;
     try {
@@ -159,9 +216,9 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
         final vehicle = ref.read(vehiclesProvider).asData?.value.where((v) => v.id == vehicleId).firstOrNull;
         final out = await ref.read(outboxProvider.notifier).save(OutboxItem(
               kind: OutboxKind.expense,
-              body: {...input.toJson(), 'id': newId()},
+              body: {...input.toJson(), 'id': upi?.id ?? newId()},
               title: _category.label(t),
-              subtitle: vehicle?.name ?? '',
+              subtitle: upi == null ? vehicle?.name ?? '' : '${vehicle?.name ?? ''} · ${t.upiPaidTo(upi.payee.name)}',
               amount: amount,
               date: _date,
             ));
@@ -449,6 +506,17 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
               loading: _saving,
               onPressed: () => _save(vehicleId),
             ),
+            if (!_editing) ...[
+              const SizedBox(height: 8),
+              SizedBox(
+                height: 52,
+                child: OutlinedButton.icon(
+                  onPressed: _saving ? null : () => _payByUpi(vehicleId),
+                  icon: const Icon(Icons.qr_code_2_rounded),
+                  label: Text(t.payByUpi),
+                ),
+              ),
+            ],
           ],
         ),
       ),

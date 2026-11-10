@@ -29,6 +29,13 @@ class AccountBrief(BaseModel):
     name: str
 
 
+class PayeeBrief(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    id: uuid.UUID
+    name: str
+    upi_id: str
+
+
 class PlaceBrief(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     id: uuid.UUID

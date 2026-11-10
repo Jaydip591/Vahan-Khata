@@ -17,6 +17,7 @@ from apps.ledger.controllers.ledger_controller import router as ledger_router
 from apps.report.controllers.report_controller import router as report_router
 from apps.payment.controllers.payment_controller import router as payment_router
 from apps.party.controllers.party_controller import router as party_router
+from apps.payee.controllers.payee_controller import router as payee_router
 from apps.place.controllers.place_controller import router as place_router
 from apps.place.services.place_service import ensure_seed_places
 from apps.trip.controllers.trip_controller import router as trip_router
@@ -60,6 +61,7 @@ for _router in (
     driver_router,
     party_router,
     account_router,
+    payee_router,
     place_router,
     trip_router,
     payment_router,

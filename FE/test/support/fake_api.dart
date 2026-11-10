@@ -18,6 +18,7 @@ class FakeApi implements HttpClientAdapter {
     'trips': [],
     'payments': [],
     'expenses': [],
+    'payees': [],
   };
 
   /// Recent routes the server would suggest: maps with from/to place names.

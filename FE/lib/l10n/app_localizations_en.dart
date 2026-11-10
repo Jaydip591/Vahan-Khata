@@ -1058,4 +1058,79 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get shareYear => 'Whole year as PDF / Excel';
+
+  @override
+  String get payByUpi => 'Pay by UPI';
+
+  @override
+  String get payWhom => 'Pay whom?';
+
+  @override
+  String get scanQr => 'Scan QR';
+
+  @override
+  String get typeUpiId => 'Type UPI ID';
+
+  @override
+  String get scanHint => 'Hold the pump\'s or shop\'s UPI QR inside the square';
+
+  @override
+  String get notUpiQr => 'This is not a UPI QR';
+
+  @override
+  String get payeeName => 'Name (e.g. Pump - Kamrej)';
+
+  @override
+  String get upiIdLabel => 'UPI ID';
+
+  @override
+  String get upiIdHint => 'e.g. kamrejpump@okaxis';
+
+  @override
+  String get upiIdInvalid => 'A UPI ID looks like name@bank';
+
+  @override
+  String get savePayee => 'Save and continue';
+
+  @override
+  String get payees => 'UPI payees';
+
+  @override
+  String get emptyPayees => 'No UPI payee saved yet';
+
+  @override
+  String get addPayee => 'Add UPI payee';
+
+  @override
+  String get editPayee => 'Edit UPI payee';
+
+  @override
+  String get upiOpening => 'Opening Google Pay…';
+
+  @override
+  String get upiFailed => 'Payment did not go through. Nothing was saved.';
+
+  @override
+  String get upiNoApp => 'No UPI app on this phone';
+
+  @override
+  String get upiAskTitle => 'Did the payment go through?';
+
+  @override
+  String get upiAskBody =>
+      'The UPI app did not give a clear answer. Press \"Yes\" only if the money was sent.';
+
+  @override
+  String get yes => 'Yes';
+
+  @override
+  String get no => 'No';
+
+  @override
+  String upiPaidTo(Object name) {
+    return 'UPI · $name';
+  }
+
+  @override
+  String get upiNeedsInternet => 'UPI needs internet';
 }

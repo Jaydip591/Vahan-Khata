@@ -22,6 +22,8 @@ import '../../features/trips/presentation/trips_screen.dart';
 import '../../features/profile/presentation/change_password_screen.dart';
 import '../../features/profile/presentation/profile_edit_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
+import '../../features/upi/data/payee.dart';
+import '../../features/upi/presentation/payees_screen.dart';
 import '../../features/users/data/managed_user.dart';
 import '../../features/users/presentation/user_form_screen.dart';
 import '../../features/users/presentation/users_screen.dart';
@@ -135,6 +137,14 @@ final routerProvider = Provider<GoRouter>((ref) {
             path: 'edit',
             builder: (_, s) => AccountFormScreen(account: s.extra as Account?),
           ),
+        ],
+      ),
+      GoRoute(
+        path: '/payees',
+        builder: (_, _) => const PayeesScreen(),
+        routes: [
+          GoRoute(path: 'new', builder: (_, _) => const PayeeFormScreen()),
+          GoRoute(path: 'edit', builder: (_, s) => PayeeFormScreen(payee: s.extra as Payee?)),
         ],
       ),
       GoRoute(
