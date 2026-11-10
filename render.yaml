@@ -1,0 +1,30 @@
+# Render Blueprint: Dashboard -> New -> Blueprint -> pick this repo.
+# The API runs from BE/Dockerfile (migrations run on every start). The database is on Neon;
+# paste its connection string into DATABASE_URL when Render asks.
+services:
+  - type: web
+    name: vahan-khata-api
+    runtime: docker
+    plan: free
+    region: singapore
+    rootDir: BE
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: WEB_CONCURRENCY
+        value: "1" # free plan has 512 MB; one worker also keeps the first-start admin setup simple
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        sync: false # Neon connection string (direct, not -pooler), e.g. postgresql://...neon.tech/neondb?sslmode=require
+      - key: COMPANY_NAME
+        sync: false
+      - key: ADMIN_USERNAME
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: ADMIN_NAME
+        sync: false

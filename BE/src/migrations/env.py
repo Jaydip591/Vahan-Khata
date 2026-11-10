@@ -38,7 +38,8 @@ import apps.expense.models  # noqa: F401
 config = context.config
 
 # Override the sqlalchemy.url from settings (respects env-var DATABASE_URL)
-config.set_main_option("sqlalchemy.url", settings.DATABASE_URL)
+# (ConfigParser treats % as special, so it is doubled.)
+config.set_main_option("sqlalchemy.url", settings.async_database_url.replace("%", "%%"))
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
@@ -75,6 +76,7 @@ async def run_migrations_online() -> None:
         config.get_section(config.config_ini_section, {}),
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
+        connect_args=settings.database_connect_args,
     )
     async with connectable.connect() as connection:
         await connection.run_sync(do_run_migrations)

@@ -25,3 +25,19 @@ async def test_bootstrap_creates_company_and_admin_when_empty():
         assert admin.company_id == company.id
         assert admin.role == "superadmin"
         assert admin.password_hash != "admin-pass-1"
+
+
+def test_hosted_database_urls_are_made_asyncpg_friendly():
+    from core.config import Settings
+
+    s = Settings(
+        DATABASE_URL="postgresql://u:p@ep-cool-1.ap-southeast-1.aws.neon.tech/db?sslmode=require&channel_binding=require"
+    )
+    assert s.async_database_url == "postgresql+asyncpg://u:p@ep-cool-1.ap-southeast-1.aws.neon.tech/db"
+    assert s.database_connect_args == {"ssl": "require"}
+    pooled = Settings(DATABASE_URL="postgres://u:p@ep-cool-1-pooler.neon.tech/db?sslmode=require")
+    assert pooled.async_database_url.startswith("postgresql+asyncpg://")
+    assert pooled.database_connect_args == {"ssl": "require", "statement_cache_size": 0}
+    local = Settings(DATABASE_URL="postgresql+asyncpg://t:t@localhost:5432/t")
+    assert local.async_database_url == "postgresql+asyncpg://t:t@localhost:5432/t"
+    assert local.database_connect_args == {}

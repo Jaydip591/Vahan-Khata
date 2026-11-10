@@ -5,7 +5,8 @@ from core.config import settings
 
 # ── Engine ─────────────────────────────────────────────────────────────────────
 engine = create_async_engine(
-    settings.DATABASE_URL,
+    settings.async_database_url,
+    connect_args=settings.database_connect_args,
     echo=settings.is_development,   # SQL logging in dev
     hide_parameters=True,           # never log bind values (hashes, tokens)
     pool_pre_ping=True,

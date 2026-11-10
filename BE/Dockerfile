@@ -21,4 +21,5 @@ USER appuser
 EXPOSE 8000
 
 # Apply migrations, then start. docker-compose.yml adds --reload for development.
-CMD ["sh", "-c", "alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port 8000 --workers 2"]
+# PORT and WEB_CONCURRENCY can be set by the host (Render sets PORT).
+CMD ["sh", "-c", "alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000} --workers ${WEB_CONCURRENCY:-2} --proxy-headers --forwarded-allow-ips='*'"]

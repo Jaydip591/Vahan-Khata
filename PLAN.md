@@ -143,11 +143,11 @@ Done when: icon and splash show on the launcher, the app looks right in light an
 
 Not doing now (user said no): search/filter on lists, WhatsApp "baaki" reminder, account-to-account transfer, app lock, 6-month/per-vehicle charts. Other ideas listed but not chosen: payables khata (pump/mechanic udhaar), vehicle fixed costs (EMI/insurance), bilty/LR PDF, per-ton rate, return trip, km-based service reminder, activity log, recycle bin, full Excel backup.
 
-4b Deploy — ON HOLD (user, 2026-11-10: ignore deploy, expiry notifications and Phase 5 pilot until the next work list is done). Hosting on Render, not Oracle. Database: Neon (free). Keep-awake: a free pinger site (cron-job.org) calls `/health` every 13 minutes so the free web service does not sleep.
-- [ ] Render web service from `BE/Dockerfile`, HTTPS included; `DATABASE_URL`, secrets and admin bootstrap as env vars
-- [ ] Postgres on Neon (`DATABASE_URL` with SSL); check the async driver URL form
-- [ ] Nightly backup with a Render Cron Job running `pg_dump` to Google Drive (rclone) or object storage; tested restore
-- [ ] Release APK pointing at the Render URL, signed; install instructions
+4b Deploy — started 2026-11-11 (steps in `DEPLOY.md`). Hosting on Render, not Oracle. Database: Neon (free). Keep-awake: a free pinger site (cron-job.org) calls `/health` every 13 minutes so the free web service does not sleep.
+- [ ] Render web service from `BE/Dockerfile` via `render.yaml` (code ready; user creates it in the Render dashboard and enters the secrets there)
+- [ ] Postgres on Neon (code accepts Neon's `postgresql://...?sslmode=require` string as is; user creates the project)
+- [ ] Backups: for now Neon's own restore (user's choice). Later: nightly encrypted dump (repo is PUBLIC, so never store dumps in it)
+- [ ] Signed APK on GitHub Releases: release key made (`FE/android/app/upload-keystore.jks` + `key.properties`, not in git, user must back them up), workflow `.github/workflows/release-apk.yml` on `v*` tags; user adds the secrets and `API_BASE_URL` variable, then tags v1.0.1
 Later (user's choice, after the above): document expiry notifications (insurance, PUC, fitness, permit, tax)
 Done when: entries made in airplane mode appear on the server after reconnect with no duplicates; a backup restore was tested.
 

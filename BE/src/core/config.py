@@ -1,3 +1,5 @@
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
+
 from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -37,6 +39,30 @@ class Settings(BaseSettings):
     ADMIN_USERNAME: str | None = None
     ADMIN_PASSWORD: str | None = None
     ADMIN_NAME: str = "Admin"
+
+    @property
+    def async_database_url(self) -> str:
+        """DATABASE_URL in the form SQLAlchemy + asyncpg wants.
+
+        Hosted Postgres (Neon, Render) hands out `postgres://` or `postgresql://` URLs with
+        `?sslmode=require&channel_binding=require`. asyncpg does not understand those query
+        options, so the driver is added and SSL is passed through `database_connect_args`."""
+        parts = urlsplit(self.DATABASE_URL)
+        scheme = "postgresql+asyncpg" if parts.scheme in ("postgres", "postgresql") else parts.scheme
+        query = [(k, v) for k, v in parse_qsl(parts.query) if k not in ("sslmode", "channel_binding", "ssl")]
+        return urlunsplit((scheme, parts.netloc, parts.path, urlencode(query), parts.fragment))
+
+    @property
+    def database_connect_args(self) -> dict:
+        parts = urlsplit(self.DATABASE_URL)
+        query = dict(parse_qsl(parts.query))
+        args: dict = {}
+        if query.get("sslmode") in ("require", "verify-ca", "verify-full") or query.get("ssl") == "require":
+            args["ssl"] = "require"
+        if "-pooler." in (parts.hostname or ""):
+            # Neon's pooled endpoint (PgBouncer) cannot keep prepared statements.
+            args["statement_cache_size"] = 0
+        return args
 
     @property
     def is_development(self) -> bool:
