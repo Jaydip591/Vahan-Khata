@@ -342,5 +342,17 @@
   "emptyReportHint": "ટ્રીપ અને ખર્ચ ઉમેરશો એટલે અહીં દેખાશે",
   "shortcutTrip": "નવી ટ્રીપ",
   "shortcutExpense": "ખર્ચ ઉમેરો",
-  "shortcutPayment": "પેમેન્ટ મળ્યું"
+  "shortcutPayment": "પેમેન્ટ મળ્યું",
+  "reportYear": "વર્ષ",
+  "docYear": "વાર્ષિક રિપોર્ટ",
+  "fyLabel": "નાણાકીય વર્ષ {label}",
+  "fyRange": "એપ્રિલ {from} – માર્ચ {to}",
+  "fyPrev": "પાછલું વર્ષ",
+  "fyNext": "આવતું વર્ષ",
+  "yearProfit": "આ વર્ષનો નફો",
+  "colMonth": "મહિનો",
+  "colTrips": "ટ્રીપ",
+  "byMonth": "મહિના પ્રમાણે",
+  "byVehicle": "ગાડી પ્રમાણે",
+  "shareYear": "આખા વર્ષની PDF / Excel"
 }

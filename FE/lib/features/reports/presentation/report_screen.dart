@@ -11,6 +11,8 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/ui/app_chip.dart';
 import '../../../core/ui/ink_header.dart';
 import '../../../core/ui/status_tag.dart';
+import '../../export/export_sheet.dart';
+import '../../export/statement_doc.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../expenses/data/expense.dart';
 import '../data/report.dart';
@@ -18,7 +20,7 @@ import '../data/report_repository.dart';
 import 'month_switcher.dart';
 import 'report_widgets.dart';
 
-enum _Tab { vehicle, party, trend, expense, balance }
+enum _Tab { vehicle, party, trend, year, expense, balance }
 
 class ReportScreen extends ConsumerStatefulWidget {
   const ReportScreen({super.key});
@@ -38,13 +40,14 @@ class _ReportScreenState extends ConsumerState<ReportScreen> {
       _Tab.vehicle: t.reportVehicle,
       _Tab.party: t.reportParty,
       _Tab.trend: t.reportMonths,
+      _Tab.year: t.reportYear,
       _Tab.expense: t.reportExpense,
       _Tab.balance: t.reportBalance,
     };
     return Column(
       children: [
         InkHeader(title: t.tabReport),
-        if (_tab != _Tab.balance)
+        if (_tab != _Tab.balance && _tab != _Tab.year)
           Container(
             color: AppColors.card,
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -73,6 +76,7 @@ class _ReportScreenState extends ConsumerState<ReportScreen> {
             _Tab.vehicle => _VehicleTab(month: key),
             _Tab.party => _PartyTab(month: key),
             _Tab.trend => _TrendTab(month: key),
+            _Tab.year => const _YearTab(),
             _Tab.expense => _ExpenseTab(month: key),
             _Tab.balance => const _BalanceTab(),
           },
@@ -493,6 +497,183 @@ class _AccountCard extends StatelessWidget {
               part(t.balanceOpening, row.opening, AppColors.text),
               part(t.balanceIn, row.received, AppColors.income),
               part(t.balanceOut, row.spent, AppColors.expense),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ───────────────────────── Varsh (financial year) ─────────────────────────
+class _YearTab extends ConsumerWidget {
+  const _YearTab();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final t = AppL10n.of(context);
+    final lang = Localizations.localeOf(context).languageCode;
+    final fy = ref.watch(selectedFyProvider);
+    final p = yearReportProvider(fy);
+    final switcher = Container(
+      color: AppColors.card,
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      child: Row(
+        children: [
+          IconButton(
+            tooltip: t.fyPrev,
+            color: AppColors.text,
+            icon: const Icon(Icons.chevron_left_rounded, size: 30),
+            onPressed: () => ref.read(selectedFyProvider.notifier).shift(-1),
+          ),
+          Expanded(
+            child: Column(
+              children: [
+                Text(t.fyLabel('$fy-${((fy + 1) % 100).toString().padLeft(2, '0')}'),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+                Text(t.fyRange('$fy', '${fy + 1}'),
+                    style: TextStyle(fontSize: 13, color: AppColors.muted)),
+              ],
+            ),
+          ),
+          IconButton(
+            tooltip: t.fyNext,
+            color: AppColors.text,
+            icon: const Icon(Icons.chevron_right_rounded, size: 30),
+            onPressed: fy >= fyOf(DateTime.now()) ? null : () => ref.read(selectedFyProvider.notifier).shift(1),
+          ),
+        ],
+      ),
+    );
+    return Column(
+      children: [
+        switcher,
+        Expanded(
+          child: _async<YearReport>(context, ref.watch(p), () => ref.invalidate(p), (y) {
+            final top = y.months.fold<double>(0, (m, r) => [m, r.income, r.expense].reduce((a, b) => a > b ? a : b));
+            return AppRefresh(
+              onRefresh: () async => ref.refresh(p.future),
+              child: ListView(
+                padding: const EdgeInsets.all(16),
+                children: [
+                  _YearHero(y: y),
+                  const SizedBox(height: 10),
+                  OutlinedButton.icon(
+                    onPressed: () => showExportSheet(
+                      context,
+                      () async => yearDoc(t, lang, y, (d) => monthLabel(lang, d)),
+                    ),
+                    icon: const Icon(Icons.ios_share_rounded),
+                    label: Text(t.shareYear),
+                  ),
+                  const SizedBox(height: 18),
+                  Text(t.byMonth, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+                  const SizedBox(height: 8),
+                  for (final m in y.months.reversed.where((m) => m.trips > 0 || m.expense > 0 || m.collected > 0)) ...[
+                    ReportCard(
+                      onTap: () {
+                        ref.read(selectedMonthProvider.notifier).set(m.month);
+                        context.push('/report/month');
+                      },
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(monthLabel(lang, m.month),
+                                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+                              ),
+                              Text(formatRupees(m.profit),
+                                  style: TextStyle(
+                                      fontSize: 20, fontWeight: FontWeight.w600, color: profitColor(m.profit))),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          _BarRow(label: t.incomeLabel, value: m.income, top: top, color: AppColors.income),
+                          const SizedBox(height: 6),
+                          _BarRow(label: t.expenseLabel, value: m.expense, top: top, color: AppColors.expense),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                  ],
+                  if (y.trips == 0 && y.expense == 0)
+                    EmptyState(icon: Icons.calendar_month_rounded, title: t.emptyReport, topGap: 8),
+                  if (y.vehicles.any((v) => v.trips > 0 || v.expense > 0)) ...[
+                    const SizedBox(height: 8),
+                    Text(t.byVehicle, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+                    const SizedBox(height: 8),
+                    for (final v in y.vehicles.where((v) => v.trips > 0 || v.expense > 0)) ...[
+                      ReportCard(
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(v.name, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+                                  Text(t.tripsCount(v.trips), style: TextStyle(fontSize: 14, color: AppColors.muted)),
+                                ],
+                              ),
+                            ),
+                            Text(formatRupees(v.profit),
+                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: profitColor(v.profit))),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                    ],
+                  ],
+                ],
+              ),
+            );
+          }),
+        ),
+      ],
+    );
+  }
+}
+
+class _YearHero extends StatelessWidget {
+  const _YearHero({required this.y});
+  final YearReport y;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = AppL10n.of(context);
+    Widget stat(String label, double v, Color c) => Expanded(
+          child: Column(
+            children: [
+              Text(label, style: const TextStyle(color: AppColors.mutedOnInk, fontSize: 14)),
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(formatRupees(v), style: TextStyle(color: c, fontSize: 18, fontWeight: FontWeight.w600)),
+              ),
+            ],
+          ),
+        );
+    return Container(
+      padding: const EdgeInsets.fromLTRB(12, 16, 12, 16),
+      decoration: BoxDecoration(color: AppColors.ink, borderRadius: BorderRadius.circular(18)),
+      child: Column(
+        children: [
+          Text(t.yearProfit, style: const TextStyle(color: AppColors.mutedOnInk, fontSize: 15)),
+          CountUpRupees(
+            y.profit,
+            style: TextStyle(
+              color: y.profit < 0 ? AppColors.expenseOnInk : AppColors.incomeOnInk,
+              fontSize: 34,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          Text(t.tripsCount(y.trips), style: const TextStyle(color: AppColors.mutedOnInk, fontSize: 14)),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              stat(t.incomeLabel, y.income, AppColors.incomeOnInk),
+              stat(t.expenseLabel, y.expense, AppColors.expenseOnInk),
+              stat(t.collectedLabel, y.collected, Colors.white),
             ],
           ),
         ],

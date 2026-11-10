@@ -110,3 +110,27 @@ class WeekSummary(BaseModel):
     profit: Decimal
     trips: int
     days: list[WeekDay]  # always 7, Monday first
+
+
+class YearMonth(BaseModel):
+    month: str  # YYYY-MM
+    income: Decimal
+    expense: Decimal
+    profit: Decimal
+    collected: Decimal
+    trips: int
+
+
+class YearReport(BaseModel):
+    fy: int  # start year: 2026 = April 2026 to March 2027
+    label: str  # "2026-27"
+    start: date
+    end: date  # inclusive (31 March)
+    income: Decimal
+    expense: Decimal
+    profit: Decimal
+    collected: Decimal
+    trips: int
+    total_due: Decimal  # what parties owe today, all time
+    months: list[YearMonth]  # April first, 12 rows
+    vehicles: list[VehicleReport]

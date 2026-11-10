@@ -12,6 +12,7 @@ from apps.report.schemas.report import (
     Trend,
     VehicleReports,
     WeekSummary,
+    YearReport,
 )
 from apps.report.services.report_service import ReportService
 from apps.user.models.user import User
@@ -73,3 +74,17 @@ async def week(
     db: AsyncSession = Depends(get_db),
 ):
     return await ReportService.week(db, user.company_id, day or date.today())
+
+
+def _current_fy() -> int:
+    today = date.today()
+    return today.year if today.month >= 4 else today.year - 1
+
+
+@router.get("/year", response_model=YearReport, summary="Financial year (April-March) report")
+async def year(
+    fy: int | None = Query(default=None, ge=2000, le=2100, description="Start year; 2026 = Apr 2026-Mar 2027"),
+    user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    return await ReportService.year(db, user.company_id, fy or _current_fy())

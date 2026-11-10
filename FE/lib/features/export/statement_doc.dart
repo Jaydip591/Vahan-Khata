@@ -245,6 +245,50 @@ StatementDoc monthDoc(
   );
 }
 
+/// A financial year: headline numbers, each month and each vehicle.
+StatementDoc yearDoc(AppL10n t, String lang, YearReport y, String Function(DateTime) monthName) {
+  return StatementDoc(
+    title: t.docYear,
+    subtitle: t.fyLabel(y.label),
+    fileName: 'report_FY_${y.label}',
+    summary: [
+      SummaryItem(t.profitLabel, y.profit, tone: y.profit < 0 ? Tone.expense : Tone.income),
+      SummaryItem(t.incomeLabel, y.income, tone: Tone.income),
+      SummaryItem(t.expenseLabel, y.expense, tone: Tone.expense),
+      SummaryItem(t.collectedLabel, y.collected),
+    ],
+    tables: [
+      DocTable(
+        title: t.byMonth,
+        columns: [
+          DocColumn(t.colMonth, CellKind.text, flex: 2),
+          DocColumn(t.colTrips, CellKind.number, flex: 0.9),
+          DocColumn(t.incomeLabel, CellKind.money, flex: 1.5),
+          DocColumn(t.expenseLabel, CellKind.money, flex: 1.5),
+          DocColumn(t.profitLabel, CellKind.money, flex: 1.5),
+          DocColumn(t.collectedLabel, CellKind.money, flex: 1.5),
+        ],
+        rows: [
+          for (final m in y.months) [monthName(m.month), m.trips, m.income, m.expense, m.profit, m.collected],
+        ],
+        totals: [null, y.trips, y.income, y.expense, y.profit, y.collected],
+      ),
+      DocTable(
+        title: t.byVehicle,
+        columns: [
+          DocColumn(t.vehicle, CellKind.text, flex: 2.2),
+          DocColumn(t.colTrips, CellKind.number, flex: 0.9),
+          DocColumn(t.incomeLabel, CellKind.money, flex: 1.5),
+          DocColumn(t.expenseLabel, CellKind.money, flex: 1.5),
+          DocColumn(t.profitLabel, CellKind.money, flex: 1.5),
+        ],
+        rows: [for (final v in y.vehicles) [v.name, v.trips, v.income, v.expense, v.profit]],
+        totals: [null, y.trips, y.income, y.expense, y.profit],
+      ),
+    ],
+  );
+}
+
 String _trim(double v) =>
     v == v.roundToDouble() ? v.round().toString() : v.toStringAsFixed(1);
 

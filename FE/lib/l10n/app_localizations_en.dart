@@ -1018,4 +1018,44 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get shortcutPayment => 'Payment received';
+
+  @override
+  String get reportYear => 'Year';
+
+  @override
+  String get docYear => 'Yearly report';
+
+  @override
+  String fyLabel(Object label) {
+    return 'Financial year $label';
+  }
+
+  @override
+  String fyRange(Object from, Object to) {
+    return 'April $from – March $to';
+  }
+
+  @override
+  String get fyPrev => 'Previous year';
+
+  @override
+  String get fyNext => 'Next year';
+
+  @override
+  String get yearProfit => 'Profit this year';
+
+  @override
+  String get colMonth => 'Month';
+
+  @override
+  String get colTrips => 'Trips';
+
+  @override
+  String get byMonth => 'Month by month';
+
+  @override
+  String get byVehicle => 'Vehicle by vehicle';
+
+  @override
+  String get shareYear => 'Whole year as PDF / Excel';
 }

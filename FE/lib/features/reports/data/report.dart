@@ -253,3 +253,68 @@ class WeekSummary {
         days: [for (final d in j['days'] as List) WeekDay.fromJson(d as Map<String, dynamic>)],
       );
 }
+
+class YearMonth {
+  const YearMonth({
+    required this.month,
+    required this.income,
+    required this.expense,
+    required this.profit,
+    required this.collected,
+    required this.trips,
+  });
+  final DateTime month;
+  final double income;
+  final double expense;
+  final double profit;
+  final double collected;
+  final int trips;
+
+  factory YearMonth.fromJson(Map<String, dynamic> j) => YearMonth(
+        month: DateTime.parse('${j['month']}-01'),
+        income: parseMoney(j['income']),
+        expense: parseMoney(j['expense']),
+        profit: parseMoney(j['profit']),
+        collected: parseMoney(j['collected']),
+        trips: j['trips'] as int,
+      );
+}
+
+/// Financial year April-March.
+class YearReport {
+  const YearReport({
+    required this.fy,
+    required this.label,
+    required this.income,
+    required this.expense,
+    required this.profit,
+    required this.collected,
+    required this.trips,
+    required this.totalDue,
+    required this.months,
+    required this.vehicles,
+  });
+  final int fy;
+  final String label; // 2026-27
+  final double income;
+  final double expense;
+  final double profit;
+  final double collected;
+  final int trips;
+  final double totalDue;
+  final List<YearMonth> months;
+  final List<VehicleReport> vehicles;
+
+  factory YearReport.fromJson(Map<String, dynamic> j) => YearReport(
+        fy: j['fy'] as int,
+        label: j['label'] as String,
+        income: parseMoney(j['income']),
+        expense: parseMoney(j['expense']),
+        profit: parseMoney(j['profit']),
+        collected: parseMoney(j['collected']),
+        trips: j['trips'] as int,
+        totalDue: parseMoney(j['total_due']),
+        months: [for (final m in j['months'] as List) YearMonth.fromJson(m as Map<String, dynamic>)],
+        vehicles: [for (final v in j['vehicles'] as List) VehicleReport.fromJson(v as Map<String, dynamic>)],
+      );
+}

@@ -12,6 +12,8 @@ from apps.party.models.party import Party
 from apps.payment.models.payment import Payment
 from apps.expense.schemas.expense import FUEL_CATEGORIES
 from apps.report.schemas.report import (
+    YearMonth,
+    YearReport,
     WeekDay,
     WeekSummary,
     AccountBalance,
@@ -92,60 +94,58 @@ class ReportService:
     @staticmethod
     async def vehicles(db: AsyncSession, company_id: UUID, month: str) -> VehicleReports:
         start, end = month_range(month)
-        vehicles = (
-            (await db.execute(select(Vehicle).where(*_live(Vehicle, company_id))))
-            .scalars()
-            .all()
+        return VehicleReports(month=month, vehicles=await _vehicle_rows(db, company_id, start, end))
+
+    @staticmethod
+    async def year(db: AsyncSession, company_id: UUID, fy: int) -> YearReport:
+        """Financial year April-March: totals, month by month, and each vehicle."""
+        start, end = date(fy, 4, 1), date(fy + 1, 4, 1)
+        months = [f"{fy + (m < 4):04d}-{m:02d}" for m in (4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3)]
+        inc: dict = defaultdict(lambda: ZERO)
+        trips: dict = defaultdict(int)
+        exp: dict = defaultdict(lambda: ZERO)
+        got: dict = defaultdict(lambda: ZERO)
+        for d, total, n in await db.execute(
+            select(Trip.trip_date, func.sum(Trip.bhada), func.count())
+            .where(*_live(Trip, company_id), Trip.trip_date >= start, Trip.trip_date < end)
+            .group_by(Trip.trip_date)
+        ):
+            inc[d.strftime("%Y-%m")] += Decimal(total)
+            trips[d.strftime("%Y-%m")] += n
+        for d, total in await db.execute(
+            select(Expense.expense_date, func.sum(Expense.amount))
+            .where(*_live(Expense, company_id), Expense.expense_date >= start, Expense.expense_date < end)
+            .group_by(Expense.expense_date)
+        ):
+            exp[d.strftime("%Y-%m")] += Decimal(total)
+        for d, total in await db.execute(
+            select(Payment.paid_on, func.sum(Payment.amount))
+            .where(*_live(Payment, company_id), Payment.paid_on >= start, Payment.paid_on < end)
+            .group_by(Payment.paid_on)
+        ):
+            got[d.strftime("%Y-%m")] += Decimal(total)
+        rows = [
+            YearMonth(
+                month=m, income=inc[m], expense=exp[m], profit=inc[m] - exp[m], collected=got[m], trips=trips[m]
+            )
+            for m in months
+        ]
+        income = sum((r.income for r in rows), ZERO)
+        expense = sum((r.expense for r in rows), ZERO)
+        return YearReport(
+            fy=fy,
+            label=f"{fy}-{(fy + 1) % 100:02d}",
+            start=start,
+            end=end - timedelta(days=1),
+            income=income,
+            expense=expense,
+            profit=income - expense,
+            collected=sum((r.collected for r in rows), ZERO),
+            trips=sum(r.trips for r in rows),
+            total_due=(await _party_balances(db, company_id))[1],
+            months=rows,
+            vehicles=await _vehicle_rows(db, company_id, start, end),
         )
-        inc = {
-            r[0]: (Decimal(r[1]), r[2])
-            for r in await db.execute(
-                select(Trip.vehicle_id, func.sum(Trip.bhada), func.count())
-                .where(*_live(Trip, company_id), Trip.trip_date >= start, Trip.trip_date < end)
-                .group_by(Trip.vehicle_id)
-            )
-        }
-        exp = {
-            r[0]: Decimal(r[1])
-            for r in await db.execute(
-                select(Expense.vehicle_id, func.sum(Expense.amount))
-                .where(*_live(Expense, company_id), Expense.expense_date >= start, Expense.expense_date < end)
-                .group_by(Expense.vehicle_id)
-            )
-        }
-        diesel = defaultdict(list)
-        for e in (
-            await db.execute(
-                select(Expense).where(
-                    *_live(Expense, company_id),
-                    Expense.category.in_(FUEL_CATEGORIES),
-                    Expense.expense_date >= start,
-                    Expense.expense_date < end,
-                )
-            )
-        ).scalars():
-            diesel[e.vehicle_id].append(e)
-        rows = []
-        for v in vehicles:
-            income, trips = inc.get(v.id, (ZERO, 0))
-            expense = exp.get(v.id, ZERO)
-            fuels, km, mileage = _fuel_summary(diesel[v.id])
-            rows.append(
-                VehicleReport(
-                    vehicle_id=v.id,
-                    name=v.name,
-                    number=v.number,
-                    income=income,
-                    expense=expense,
-                    profit=income - expense,
-                    trips=trips,
-                    fuels=fuels,
-                    km=km,
-                    mileage=mileage,
-                )
-            )
-        rows.sort(key=lambda r: (-r.profit, r.name.lower()))
-        return VehicleReports(month=month, vehicles=rows)
 
     @staticmethod
     async def parties(db: AsyncSession, company_id: UUID, month: str) -> PartyReports:
@@ -290,6 +290,64 @@ class ReportService:
             accounts=rows,
             unassigned_spent=spent.get(None, ZERO),
         )
+
+
+async def _vehicle_rows(db: AsyncSession, company_id: UUID, start: date, end: date) -> list[VehicleReport]:
+    """Income, expense, profit, trips and fuel per vehicle between start and end (exclusive)."""
+    vehicles = (
+        (await db.execute(select(Vehicle).where(*_live(Vehicle, company_id))))
+        .scalars()
+        .all()
+    )
+    inc = {
+        r[0]: (Decimal(r[1]), r[2])
+        for r in await db.execute(
+            select(Trip.vehicle_id, func.sum(Trip.bhada), func.count())
+            .where(*_live(Trip, company_id), Trip.trip_date >= start, Trip.trip_date < end)
+            .group_by(Trip.vehicle_id)
+        )
+    }
+    exp = {
+        r[0]: Decimal(r[1])
+        for r in await db.execute(
+            select(Expense.vehicle_id, func.sum(Expense.amount))
+            .where(*_live(Expense, company_id), Expense.expense_date >= start, Expense.expense_date < end)
+            .group_by(Expense.vehicle_id)
+        )
+    }
+    diesel = defaultdict(list)
+    for e in (
+        await db.execute(
+            select(Expense).where(
+                *_live(Expense, company_id),
+                Expense.category.in_(FUEL_CATEGORIES),
+                Expense.expense_date >= start,
+                Expense.expense_date < end,
+            )
+        )
+    ).scalars():
+        diesel[e.vehicle_id].append(e)
+    rows = []
+    for v in vehicles:
+        income, trips = inc.get(v.id, (ZERO, 0))
+        expense = exp.get(v.id, ZERO)
+        fuels, km, mileage = _fuel_summary(diesel[v.id])
+        rows.append(
+            VehicleReport(
+                vehicle_id=v.id,
+                name=v.name,
+                number=v.number,
+                income=income,
+                expense=expense,
+                profit=income - expense,
+                trips=trips,
+                fuels=fuels,
+                km=km,
+                mileage=mileage,
+            )
+        )
+    rows.sort(key=lambda r: (-r.profit, r.name.lower()))
+    return rows
 
 
 async def _party_balances(db: AsyncSession, company_id: UUID) -> tuple[dict, Decimal]:

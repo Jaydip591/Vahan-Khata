@@ -129,7 +129,7 @@ B. Real-app UX
 
 C. New features
 - [x] C1. Launcher shortcuts: long-press the app icon -> "નવી ટ્રીપ" / "ખર્ચ" / "પેમેન્ટ" opening the entry sheet directly (package `quick_actions`, Android App Shortcuts, Android 7.1+). Labels follow the in-app language (set at runtime). Old phones/odd launchers just show no shortcuts. Test on the user's OPPO first.
-- [ ] C2. Yearly report (financial year April-March): "Saal" option in the Report tab; FY totals (bhada, kharcha, profit, received, baaki), month-by-month table, per-vehicle profit; PDF and Excel export through the existing export code. Backend `/reports/year?fy=2026` (FY start year).
+- [x] C2. Yearly report (financial year April-March): "Saal" option in the Report tab; FY totals (bhada, kharcha, profit, received, baaki), month-by-month table, per-vehicle profit; PDF and Excel export through the existing export code. Backend `/reports/year?fy=2026` (FY start year).
 - [ ] C3. Pay by UPI from the Kharcha entry (approved by the user; problems below were accepted as small):
   - Flow: category tile -> vehicle chip -> keypad amount -> "UPI થી ચૂકવો" button -> payee chip (saved) or "Scan QR" (first time; camera via `mobile_scanner`) or type a UPI ID -> UPI app opens with the amount filled -> user enters PIN -> back to our app.
   - Result from the UPI app (`Status`, `txnId`, `ApprovalRefNo`/UTR): SUCCESS -> save the expense automatically (account = a UPI account, UTR in a new `upi_ref` field); FAILURE/cancel -> no entry, show "Payment nahi hua"; SUBMITTED/empty/unclear -> ask "Payment થયું?" yes saves, no discards.

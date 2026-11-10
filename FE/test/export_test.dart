@@ -198,6 +198,30 @@ void main() {
       expect(book.tables.containsKey('ટ્રીપ'), isTrue);
     });
 
+    testWidgets('year tab: totals, month by month, and the whole year as Excel', (t0) async {
+      await boot(t0);
+      await tapIt(t0, find.text('રિપોર્ટ').last);
+      await t0.drag(find.text('પાર્ટી'), const Offset(-300, 0));
+      await t0.pumpAndSettle();
+      await tapIt(t0, find.text('વર્ષ'));
+      expect(find.textContaining('નાણાકીય વર્ષ'), findsOneWidget);
+      expect(find.text('₹1,60,000'), findsWidgets);
+      expect(find.text('40 ટ્રીપ'), findsWidgets);
+      expect(find.text('નવેમ્બર 2026'), findsOneWidget);
+      expect(find.text('ઓક્ટોબર 2026'), findsOneWidget);
+      expect(find.text('એપ્રિલ 2026'), findsNothing); // empty months are left out on screen
+      expect(api.where('GET', '/api/v1/reports/year').last.queryParameters['fy'], isA<int>());
+      await tapIt(t0, find.text('આખા વર્ષની PDF / Excel'));
+      await tapIt(t0, find.text('Excel'));
+      final s = shared.shared.single;
+      expect(s.fileName, 'report_FY_2026-27.xlsx');
+      final book = Excel.decodeBytes(s.bytes);
+      expect(book.tables.length, 3); // summary, months, vehicles
+      final months = book.tables['મહિના પ્રમાણે']!;
+      expect(months.rows.length, 14); // header + 12 months + total
+      expect(numOf(months.rows.last[4]), 160000);
+    });
+
     testWidgets('month details: share icon makes a month Excel with all trips and expenses', (t0) async {
       final vid = api.db['vehicles']!.first['id'] as String;
       final pid = api.db['parties']!.first['id'] as String;

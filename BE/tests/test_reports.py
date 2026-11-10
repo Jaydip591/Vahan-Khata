@@ -198,3 +198,35 @@ async def test_week_summary_monday_to_sunday(client, auth, seeded):
     wed = r["days"][2]
     assert wed["day"] == "2026-11-11" and Decimal(wed["income"]) == 11000 and wed["trips"] == 2
     assert Decimal(wed["expense"]) == 1500 and Decimal(r["days"][6]["expense"]) == 500
+
+
+async def test_financial_year_report(client, auth, seeded):
+    w = await make_world(client, auth)
+    other = await make_vehicle(client, auth, "Tempo 2", "GJ05 CD 5678")
+    await make_trip(client, auth, w, bhada="10000", trip_date="2026-04-01")  # first day of FY 2026-27
+    await make_trip(client, auth, w, bhada="6000", trip_date="2026-11-05", vehicle_id=other)
+    await make_trip(client, auth, w, bhada="4000", trip_date="2027-03-31")  # last day
+    await make_trip(client, auth, w, bhada="9999", trip_date="2026-03-31")  # previous FY
+    await make_trip(client, auth, w, bhada="7777", trip_date="2027-04-01")  # next FY
+    await spend(client, auth, w["vehicle"], 1500, day="2026-04-10")
+    await spend(client, auth, other, 500, day="2026-11-06")
+    await make_payment(client, auth, w, "8000", paid_on="2026-11-10")
+    r = (await client.get(R + "/year", params={"fy": 2026}, headers=auth)).json()
+    assert r["label"] == "2026-27" and r["start"] == "2026-04-01" and r["end"] == "2027-03-31"
+    assert Decimal(r["income"]) == 20000 and Decimal(r["expense"]) == 2000 and Decimal(r["profit"]) == 18000
+    assert r["trips"] == 3 and Decimal(r["collected"]) == 8000
+    assert [m["month"] for m in r["months"]][:2] == ["2026-04", "2026-05"] and r["months"][-1]["month"] == "2027-03"
+    by_m = {m["month"]: m for m in r["months"]}
+    assert Decimal(by_m["2026-04"]["profit"]) == 8500 and by_m["2027-03"]["trips"] == 1
+    assert Decimal(by_m["2026-11"]["collected"]) == 8000
+    by_v = {v["name"]: v for v in r["vehicles"]}
+    assert Decimal(by_v["Eicher 1"]["profit"]) == 12500 and Decimal(by_v["Tempo 2"]["profit"]) == 5500
+
+
+async def test_year_defaults_to_current_fy(client, auth):
+    from datetime import date
+
+    today = date.today()
+    fy = today.year if today.month >= 4 else today.year - 1
+    r = (await client.get(R + "/year", headers=auth)).json()
+    assert r["fy"] == fy and len(r["months"]) == 12

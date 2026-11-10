@@ -35,6 +35,8 @@ class ReportRepository {
   Future<ExpenseReport> expenses(String month) async =>
       ExpenseReport.fromJson(await _get('expenses', {'month': month}));
 
+  Future<YearReport> year(int fy) async => YearReport.fromJson(await _get('year', {'fy': fy}));
+
   Future<WeekSummary> week() async => WeekSummary.fromJson(await _get('week', {}));
 
   Future<AccountBalances> accounts() async => AccountBalances.fromJson(await _get('accounts', {}));
@@ -69,6 +71,22 @@ final trendProvider = FutureProvider.family<List<TrendPoint>, String>(
 final expenseReportProvider = FutureProvider.family<ExpenseReport, String>(
     (ref, month) => ref.watch(reportRepositoryProvider).expenses(month));
 
+/// Start year of the financial year that holds [d] (April-March).
+int fyOf(DateTime d) => d.month >= 4 ? d.year : d.year - 1;
+
+/// The financial year shown in the Year tab. Starts on the current one.
+class SelectedFy extends Notifier<int> {
+  @override
+  int build() => fyOf(DateTime.now());
+
+  void shift(int delta) => state += delta;
+}
+
+final selectedFyProvider = NotifierProvider<SelectedFy, int>(SelectedFy.new);
+
+final yearReportProvider =
+    FutureProvider.family<YearReport, int>((ref, fy) => ref.watch(reportRepositoryProvider).year(fy));
+
 final weekProvider = FutureProvider<WeekSummary>((ref) => ref.watch(reportRepositoryProvider).week());
 
 final accountBalancesProvider =
@@ -87,6 +105,7 @@ void invalidateReports(dynamic ref) {
   ref.invalidate(expenseReportProvider);
   ref.invalidate(accountBalancesProvider);
   ref.invalidate(weekProvider);
+  ref.invalidate(yearReportProvider);
   ref.invalidate(vehicleTripsProvider);
   ref.invalidate(monthExpensesProvider);
 }

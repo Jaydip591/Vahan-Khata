@@ -1014,4 +1014,44 @@ class AppL10nGu extends AppL10n {
 
   @override
   String get shortcutPayment => 'પેમેન્ટ મળ્યું';
+
+  @override
+  String get reportYear => 'વર્ષ';
+
+  @override
+  String get docYear => 'વાર્ષિક રિપોર્ટ';
+
+  @override
+  String fyLabel(Object label) {
+    return 'નાણાકીય વર્ષ $label';
+  }
+
+  @override
+  String fyRange(Object from, Object to) {
+    return 'એપ્રિલ $from – માર્ચ $to';
+  }
+
+  @override
+  String get fyPrev => 'પાછલું વર્ષ';
+
+  @override
+  String get fyNext => 'આવતું વર્ષ';
+
+  @override
+  String get yearProfit => 'આ વર્ષનો નફો';
+
+  @override
+  String get colMonth => 'મહિનો';
+
+  @override
+  String get colTrips => 'ટ્રીપ';
+
+  @override
+  String get byMonth => 'મહિના પ્રમાણે';
+
+  @override
+  String get byVehicle => 'ગાડી પ્રમાણે';
+
+  @override
+  String get shareYear => 'આખા વર્ષની PDF / Excel';
 }

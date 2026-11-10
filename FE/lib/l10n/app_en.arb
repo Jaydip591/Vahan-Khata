@@ -335,5 +335,17 @@
   "emptyReportHint": "Add trips and expenses to see them here",
   "shortcutTrip": "New trip",
   "shortcutExpense": "Add expense",
-  "shortcutPayment": "Payment received"
+  "shortcutPayment": "Payment received",
+  "reportYear": "Year",
+  "docYear": "Yearly report",
+  "fyLabel": "Financial year {label}",
+  "fyRange": "April {from} – March {to}",
+  "fyPrev": "Previous year",
+  "fyNext": "Next year",
+  "yearProfit": "Profit this year",
+  "colMonth": "Month",
+  "colTrips": "Trips",
+  "byMonth": "Month by month",
+  "byVehicle": "Vehicle by vehicle",
+  "shareYear": "Whole year as PDF / Excel"
 }

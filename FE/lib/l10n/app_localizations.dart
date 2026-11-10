@@ -2028,6 +2028,78 @@ abstract class AppL10n {
   /// In gu, this message translates to:
   /// **'પેમેન્ટ મળ્યું'**
   String get shortcutPayment;
+
+  /// No description provided for @reportYear.
+  ///
+  /// In gu, this message translates to:
+  /// **'વર્ષ'**
+  String get reportYear;
+
+  /// No description provided for @docYear.
+  ///
+  /// In gu, this message translates to:
+  /// **'વાર્ષિક રિપોર્ટ'**
+  String get docYear;
+
+  /// No description provided for @fyLabel.
+  ///
+  /// In gu, this message translates to:
+  /// **'નાણાકીય વર્ષ {label}'**
+  String fyLabel(Object label);
+
+  /// No description provided for @fyRange.
+  ///
+  /// In gu, this message translates to:
+  /// **'એપ્રિલ {from} – માર્ચ {to}'**
+  String fyRange(Object from, Object to);
+
+  /// No description provided for @fyPrev.
+  ///
+  /// In gu, this message translates to:
+  /// **'પાછલું વર્ષ'**
+  String get fyPrev;
+
+  /// No description provided for @fyNext.
+  ///
+  /// In gu, this message translates to:
+  /// **'આવતું વર્ષ'**
+  String get fyNext;
+
+  /// No description provided for @yearProfit.
+  ///
+  /// In gu, this message translates to:
+  /// **'આ વર્ષનો નફો'**
+  String get yearProfit;
+
+  /// No description provided for @colMonth.
+  ///
+  /// In gu, this message translates to:
+  /// **'મહિનો'**
+  String get colMonth;
+
+  /// No description provided for @colTrips.
+  ///
+  /// In gu, this message translates to:
+  /// **'ટ્રીપ'**
+  String get colTrips;
+
+  /// No description provided for @byMonth.
+  ///
+  /// In gu, this message translates to:
+  /// **'મહિના પ્રમાણે'**
+  String get byMonth;
+
+  /// No description provided for @byVehicle.
+  ///
+  /// In gu, this message translates to:
+  /// **'ગાડી પ્રમાણે'**
+  String get byVehicle;
+
+  /// No description provided for @shareYear.
+  ///
+  /// In gu, this message translates to:
+  /// **'આખા વર્ષની PDF / Excel'**
+  String get shareYear;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {
