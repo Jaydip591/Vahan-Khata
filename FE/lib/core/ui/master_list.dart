@@ -34,10 +34,10 @@ class MasterTile extends StatelessWidget {
     return PressScale(child: Opacity(
       opacity: dimmed ? 0.55 : 1,
       child: Material(
-        color: Colors.white,
+        color: AppColors.card,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
-          side: const BorderSide(color: AppColors.line),
+          side: BorderSide(color: AppColors.line),
         ),
         child: InkWell(
           borderRadius: BorderRadius.circular(16),
@@ -53,10 +53,10 @@ class MasterTile extends StatelessWidget {
                   width: 46,
                   height: 46,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFEFEBE2),
+                    color: AppColors.chipFill,
                     borderRadius: BorderRadius.circular(14),
                   ),
-                  child: Icon(icon, color: AppColors.ink, size: 24),
+                  child: Icon(icon, color: AppColors.text, size: 24),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -67,12 +67,12 @@ class MasterTile extends StatelessWidget {
                           style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
                       if (subtitle != null && subtitle!.isNotEmpty)
                         Text(subtitle!,
-                            style: const TextStyle(fontSize: 14, color: AppColors.muted)),
+                            style: TextStyle(fontSize: 14, color: AppColors.muted)),
                     ],
                   ),
                 ),
                 ?trailing,
-                const Icon(Icons.chevron_right_rounded, color: AppColors.muted),
+                Icon(Icons.chevron_right_rounded, color: AppColors.muted),
               ],
             ),
           ),
@@ -152,7 +152,7 @@ class MasterListScreen<T> extends ConsumerWidget {
                           const SizedBox(height: 4),
                           Text(t.emptyHint,
                               textAlign: TextAlign.center,
-                              style: const TextStyle(fontSize: 15, color: AppColors.muted)),
+                              style: TextStyle(fontSize: 15, color: AppColors.muted)),
                         ],
                       )
                     : ListView.separated(
@@ -196,11 +196,11 @@ Future<bool> confirmDialog(
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(ctx, false),
-          child: Text(t.cancel, style: const TextStyle(fontSize: 17, color: AppColors.muted)),
+          child: Text(t.cancel, style: TextStyle(fontSize: 17, color: AppColors.muted)),
         ),
         TextButton(
           onPressed: () => Navigator.pop(ctx, true),
-          child: Text(confirmLabel, style: const TextStyle(fontSize: 17, color: AppColors.expense)),
+          child: Text(confirmLabel, style: TextStyle(fontSize: 17, color: AppColors.expense)),
         ),
       ],
     ),

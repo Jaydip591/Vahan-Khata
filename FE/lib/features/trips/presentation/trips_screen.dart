@@ -65,7 +65,7 @@ class _TripsScreenState extends ConsumerState<TripsScreen> {
       children: [
         InkHeader(title: t.tabTrips),
         Container(
-          color: Colors.white,
+          color: AppColors.card,
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           child: Row(
             children: [
@@ -194,10 +194,10 @@ class TripCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final t = AppL10n.of(context);
     return PressScale(child: Material(
-      color: Colors.white,
+      color: AppColors.card,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
-        side: const BorderSide(color: AppColors.line),
+        side: BorderSide(color: AppColors.line),
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
@@ -235,14 +235,14 @@ class TripCard extends StatelessWidget {
               const SizedBox(height: 4),
               Text(
                 '${trip.party.name} · ${trip.vehicle.name}',
-                style: const TextStyle(fontSize: 15, color: AppColors.muted),
+                style: TextStyle(fontSize: 15, color: AppColors.muted),
               ),
               const SizedBox(height: 8),
               Row(
                 children: [
                   Text(
                     formatDay(trip.tripDate),
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 14,
                       color: AppColors.muted,
                     ),

@@ -139,10 +139,10 @@ class _PartyTile extends StatelessWidget {
       tag = StatusTag(t.settled, TagKind.good);
     }
     return Material(
-      color: Colors.white,
+      color: AppColors.card,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
-        side: const BorderSide(color: AppColors.line),
+        side: BorderSide(color: AppColors.line),
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
@@ -153,9 +153,9 @@ class _PartyTile extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 23,
-                backgroundColor: const Color(0xFFEFEBE2),
+                backgroundColor: AppColors.chipFill,
                 child: Text(party.name.characters.first.toUpperCase(),
-                    style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w500, color: AppColors.ink)),
+                    style: TextStyle(fontSize: 19, fontWeight: FontWeight.w500, color: AppColors.text)),
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -170,9 +170,9 @@ class _PartyTile extends StatelessWidget {
               ),
               if (owes)
                 Text(formatRupees(party.balance),
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontSize: 19, fontWeight: FontWeight.w500, color: AppColors.expense)),
-              const Icon(Icons.chevron_right_rounded, color: AppColors.muted),
+              Icon(Icons.chevron_right_rounded, color: AppColors.muted),
             ],
           ),
         ),

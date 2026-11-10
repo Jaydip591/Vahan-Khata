@@ -76,12 +76,12 @@ class _ShellScaffoldState extends ConsumerState<ShellScaffold>
         children: [
           const PendingStrip(),
           Material(
-            color: Colors.white,
+            color: AppColors.card,
             child: SafeArea(
               top: false,
               child: Container(
                 height: 66,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   border: Border(top: BorderSide(color: AppColors.line)),
                 ),
                 child: Row(
@@ -130,7 +130,7 @@ class _BarItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = active ? AppColors.ink : AppColors.muted;
+    final color = active ? AppColors.text : AppColors.muted;
     return InkWell(
       onTap: onTap,
       child: Container(

@@ -13,7 +13,7 @@ Future<T?> showAppSheet<T>(BuildContext context, WidgetBuilder builder) {
     context: context,
     isScrollControlled: true,
     useSafeArea: true,
-    backgroundColor: Colors.white,
+    backgroundColor: AppColors.card,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
     ),
@@ -134,7 +134,7 @@ class _AmountSheetState extends State<_AmountSheet> {
             child: _showError
                 ? Center(
                     child: Text(t.enterAmount,
-                        style: const TextStyle(color: AppColors.expense, fontSize: 14)),
+                        style: TextStyle(color: AppColors.expense, fontSize: 14)),
                   )
                 : null,
           ),

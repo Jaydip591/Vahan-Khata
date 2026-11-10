@@ -215,7 +215,7 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
     padding: const EdgeInsets.only(top: 14, bottom: 8),
     child: Text(
       text,
-      style: const TextStyle(fontSize: 14, color: AppColors.muted),
+      style: TextStyle(fontSize: 14, color: AppColors.muted),
     ),
   );
 
@@ -247,7 +247,7 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
               children: [
                 Text(
                   label,
-                  style: const TextStyle(fontSize: 12, color: AppColors.muted),
+                  style: TextStyle(fontSize: 12, color: AppColors.muted),
                 ),
                 Text(
                   text.isEmpty
@@ -260,7 +260,7 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
                         ? AppColors.muted
                         : (field == _Field.amount
                               ? AppColors.expense
-                              : AppColors.ink),
+                              : AppColors.text),
                   ),
                 ),
               ],
@@ -437,7 +437,7 @@ class _ExpenseSheetState extends ConsumerState<ExpenseSheet> {
                 padding: const EdgeInsets.only(top: 6),
                 child: Text(
                   _error!,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: AppColors.expense,
                     fontSize: 15,
                   ),

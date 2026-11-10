@@ -153,10 +153,10 @@ class _QuickTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.white,
+      color: AppColors.card,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(18),
-        side: const BorderSide(color: AppColors.line),
+        side: BorderSide(color: AppColors.line),
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(18),
@@ -376,7 +376,7 @@ class _VehicleProfits extends ConsumerWidget {
                       ),
                       Text(
                         t.tripsCount(v.trips),
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 14,
                           color: AppColors.muted,
                         ),

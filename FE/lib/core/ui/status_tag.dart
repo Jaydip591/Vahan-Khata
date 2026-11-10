@@ -13,10 +13,10 @@ class StatusTag extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final (bg, fg) = switch (kind) {
-      TagKind.good => (const Color(0xFFDCEFE8), const Color(0xFF14584A)),
-      TagKind.warn => (AppColors.goldSoft, const Color(0xFF7A5A12)),
-      TagKind.bad => (const Color(0xFFF8E0DC), const Color(0xFF8E3027)),
-      TagKind.neutral => (const Color(0xFFEFEBE2), AppColors.muted),
+      TagKind.good => (AppColors.tagGoodBg, AppColors.tagGoodFg),
+      TagKind.warn => (AppColors.goldSoft, AppColors.tagWarnFg),
+      TagKind.bad => (AppColors.tagBadBg, AppColors.tagBadFg),
+      TagKind.neutral => (AppColors.chipFill, AppColors.muted),
     };
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),

@@ -115,7 +115,7 @@ class _UserFormScreenState extends ConsumerState<UserFormScreen> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 14),
                 child: Text('@${_username.text}',
-                    style: const TextStyle(fontSize: 17, color: AppColors.muted)),
+                    style: TextStyle(fontSize: 17, color: AppColors.muted)),
               )
             else ...[
               AppTextField(
@@ -159,16 +159,16 @@ class _UserFormScreenState extends ConsumerState<UserFormScreen> {
             if (_editing && !isSelf) ...[
               const SizedBox(height: 18),
               Material(
-                color: Colors.white,
+                color: AppColors.card,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14),
-                  side: const BorderSide(color: AppColors.fieldLine, width: 1.5),
+                  side: BorderSide(color: AppColors.fieldLine, width: 1.5),
                 ),
                 child: SwitchListTile(
                   title: Text(t.userActive, style: const TextStyle(fontSize: 17)),
                   value: _active,
-                  activeThumbColor: AppColors.gold,
-                  activeTrackColor: AppColors.ink,
+                  activeThumbColor: AppColors.selectedAccent,
+                  activeTrackColor: AppColors.selected,
                   onChanged: (v) => setState(() => _active = v),
                 ),
               ),

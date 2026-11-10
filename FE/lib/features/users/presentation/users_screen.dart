@@ -32,7 +32,7 @@ class UsersScreen extends ConsumerWidget {
             : Padding(
                 padding: const EdgeInsets.only(right: 4),
                 child: Text(t.userInactive,
-                    style: const TextStyle(color: AppColors.expense, fontSize: 13)),
+                    style: TextStyle(color: AppColors.expense, fontSize: 13)),
               ),
         onTap: () => context.push('/users/edit', extra: u),
       ),

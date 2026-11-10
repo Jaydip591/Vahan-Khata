@@ -72,11 +72,11 @@ class FormShell extends StatelessWidget {
                         padding: const EdgeInsets.only(bottom: 8),
                         child: Row(
                           children: [
-                            const Icon(Icons.error_outline, color: AppColors.expense, size: 20),
+                            Icon(Icons.error_outline, color: AppColors.expense, size: 20),
                             const SizedBox(width: 8),
                             Expanded(
                               child: Text(error!,
-                                  style: const TextStyle(color: AppColors.expense, fontSize: 15)),
+                                  style: TextStyle(color: AppColors.expense, fontSize: 15)),
                             ),
                           ],
                         ),

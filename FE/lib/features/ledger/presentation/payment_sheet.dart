@@ -155,7 +155,7 @@ class _PaymentSheetState extends ConsumerState<PaymentSheet> {
     padding: const EdgeInsets.only(top: 14, bottom: 8),
     child: Text(
       text,
-      style: const TextStyle(fontSize: 14, color: AppColors.muted),
+      style: TextStyle(fontSize: 14, color: AppColors.muted),
     ),
   );
 
@@ -217,7 +217,7 @@ class _PaymentSheetState extends ConsumerState<PaymentSheet> {
                     else if (parties.isEmpty)
                       Text(
                         t.noPartyYet,
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: AppColors.expense,
                           fontSize: 15,
                         ),
@@ -356,7 +356,7 @@ class _PaymentSheetState extends ConsumerState<PaymentSheet> {
                 padding: const EdgeInsets.only(top: 6),
                 child: Text(
                   _error!,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: AppColors.expense,
                     fontSize: 15,
                   ),
@@ -388,11 +388,11 @@ class _PartyRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: selected ? AppColors.ink : Colors.white,
+      color: selected ? AppColors.selected : AppColors.card,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(14),
         side: BorderSide(
-          color: selected ? AppColors.ink : AppColors.fieldLine,
+          color: selected ? AppColors.selected : AppColors.fieldLine,
           width: 1.5,
         ),
       ),
@@ -408,7 +408,7 @@ class _PartyRow extends StatelessWidget {
                   party.name,
                   style: TextStyle(
                     fontSize: 17,
-                    color: selected ? Colors.white : AppColors.ink,
+                    color: selected ? AppColors.onSelected : AppColors.text,
                     fontWeight: selected ? FontWeight.w500 : FontWeight.w400,
                   ),
                 ),

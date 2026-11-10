@@ -41,7 +41,7 @@ class _KharchaScreenState extends ConsumerState<KharchaScreen> {
             child: ListView(
               padding: const EdgeInsets.all(16),
               children: [
-                Text(t.whatExpense, style: const TextStyle(fontSize: 16, color: AppColors.muted)),
+                Text(t.whatExpense, style: TextStyle(fontSize: 16, color: AppColors.muted)),
                 const SizedBox(height: 10),
                 GridView.count(
                   padding: EdgeInsets.zero,
@@ -54,10 +54,10 @@ class _KharchaScreenState extends ConsumerState<KharchaScreen> {
                   children: [
                     for (final c in ExpenseCategory.tiles)
                       Material(
-                        color: Colors.white,
+                        color: AppColors.card,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(18),
-                          side: const BorderSide(color: AppColors.line),
+                          side: BorderSide(color: AppColors.line),
                         ),
                         child: InkWell(
                           borderRadius: BorderRadius.circular(18),
@@ -103,7 +103,7 @@ class _KharchaScreenState extends ConsumerState<KharchaScreen> {
                         padding: const EdgeInsets.only(top: 12),
                         child: Text(t.emptyExpenses,
                             textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 16, color: AppColors.muted)),
+                            style: TextStyle(fontSize: 16, color: AppColors.muted)),
                       );
                     }
                     final total = list.fold<double>(0, (a, e) => a + e.amount);
@@ -153,7 +153,7 @@ class _KharchaScreenState extends ConsumerState<KharchaScreen> {
                             trailing: Padding(
                               padding: const EdgeInsets.only(right: 4),
                               child: Text(formatRupees(e.amount),
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w500,
                                     color: AppColors.expense,

@@ -45,7 +45,7 @@ class AppTextField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(fontSize: 14, color: AppColors.muted)),
+        Text(label, style: TextStyle(fontSize: 14, color: AppColors.muted)),
         const SizedBox(height: 6),
         TextFormField(
           controller: controller,
@@ -61,17 +61,17 @@ class AppTextField extends StatelessWidget {
           style: const TextStyle(fontSize: 18),
           decoration: InputDecoration(
             hintText: hint,
-            hintStyle: const TextStyle(color: AppColors.muted, fontSize: 16),
+            hintStyle: TextStyle(color: AppColors.muted, fontSize: 16),
             suffixIcon: suffixIcon,
             counterText: '',
             filled: true,
-            fillColor: Colors.white,
+            fillColor: AppColors.card,
             contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
             enabledBorder: border(AppColors.fieldLine),
-            focusedBorder: border(AppColors.ink, 2),
+            focusedBorder: border(AppColors.text, 2),
             errorBorder: border(AppColors.expense),
             focusedErrorBorder: border(AppColors.expense, 2),
-            errorStyle: const TextStyle(color: AppColors.expense, fontSize: 14),
+            errorStyle: TextStyle(color: AppColors.expense, fontSize: 14),
           ),
         ),
       ],

@@ -39,7 +39,7 @@ class AccountChips extends ConsumerWidget {
           data: (accounts) {
             if (accounts.isEmpty && !allowNone) {
               return Text(t.needAccountFirst,
-                  style: const TextStyle(color: AppColors.expense, fontSize: 15));
+                  style: TextStyle(color: AppColors.expense, fontSize: 15));
             }
             return Wrap(
               spacing: 8,

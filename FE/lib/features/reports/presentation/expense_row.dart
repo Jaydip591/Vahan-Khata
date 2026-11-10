@@ -27,10 +27,10 @@ class ExpenseRow extends StatelessWidget {
       if (e.odometer != null) t.kmValue(e.odometer!),
     ];
     return Material(
-      color: Colors.white,
+      color: AppColors.card,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
-        side: const BorderSide(color: AppColors.line),
+        side: BorderSide(color: AppColors.line),
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
@@ -49,15 +49,15 @@ class ExpenseRow extends StatelessWidget {
                       showVehicle ? '${e.category.label(t)} · ${e.vehicle.name}' : e.category.label(t),
                       style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
                     ),
-                    Text(formatDay(e.date), style: const TextStyle(fontSize: 14, color: AppColors.muted)),
+                    Text(formatDay(e.date), style: TextStyle(fontSize: 14, color: AppColors.muted)),
                     if (extras.isNotEmpty)
                       Text(extras.join('  ·  '),
-                          style: const TextStyle(fontSize: 14, color: AppColors.muted)),
+                          style: TextStyle(fontSize: 14, color: AppColors.muted)),
                   ],
                 ),
               ),
               Text(formatRupees(e.amount),
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: AppColors.expense)),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: AppColors.expense)),
             ],
           ),
         ),
@@ -79,12 +79,12 @@ class MiniStat extends StatelessWidget {
   Widget build(BuildContext context) => Expanded(
         child: Column(
           children: [
-            Text(label, style: const TextStyle(fontSize: 13, color: AppColors.muted)),
+            Text(label, style: TextStyle(fontSize: 13, color: AppColors.muted)),
             const SizedBox(height: 2),
             FittedBox(
               fit: BoxFit.scaleDown,
               child: Text(value,
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: color ?? AppColors.ink)),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: color ?? AppColors.text)),
             ),
           ],
         ),

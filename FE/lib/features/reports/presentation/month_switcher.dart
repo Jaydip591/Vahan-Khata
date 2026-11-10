@@ -18,7 +18,7 @@ class MonthSwitcher extends ConsumerWidget {
     final month = ref.watch(selectedMonthProvider);
     final now = DateTime.now();
     final isCurrent = month.year == now.year && month.month == now.month;
-    final color = onInk ? Colors.white : AppColors.ink;
+    final color = onInk ? Colors.white : AppColors.text;
     return Row(
       children: [
         IconButton(

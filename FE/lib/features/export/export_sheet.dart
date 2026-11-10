@@ -100,7 +100,7 @@ class _ExportSheetState extends ConsumerState<_ExportSheet> {
                   const SizedBox(height: 14),
                   Text(
                     t.exporting,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 16,
                       color: AppColors.muted,
                     ),
@@ -127,7 +127,7 @@ class _ExportSheetState extends ConsumerState<_ExportSheet> {
                 padding: const EdgeInsets.only(top: 12),
                 child: Text(
                   _error!,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: AppColors.expense,
                     fontSize: 15,
                   ),
@@ -154,10 +154,10 @@ class _Choice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Material(
-    color: Colors.white,
+    color: AppColors.card,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(16),
-      side: const BorderSide(color: AppColors.line),
+      side: BorderSide(color: AppColors.line),
     ),
     child: InkWell(
       borderRadius: BorderRadius.circular(16),
@@ -189,7 +189,7 @@ class _Choice extends StatelessWidget {
                   ),
                   Text(
                     help,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 14,
                       color: AppColors.muted,
                     ),
@@ -197,7 +197,7 @@ class _Choice extends StatelessWidget {
                 ],
               ),
             ),
-            const Icon(Icons.share_rounded, color: AppColors.muted),
+            Icon(Icons.share_rounded, color: AppColors.muted),
           ],
         ),
       ),

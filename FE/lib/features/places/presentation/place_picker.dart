@@ -24,7 +24,7 @@ Future<Place?> showPlacePicker(BuildContext context, {required String title}) {
     context: context,
     isScrollControlled: true,
     useSafeArea: true,
-    backgroundColor: Colors.white,
+    backgroundColor: AppColors.card,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
     ),
@@ -142,7 +142,7 @@ class _PlacePickerSheetState extends ConsumerState<PlacePickerSheet> {
         children: [
           Row(
             children: [
-              const Icon(Icons.add_location_alt_outlined, color: AppColors.ink),
+              Icon(Icons.add_location_alt_outlined, color: AppColors.text),
               const SizedBox(width: 10),
               Expanded(
                 child: Text(t.placeAdd(nameEn),
@@ -154,9 +154,9 @@ class _PlacePickerSheetState extends ConsumerState<PlacePickerSheet> {
           if (isGujarati)
             AppChip(label: q, selected: false, onTap: () => _add(q, q))
           else if (_checking)
-            Text(t.placeChecking, style: const TextStyle(color: AppColors.muted, fontSize: 15))
+            Text(t.placeChecking, style: TextStyle(color: AppColors.muted, fontSize: 15))
           else if (_suggestions.isNotEmpty) ...[
-            Text(t.placeAddHint, style: const TextStyle(color: AppColors.muted, fontSize: 14)),
+            Text(t.placeAddHint, style: TextStyle(color: AppColors.muted, fontSize: 14)),
             const SizedBox(height: 8),
             Wrap(
               spacing: 8,
@@ -167,7 +167,7 @@ class _PlacePickerSheetState extends ConsumerState<PlacePickerSheet> {
               ],
             ),
           ] else ...[
-            Text(t.placeTypeGujarati, style: const TextStyle(color: AppColors.muted, fontSize: 14)),
+            Text(t.placeTypeGujarati, style: TextStyle(color: AppColors.muted, fontSize: 14)),
             const SizedBox(height: 8),
             Row(
               children: [
@@ -178,7 +178,7 @@ class _PlacePickerSheetState extends ConsumerState<PlacePickerSheet> {
                     style: const TextStyle(fontSize: 18),
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor: AppColors.card,
                       isDense: true,
                       contentPadding: const EdgeInsets.all(12),
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
@@ -236,7 +236,7 @@ class _PlacePickerSheetState extends ConsumerState<PlacePickerSheet> {
                 style: const TextStyle(fontSize: 18),
                 decoration: InputDecoration(
                   hintText: t.placeSearchHint,
-                  hintStyle: const TextStyle(color: AppColors.muted, fontSize: 16),
+                  hintStyle: TextStyle(color: AppColors.muted, fontSize: 16),
                   prefixIcon: const Icon(Icons.search_rounded),
                   suffixIcon: q.isEmpty
                       ? null
@@ -252,11 +252,11 @@ class _PlacePickerSheetState extends ConsumerState<PlacePickerSheet> {
                   contentPadding: const EdgeInsets.symmetric(vertical: 16),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14),
-                    borderSide: const BorderSide(color: AppColors.fieldLine, width: 1.5),
+                    borderSide: BorderSide(color: AppColors.fieldLine, width: 1.5),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14),
-                    borderSide: const BorderSide(color: AppColors.ink, width: 2),
+                    borderSide: BorderSide(color: AppColors.text, width: 2),
                   ),
                 ),
               ),
@@ -264,7 +264,7 @@ class _PlacePickerSheetState extends ConsumerState<PlacePickerSheet> {
                 Padding(
                   padding: const EdgeInsets.only(top: 12, bottom: 4),
                   child: Text(t.placePopular,
-                      style: const TextStyle(fontSize: 14, color: AppColors.muted)),
+                      style: TextStyle(fontSize: 14, color: AppColors.muted)),
                 ),
               Expanded(
                 child: ListView(
@@ -276,7 +276,7 @@ class _PlacePickerSheetState extends ConsumerState<PlacePickerSheet> {
                         leading: const Icon(Icons.location_on_outlined, color: AppColors.gold),
                         title: Text(p.nameFor(lang), style: const TextStyle(fontSize: 19)),
                         subtitle: Text(p.otherNameFor(lang),
-                            style: const TextStyle(fontSize: 14, color: AppColors.muted)),
+                            style: TextStyle(fontSize: 14, color: AppColors.muted)),
                         onTap: () => Navigator.pop(context, p),
                       ),
                     if (q.isNotEmpty && !_hasExactMatch) _addCard(t),

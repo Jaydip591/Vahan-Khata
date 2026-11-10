@@ -9,6 +9,7 @@ import '../../../core/ui/motion.dart';
 import '../../../core/locale_controller.dart';
 import '../../../core/providers.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/theme_mode_controller.dart';
 import '../../../core/ui/ink_header.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../core/ui/master_list.dart';
@@ -33,12 +34,12 @@ class MoreScreen extends ConsumerWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: Text(t.cancel, style: const TextStyle(fontSize: 17, color: AppColors.muted)),
+            child: Text(t.cancel, style: TextStyle(fontSize: 17, color: AppColors.muted)),
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
             child: Text(t.logout,
-                style: const TextStyle(fontSize: 17, color: AppColors.expense)),
+                style: TextStyle(fontSize: 17, color: AppColors.expense)),
           ),
         ],
       ),
@@ -51,6 +52,7 @@ class MoreScreen extends ConsumerWidget {
     final t = AppL10n.of(context);
     final auth = ref.watch(authControllerProvider);
     final locale = ref.watch(localeProvider);
+    final themeMode = ref.watch(themeModeProvider);
     final user = auth is Authenticated ? auth.user : null;
 
     return Scaffold(
@@ -88,7 +90,7 @@ class MoreScreen extends ConsumerWidget {
                 ],
                 const SizedBox(height: 10),
                 _Heading(t.settings),
-                Text(t.language, style: const TextStyle(fontSize: 14, color: AppColors.muted)),
+                Text(t.language, style: TextStyle(fontSize: 14, color: AppColors.muted)),
                 const SizedBox(height: 8),
                 Row(
                   children: [
@@ -110,6 +112,27 @@ class MoreScreen extends ConsumerWidget {
                   ],
                 ),
                 const SizedBox(height: 20),
+                Text(t.themeLabel, style: TextStyle(fontSize: 14, color: AppColors.muted)),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    for (final (i, m) in [
+                      (ThemeMode.system, t.themeSystem),
+                      (ThemeMode.light, t.themeLight),
+                      (ThemeMode.dark, t.themeDark),
+                    ].indexed) ...[
+                      if (i > 0) const SizedBox(width: 10),
+                      Expanded(
+                        child: _LangChip(
+                          label: m.$2,
+                          selected: themeMode == m.$1,
+                          onTap: () => ref.read(themeModeProvider.notifier).set(m.$1),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+                const SizedBox(height: 20),
                 const _VibrationRow(),
                 const SizedBox(height: 10),
                 const _VersionRow(),
@@ -120,7 +143,7 @@ class MoreScreen extends ConsumerWidget {
                   label: Text(t.logout),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.expense,
-                    side: const BorderSide(color: AppColors.expense, width: 2),
+                    side: BorderSide(color: AppColors.expense, width: 2),
                   ),
                 ),
               ],
@@ -148,8 +171,8 @@ class _LangChip extends StatelessWidget {
         height: 56,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: selected ? AppColors.ink : Colors.white,
-          border: Border.all(color: selected ? AppColors.ink : AppColors.fieldLine, width: 1.5),
+          color: selected ? AppColors.selected : AppColors.card,
+          border: Border.all(color: selected ? AppColors.selected : AppColors.fieldLine, width: 1.5),
           borderRadius: BorderRadius.circular(16),
         ),
         child: Text(
@@ -157,7 +180,7 @@ class _LangChip extends StatelessWidget {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w500,
-            color: selected ? Colors.white : AppColors.ink,
+            color: selected ? AppColors.onSelected : AppColors.text,
           ),
         ),
       ),
@@ -180,21 +203,21 @@ class _VibrationRowState extends ConsumerState<_VibrationRow> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.card,
         border: Border.all(color: AppColors.line),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
         children: [
-          const Icon(Icons.vibration_rounded, color: AppColors.ink),
+          Icon(Icons.vibration_rounded, color: AppColors.text),
           const SizedBox(width: 12),
           Expanded(
             child: Text(t.vibration, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
           ),
           Switch(
             value: Haptics.enabled,
-            activeTrackColor: AppColors.ink,
-            activeThumbColor: AppColors.gold,
+            activeTrackColor: AppColors.selected,
+            activeThumbColor: AppColors.selectedAccent,
             onChanged: (on) async {
               await Haptics.setEnabled(ref.read(sharedPreferencesProvider), on);
               if (mounted) setState(() {});
@@ -214,7 +237,7 @@ class _Heading extends StatelessWidget {
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.only(left: 4, bottom: 10),
         child: Text(text.toUpperCase(),
-            style: const TextStyle(
+            style: TextStyle(
                 fontSize: 13, letterSpacing: 0.8, color: AppColors.muted, fontWeight: FontWeight.w600)),
       );
 }
@@ -291,16 +314,16 @@ class _VersionRow extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.card,
         border: Border.all(color: AppColors.line),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
         children: [
-          const Icon(Icons.info_outline_rounded, color: AppColors.ink),
+          Icon(Icons.info_outline_rounded, color: AppColors.text),
           const SizedBox(width: 12),
           Expanded(child: Text(t.appVersion, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500))),
-          Text(version, style: const TextStyle(fontSize: 16, color: AppColors.muted)),
+          Text(version, style: TextStyle(fontSize: 16, color: AppColors.muted)),
         ],
       ),
     );

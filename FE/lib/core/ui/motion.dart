@@ -153,7 +153,7 @@ class _SkeletonListState extends State<SkeletonList> with SingleTickerProviderSt
             builder: (_, _) => Container(
               height: widget.height,
               decoration: BoxDecoration(
-                color: Color.lerp(AppColors.line, Colors.white, 0.25 + 0.5 * _c.value),
+                color: Color.lerp(AppColors.line, AppColors.card, 0.25 + 0.5 * _c.value),
                 borderRadius: BorderRadius.circular(16),
               ),
             ),

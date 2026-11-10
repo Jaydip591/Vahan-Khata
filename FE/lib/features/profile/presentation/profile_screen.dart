@@ -124,14 +124,14 @@ class _InfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.card,
         border: Border.all(color: AppColors.line),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
         children: [
           for (var i = 0; i < rows.length; i++) ...[
-            if (i > 0) const Divider(height: 1, color: AppColors.line, indent: 56),
+            if (i > 0) Divider(height: 1, color: AppColors.line, indent: 56),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               child: Row(
@@ -142,12 +142,12 @@ class _InfoCard extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(rows[i].$2, style: const TextStyle(fontSize: 13, color: AppColors.muted)),
+                        Text(rows[i].$2, style: TextStyle(fontSize: 13, color: AppColors.muted)),
                         Text(rows[i].$3,
                             style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w500,
-                                color: rows[i].$4 ? AppColors.muted : AppColors.ink)),
+                                color: rows[i].$4 ? AppColors.muted : AppColors.text)),
                       ],
                     ),
                   ),

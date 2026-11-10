@@ -123,7 +123,7 @@ class _PartyFormScreenState extends ConsumerState<PartyFormScreen> {
               },
             ),
             const SizedBox(height: 18),
-            Text(t.paymentCycle, style: const TextStyle(fontSize: 14, color: AppColors.muted)),
+            Text(t.paymentCycle, style: TextStyle(fontSize: 14, color: AppColors.muted)),
             const SizedBox(height: 8),
             Wrap(
               spacing: 8,

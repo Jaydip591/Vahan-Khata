@@ -95,7 +95,7 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
             const SizedBox(height: 14),
             _field(t.confirmPassword, _again, (v) => v == _new.text ? null : t.passwordMismatch),
             const SizedBox(height: 16),
-            Text(t.passwordChangeNote, style: const TextStyle(fontSize: 15, color: AppColors.muted)),
+            Text(t.passwordChangeNote, style: TextStyle(fontSize: 15, color: AppColors.muted)),
           ],
         ),
       ),

@@ -174,7 +174,7 @@ class PartyLedgerScreen extends ConsumerWidget {
                     const SizedBox(height: 20),
                     Text(
                       t.tripsHeading,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 14,
                         color: AppColors.muted,
                       ),
@@ -225,7 +225,7 @@ class PartyLedgerScreen extends ConsumerWidget {
                       const SizedBox(height: 12),
                       Text(
                         t.paymentsHeading,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 14,
                           color: AppColors.muted,
                         ),
@@ -235,7 +235,7 @@ class PartyLedgerScreen extends ConsumerWidget {
                         Container(
                           padding: const EdgeInsets.fromLTRB(14, 8, 4, 8),
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: AppColors.card,
                             border: Border.all(color: AppColors.line),
                             borderRadius: BorderRadius.circular(16),
                           ),
@@ -256,7 +256,7 @@ class PartyLedgerScreen extends ConsumerWidget {
                                   children: [
                                     Text(
                                       '+${formatRupees(p.amount)}',
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.w500,
                                         color: AppColors.income,
@@ -264,7 +264,7 @@ class PartyLedgerScreen extends ConsumerWidget {
                                     ),
                                     Text(
                                       '${formatDay(p.date)} · ${p.mode == 'cash' ? t.modeCash : t.modeOnline} · ${p.accountName}',
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 14,
                                         color: AppColors.muted,
                                       ),
@@ -276,7 +276,7 @@ class PartyLedgerScreen extends ConsumerWidget {
                                 StatusTag(t.advanceTag, TagKind.neutral),
                               IconButton(
                                 tooltip: t.delete,
-                                icon: const Icon(
+                                icon: Icon(
                                   Icons.delete_outline_rounded,
                                   color: AppColors.muted,
                                 ),

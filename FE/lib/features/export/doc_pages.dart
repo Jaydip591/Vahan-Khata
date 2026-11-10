@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
 import 'statement_doc.dart';
 
@@ -8,6 +7,18 @@ import 'statement_doc.dart';
 /// correctly) and then turned into pictures for the PDF.
 const kPageW = 595.0;
 const kPageH = 842.0;
+/// Shared documents are always printed light, whatever theme the app shows.
+abstract final class _P {
+  static const ink = Color(0xFF12161C);
+  static const gold = Color(0xFFC8A24A);
+  static const goldSoft = Color(0xFFF3EAD3);
+  static const ivory = Color(0xFFF6F3EE);
+  static const line = Color(0xFFE8E2D8);
+  static const muted = Color(0xFF7A7468);
+  static const income = Color(0xFF1F8A70);
+  static const expense = Color(0xFFD2574A);
+}
+
 const _pad = 28.0;
 const _footerH = 26.0;
 const _contentH = kPageH - 2 * _pad - _footerH;
@@ -36,7 +47,7 @@ class _Block {
 TextStyle _text(
   double size, {
   FontWeight w = FontWeight.w400,
-  Color c = AppColors.ink,
+  Color c = _P.ink,
 }) => TextStyle(
   fontFamily: AppTheme.fontFamily,
   fontSize: size,
@@ -58,7 +69,7 @@ Widget _cells(
     padding: const EdgeInsets.symmetric(horizontal: 6),
     decoration: bg == null
         ? const BoxDecoration(
-            border: Border(bottom: BorderSide(color: AppColors.line)),
+            border: Border(bottom: BorderSide(color: _P.line)),
           )
         : null,
     child: Row(
@@ -86,7 +97,7 @@ Widget _cells(
 
 Widget _headerRow(DocTable table) => Container(
   height: _headH,
-  color: AppColors.ink,
+  color: _P.ink,
   padding: const EdgeInsets.symmetric(horizontal: 6),
   child: Row(
     children: [
@@ -109,9 +120,9 @@ Widget _headerRow(DocTable table) => Container(
 );
 
 Color _tone(Tone t) => switch (t) {
-  Tone.neutral => AppColors.ink,
-  Tone.income => AppColors.income,
-  Tone.expense => AppColors.expense,
+  Tone.neutral => _P.ink,
+  Tone.income => _P.income,
+  Tone.expense => _P.expense,
 };
 
 List<_Block> _blocks(StatementDoc doc, String generatedOn) {
@@ -124,7 +135,7 @@ List<_Block> _blocks(StatementDoc doc, String generatedOn) {
         children: [
           Text(
             'વાહન ખાતા  ·  Vahan Khata',
-            style: _text(11, w: FontWeight.w600, c: AppColors.gold),
+            style: _text(11, w: FontWeight.w600, c: _P.gold),
           ),
           const SizedBox(height: 4),
           Text(doc.title, style: _text(22, w: FontWeight.w700)),
@@ -133,10 +144,10 @@ List<_Block> _blocks(StatementDoc doc, String generatedOn) {
             doc.subtitle,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: _text(14, c: AppColors.muted),
+            style: _text(14, c: _P.muted),
           ),
           const SizedBox(height: 2),
-          Text(generatedOn, style: _text(10.5, c: AppColors.muted)),
+          Text(generatedOn, style: _text(10.5, c: _P.muted)),
         ],
       ),
       keepWithNext: true,
@@ -159,9 +170,9 @@ List<_Block> _blocks(StatementDoc doc, String generatedOn) {
                       vertical: 8,
                     ),
                     decoration: BoxDecoration(
-                      color: AppColors.ivory,
+                      color: _P.ivory,
                       borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: AppColors.line),
+                      border: Border.all(color: _P.line),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -170,7 +181,7 @@ List<_Block> _blocks(StatementDoc doc, String generatedOn) {
                           s.label,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: _text(10.5, c: AppColors.muted),
+                          style: _text(10.5, c: _P.muted),
                         ),
                         const SizedBox(height: 3),
                         Text(
@@ -220,7 +231,7 @@ List<_Block> _blocks(StatementDoc doc, String generatedOn) {
       out.add(
         _Block(
           _rowH,
-          _cells(table, table.totals!, bold: true, bg: AppColors.goldSoft),
+          _cells(table, table.totals!, bold: true, bg: _P.goldSoft),
           table: table,
         ),
       );
@@ -281,7 +292,7 @@ Widget buildPage(List<Widget> blocks, int n, int total, String footerText) {
               height: _footerH,
               child: Align(
                 alignment: Alignment.bottomRight,
-                child: Text(footerText, style: _text(10, c: AppColors.muted)),
+                child: Text(footerText, style: _text(10, c: _P.muted)),
               ),
             ),
           ],

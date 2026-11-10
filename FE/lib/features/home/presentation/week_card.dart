@@ -21,7 +21,7 @@ class WeekCard extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 14, 16, 12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.card,
         border: Border.all(color: AppColors.line),
         borderRadius: BorderRadius.circular(18),
       ),
@@ -36,19 +36,19 @@ class WeekCard extends ConsumerWidget {
                 child: Text(t.thisWeek, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
               ),
               Text('${formatDay(week.start)} – ${formatDay(week.end)}',
-                  style: const TextStyle(fontSize: 13, color: AppColors.muted)),
+                  style: TextStyle(fontSize: 13, color: AppColors.muted)),
             ],
           ),
           const SizedBox(height: 12),
           if (week.isEmpty)
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),
-              child: Text(t.weekEmpty, style: const TextStyle(fontSize: 16, color: AppColors.muted)),
+              child: Text(t.weekEmpty, style: TextStyle(fontSize: 16, color: AppColors.muted)),
             )
           else ...[
             Row(
               children: [
-                _Stat(label: t.weekTrips, value: '${week.trips}', color: AppColors.ink),
+                _Stat(label: t.weekTrips, value: '${week.trips}', color: AppColors.text),
                 _Stat(label: t.weekEarned, value: formatRupees(week.income), color: AppColors.income),
                 _Stat(label: t.weekSpent, value: formatRupees(week.expense), color: AppColors.expense),
               ],
@@ -69,7 +69,7 @@ class WeekCard extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: 12),
-            Text(t.weekBarsNote, style: const TextStyle(fontSize: 13, color: AppColors.muted)),
+            Text(t.weekBarsNote, style: TextStyle(fontSize: 13, color: AppColors.muted)),
             const SizedBox(height: 6),
             SizedBox(height: 110, child: WeekBars(week: week)),
           ],
@@ -90,7 +90,7 @@ class _Stat extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(label, style: const TextStyle(fontSize: 14, color: AppColors.muted)),
+            Text(label, style: TextStyle(fontSize: 14, color: AppColors.muted)),
             FittedBox(
               fit: BoxFit.scaleDown,
               alignment: Alignment.centerLeft,
@@ -162,7 +162,7 @@ class _WeekBarsState extends State<WeekBars> {
                       style: TextStyle(
                           fontSize: 12,
                           fontWeight: today ? FontWeight.w700 : FontWeight.w400,
-                          color: today ? AppColors.ink : AppColors.muted)),
+                          color: today ? AppColors.text : AppColors.muted)),
                 );
               },
             ),

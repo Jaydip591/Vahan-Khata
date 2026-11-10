@@ -31,7 +31,7 @@ class PendingStrip extends ConsumerWidget {
             children: [
               Icon(
                 failed ? Icons.error_outline_rounded : Icons.cloud_off_rounded,
-                color: failed ? Colors.white : AppColors.ink,
+                color: failed ? Colors.white : AppColors.text,
               ),
               const SizedBox(width: 10),
               Expanded(
@@ -40,13 +40,13 @@ class PendingStrip extends ConsumerWidget {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
-                    color: failed ? Colors.white : AppColors.ink,
+                    color: failed ? Colors.white : AppColors.text,
                   ),
                 ),
               ),
               Icon(
                 Icons.chevron_right_rounded,
-                color: failed ? Colors.white : AppColors.ink,
+                color: failed ? Colors.white : AppColors.text,
               ),
             ],
           ),
@@ -68,7 +68,7 @@ class PendingTile extends StatelessWidget {
       color: AppColors.goldSoft,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
-        side: const BorderSide(color: AppColors.goldLine),
+        side: BorderSide(color: AppColors.goldLine),
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
@@ -77,7 +77,7 @@ class PendingTile extends StatelessWidget {
           padding: const EdgeInsets.all(14),
           child: Row(
             children: [
-              Icon(_icon(item.kind), color: AppColors.ink, size: 26),
+              Icon(_icon(item.kind), color: AppColors.text, size: 26),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
@@ -93,7 +93,7 @@ class PendingTile extends StatelessWidget {
                     if (item.subtitle.isNotEmpty)
                       Text(
                         item.subtitle,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 14,
                           color: AppColors.muted,
                         ),
@@ -103,7 +103,7 @@ class PendingTile extends StatelessWidget {
                       children: [
                         Text(
                           formatDay(item.date),
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 14,
                             color: AppColors.muted,
                           ),
@@ -186,7 +186,7 @@ class PendingScreen extends ConsumerWidget {
                     children: [
                       Text(
                         t.pendingHelp,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 15,
                           color: AppColors.muted,
                         ),
@@ -233,7 +233,7 @@ class _PendingCard extends ConsumerWidget {
             padding: const EdgeInsets.fromLTRB(6, 6, 6, 0),
             child: Text(
               '${t.notSentFailedHelp}  (${item.error ?? ''})',
-              style: const TextStyle(fontSize: 14, color: AppColors.expense),
+              style: TextStyle(fontSize: 14, color: AppColors.expense),
             ),
           ),
         Align(
@@ -257,7 +257,7 @@ class _PendingCard extends ConsumerWidget {
                       onPressed: () => Navigator.pop(ctx, true),
                       child: Text(
                         t.delete,
-                        style: const TextStyle(color: AppColors.expense),
+                        style: TextStyle(color: AppColors.expense),
                       ),
                     ),
                   ],
@@ -265,13 +265,13 @@ class _PendingCard extends ConsumerWidget {
               );
               if (ok == true) ref.read(outboxProvider.notifier).remove(item.id);
             },
-            icon: const Icon(
+            icon: Icon(
               Icons.delete_outline_rounded,
               color: AppColors.expense,
             ),
             label: Text(
               t.delete,
-              style: const TextStyle(fontSize: 16, color: AppColors.expense),
+              style: TextStyle(fontSize: 16, color: AppColors.expense),
             ),
           ),
         ),

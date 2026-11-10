@@ -137,7 +137,7 @@ class _AccountFormScreenState extends ConsumerState<AccountFormScreen> {
               controller: _opening,
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
               inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.]'))],
-              suffixIcon: const Padding(
+              suffixIcon: Padding(
                 padding: EdgeInsets.all(14),
                 child: Text('₹', style: TextStyle(fontSize: 20, color: AppColors.muted)),
               ),

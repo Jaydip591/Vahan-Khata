@@ -324,5 +324,9 @@
   "weekLeft": "Left",
   "weekEmpty": "No trip or expense this week yet",
   "weekBarsNote": "Earning each day",
-  "weekdaysShort": "Mon,Tue,Wed,Thu,Fri,Sat,Sun"
+  "weekdaysShort": "Mon,Tue,Wed,Thu,Fri,Sat,Sun",
+  "themeLabel": "Look (light / dark)",
+  "themeSystem": "Like phone",
+  "themeLight": "Light",
+  "themeDark": "Dark"
 }

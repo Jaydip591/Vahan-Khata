@@ -1962,6 +1962,30 @@ abstract class AppL10n {
   /// In gu, this message translates to:
   /// **'સોમ,મંગળ,બુધ,ગુરુ,શુક્ર,શનિ,રવિ'**
   String get weekdaysShort;
+
+  /// No description provided for @themeLabel.
+  ///
+  /// In gu, this message translates to:
+  /// **'દેખાવ (લાઇટ / ડાર્ક)'**
+  String get themeLabel;
+
+  /// No description provided for @themeSystem.
+  ///
+  /// In gu, this message translates to:
+  /// **'ફોન મુજબ'**
+  String get themeSystem;
+
+  /// No description provided for @themeLight.
+  ///
+  /// In gu, this message translates to:
+  /// **'લાઇટ'**
+  String get themeLight;
+
+  /// No description provided for @themeDark.
+  ///
+  /// In gu, this message translates to:
+  /// **'ડાર્ક'**
+  String get themeDark;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

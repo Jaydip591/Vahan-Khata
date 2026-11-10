@@ -23,14 +23,14 @@ class AppChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fg = selected ? Colors.white : AppColors.ink;
+    final fg = selected ? AppColors.onSelected : AppColors.text;
     return PressScale(child: AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       child: Material(
-      color: selected ? AppColors.ink : Colors.white,
+      color: selected ? AppColors.selected : AppColors.card,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(14),
-        side: BorderSide(color: selected ? AppColors.ink : AppColors.fieldLine, width: 1.5),
+        side: BorderSide(color: selected ? AppColors.selected : AppColors.fieldLine, width: 1.5),
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(14),
@@ -47,7 +47,7 @@ class AppChip extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 if (icon != null) ...[
-                  Icon(icon, size: 22, color: selected ? AppColors.gold : AppColors.ink),
+                  Icon(icon, size: 22, color: selected ? AppColors.selectedAccent : AppColors.text),
                   const SizedBox(width: 8),
                 ],
                 Flexible(

@@ -985,4 +985,16 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get weekdaysShort => 'Mon,Tue,Wed,Thu,Fri,Sat,Sun';
+
+  @override
+  String get themeLabel => 'Look (light / dark)';
+
+  @override
+  String get themeSystem => 'Like phone';
+
+  @override
+  String get themeLight => 'Light';
+
+  @override
+  String get themeDark => 'Dark';
 }

@@ -145,10 +145,10 @@ class _VehicleFormScreenState extends ConsumerState<VehicleFormScreen> {
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: Material(
-        color: Colors.white,
+        color: AppColors.card,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(14),
-          side: const BorderSide(color: AppColors.fieldLine, width: 1.5),
+          side: BorderSide(color: AppColors.fieldLine, width: 1.5),
         ),
         child: InkWell(
           borderRadius: BorderRadius.circular(14),
@@ -160,18 +160,18 @@ class _VehicleFormScreenState extends ConsumerState<VehicleFormScreen> {
             padding: const EdgeInsets.fromLTRB(14, 6, 6, 6),
             child: Row(
               children: [
-                const Icon(Icons.event_outlined, color: AppColors.muted),
+                Icon(Icons.event_outlined, color: AppColors.muted),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(label, style: const TextStyle(fontSize: 13, color: AppColors.muted)),
+                      Text(label, style: TextStyle(fontSize: 13, color: AppColors.muted)),
                       Text(
                         value == null ? t.pickDate : formatDate(value),
                         style: TextStyle(
                           fontSize: 17,
-                          color: value == null ? AppColors.muted : AppColors.ink,
+                          color: value == null ? AppColors.muted : AppColors.text,
                         ),
                       ),
                     ],
@@ -180,7 +180,7 @@ class _VehicleFormScreenState extends ConsumerState<VehicleFormScreen> {
                 if (value != null)
                   IconButton(
                     tooltip: t.cancel,
-                    icon: const Icon(Icons.close_rounded, color: AppColors.muted),
+                    icon: Icon(Icons.close_rounded, color: AppColors.muted),
                     onPressed: () => setState(() => onChanged(null)),
                   ),
               ],
@@ -205,7 +205,7 @@ class _VehicleFormScreenState extends ConsumerState<VehicleFormScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(t.vehicleType, style: const TextStyle(fontSize: 14, color: AppColors.muted)),
+            Text(t.vehicleType, style: TextStyle(fontSize: 14, color: AppColors.muted)),
             const SizedBox(height: 8),
             GridView.count(
               padding: EdgeInsets.zero,
@@ -230,7 +230,7 @@ class _VehicleFormScreenState extends ConsumerState<VehicleFormScreen> {
               ],
             ),
             const SizedBox(height: 18),
-            Text(t.fuelType, style: const TextStyle(fontSize: 14, color: AppColors.muted)),
+            Text(t.fuelType, style: TextStyle(fontSize: 14, color: AppColors.muted)),
             const SizedBox(height: 8),
             Wrap(
               spacing: 8,
@@ -280,7 +280,7 @@ class _VehicleFormScreenState extends ConsumerState<VehicleFormScreen> {
               color: AppColors.goldSoft,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(14),
-                side: const BorderSide(color: AppColors.goldLine),
+                side: BorderSide(color: AppColors.goldLine),
               ),
               child: InkWell(
                 borderRadius: BorderRadius.circular(14),

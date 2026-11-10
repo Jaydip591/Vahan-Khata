@@ -83,7 +83,7 @@ class _MonthDetailScreenState extends ConsumerState<MonthDetailScreen> {
             ),
           ),
           Container(
-            color: Colors.white,
+            color: AppColors.card,
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             child: const MonthSwitcher(),
           ),
@@ -105,7 +105,7 @@ class _MonthDetailScreenState extends ConsumerState<MonthDetailScreen> {
                               Expanded(
                                 child: Text(
                                   t.profitLabel,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 17,
                                     color: AppColors.muted,
                                   ),
@@ -213,7 +213,7 @@ class _MonthDetailScreenState extends ConsumerState<MonthDetailScreen> {
                                       ),
                                       Text(
                                         '${t.tripsCount(v.trips)}  ·  ${t.expenseLabel} ${formatRupees(v.expense)}',
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontSize: 14,
                                           color: AppColors.muted,
                                         ),
@@ -229,7 +229,7 @@ class _MonthDetailScreenState extends ConsumerState<MonthDetailScreen> {
                                     color: profitColor(v.profit),
                                   ),
                                 ),
-                                const Icon(
+                                Icon(
                                   Icons.chevron_right_rounded,
                                   color: AppColors.muted,
                                 ),
@@ -300,7 +300,7 @@ class _MonthDetailScreenState extends ConsumerState<MonthDetailScreen> {
     child: Text(
       text,
       textAlign: TextAlign.center,
-      style: const TextStyle(fontSize: 18, color: AppColors.muted),
+      style: TextStyle(fontSize: 18, color: AppColors.muted),
     ),
   );
 }

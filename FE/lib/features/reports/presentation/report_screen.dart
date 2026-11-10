@@ -45,7 +45,7 @@ class _ReportScreenState extends ConsumerState<ReportScreen> {
         InkHeader(title: t.tabReport),
         if (_tab != _Tab.balance)
           Container(
-            color: Colors.white,
+            color: AppColors.card,
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             child: const MonthSwitcher(),
           ),
@@ -155,7 +155,7 @@ class _VehicleCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(row.name, style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w600)),
-                    Text(row.number, style: const TextStyle(fontSize: 14, color: AppColors.muted)),
+                    Text(row.number, style: TextStyle(fontSize: 14, color: AppColors.muted)),
                   ],
                 ),
               ),
@@ -165,7 +165,7 @@ class _VehicleCard extends StatelessWidget {
                   Text(formatRupees(row.profit),
                       style: TextStyle(
                           fontSize: 24, fontWeight: FontWeight.w600, color: profitColor(row.profit))),
-                  Text(t.profitLabel, style: const TextStyle(fontSize: 13, color: AppColors.muted)),
+                  Text(t.profitLabel, style: TextStyle(fontSize: 13, color: AppColors.muted)),
                 ],
               ),
             ],
@@ -179,12 +179,12 @@ class _VehicleCard extends StatelessWidget {
             spacing: 16,
             runSpacing: 4,
             children: [
-              Text(t.tripsCount(row.trips), style: const TextStyle(fontSize: 15, color: AppColors.muted)),
+              Text(t.tripsCount(row.trips), style: TextStyle(fontSize: 15, color: AppColors.muted)),
               if (row.mileage != null)
                 Text(row.mileageIsKg ? t.mileageKg(row.mileage!.toStringAsFixed(1)) : t.mileageValue(row.mileage!.toStringAsFixed(1)),
-                    style: const TextStyle(fontSize: 15, color: AppColors.muted)),
+                    style: TextStyle(fontSize: 15, color: AppColors.muted)),
               if (row.km != null)
-                Text(t.kmValue(row.km!), style: const TextStyle(fontSize: 15, color: AppColors.muted)),
+                Text(t.kmValue(row.km!), style: TextStyle(fontSize: 15, color: AppColors.muted)),
             ],
           ),
         ],
@@ -203,7 +203,7 @@ class _BarRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Row(
         children: [
-          SizedBox(width: 64, child: Text(label, style: const TextStyle(fontSize: 14, color: AppColors.muted))),
+          SizedBox(width: 64, child: Text(label, style: TextStyle(fontSize: 14, color: AppColors.muted))),
           Expanded(child: MeterBar(fraction: top == 0 ? 0 : value / top, color: color)),
           const SizedBox(width: 10),
           SizedBox(
@@ -247,11 +247,11 @@ class _PartyTab extends ConsumerWidget {
                                   style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w600)),
                             ),
                             Text(t.tripsCount(r.trips),
-                                style: const TextStyle(fontSize: 14, color: AppColors.muted)),
+                                style: TextStyle(fontSize: 14, color: AppColors.muted)),
                           ],
                         ),
                         const SizedBox(height: 10),
-                        _BarRow(label: t.bhadaLabel, value: r.bhada, top: top, color: AppColors.ink),
+                        _BarRow(label: t.bhadaLabel, value: r.bhada, top: top, color: AppColors.text),
                         const SizedBox(height: 6),
                         _BarRow(label: t.receivedLabel, value: r.received, top: top, color: AppColors.income),
                         const SizedBox(height: 10),
@@ -259,7 +259,7 @@ class _PartyTab extends ConsumerWidget {
                           children: [
                             Expanded(
                               child: Text(t.homeDueCard,
-                                  style: const TextStyle(fontSize: 15, color: AppColors.muted)),
+                                  style: TextStyle(fontSize: 15, color: AppColors.muted)),
                             ),
                             Text(formatRupees(r.balance),
                                 style: TextStyle(
@@ -352,10 +352,10 @@ class _ExpenseTab extends ConsumerWidget {
                       children: [
                         Expanded(
                           child: Text(t.totalExpense,
-                              style: const TextStyle(fontSize: 17, color: AppColors.muted)),
+                              style: TextStyle(fontSize: 17, color: AppColors.muted)),
                         ),
                         Text(formatRupees(r.total),
-                            style: const TextStyle(
+                            style: TextStyle(
                                 fontSize: 26, fontWeight: FontWeight.w600, color: AppColors.expense)),
                       ],
                     ),
@@ -387,7 +387,7 @@ class _ExpenseTab extends ConsumerWidget {
                               const SizedBox(width: 10),
                               Text(
                                   '${(r.total == 0 ? 0 : c.amount / r.total * 100).round()}%',
-                                  style: const TextStyle(fontSize: 14, color: AppColors.muted)),
+                                  style: TextStyle(fontSize: 14, color: AppColors.muted)),
                             ],
                           ),
                         ],
@@ -426,8 +426,8 @@ class _BalanceTab extends ConsumerWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(t.balanceTotal, style: const TextStyle(fontSize: 17, color: AppColors.muted)),
-                              Text(t.balanceAllTime, style: const TextStyle(fontSize: 13, color: AppColors.muted)),
+                              Text(t.balanceTotal, style: TextStyle(fontSize: 17, color: AppColors.muted)),
+                              Text(t.balanceAllTime, style: TextStyle(fontSize: 13, color: AppColors.muted)),
                             ],
                           ),
                         ),
@@ -445,7 +445,7 @@ class _BalanceTab extends ConsumerWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
                       child: Text(t.balanceNoAccount(formatRupees(r.unassignedSpent)),
-                          style: const TextStyle(fontSize: 14, color: AppColors.muted)),
+                          style: TextStyle(fontSize: 14, color: AppColors.muted)),
                     ),
                 ],
               ),
@@ -470,7 +470,7 @@ class _AccountCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(label, style: const TextStyle(fontSize: 13, color: AppColors.muted)),
+              Text(label, style: TextStyle(fontSize: 13, color: AppColors.muted)),
               Text(formatRupees(value), style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: color)),
             ],
           ),
@@ -494,7 +494,7 @@ class _AccountCard extends StatelessWidget {
           const SizedBox(height: 10),
           Row(
             children: [
-              part(t.balanceOpening, row.opening, AppColors.ink),
+              part(t.balanceOpening, row.opening, AppColors.text),
               part(t.balanceIn, row.received, AppColors.income),
               part(t.balanceOut, row.spent, AppColors.expense),
             ],

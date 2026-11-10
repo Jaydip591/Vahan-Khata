@@ -107,7 +107,7 @@ class _TripDetailScreenState extends ConsumerState<TripDetailScreen> {
             Expanded(
               child: Text(
                 label,
-                style: const TextStyle(fontSize: 16, color: AppColors.muted),
+                style: TextStyle(fontSize: 16, color: AppColors.muted),
               ),
             ),
             Text(
@@ -130,7 +130,7 @@ class _TripDetailScreenState extends ConsumerState<TripDetailScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.card,
         border: Border.all(color: AppColors.line),
         borderRadius: BorderRadius.circular(16),
       ),
@@ -144,7 +144,7 @@ class _TripDetailScreenState extends ConsumerState<TripDetailScreen> {
                     style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
               ),
               Text(formatRupees(total),
-                  style: const TextStyle(
+                  style: TextStyle(
                       fontSize: 20, fontWeight: FontWeight.w500, color: AppColors.expense)),
             ],
           ),
@@ -158,7 +158,7 @@ class _TripDetailScreenState extends ConsumerState<TripDetailScreen> {
               ),
             )
           else if (list.isEmpty && expenses.hasValue)
-            Text(t.noTripExpenses, style: const TextStyle(fontSize: 15, color: AppColors.muted)),
+            Text(t.noTripExpenses, style: TextStyle(fontSize: 15, color: AppColors.muted)),
           for (final e in list)
             InkWell(
               borderRadius: BorderRadius.circular(10),
@@ -167,19 +167,19 @@ class _TripDetailScreenState extends ConsumerState<TripDetailScreen> {
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: Row(
                   children: [
-                    Icon(e.category.icon, size: 22, color: AppColors.ink),
+                    Icon(e.category.icon, size: 22, color: AppColors.text),
                     const SizedBox(width: 10),
                     Expanded(
                       child: Text(e.category.label(t), style: const TextStyle(fontSize: 17)),
                     ),
                     Text(formatRupees(e.amount),
-                        style: const TextStyle(fontSize: 17, color: AppColors.expense)),
+                        style: TextStyle(fontSize: 17, color: AppColors.expense)),
                   ],
                 ),
               ),
             ),
           const SizedBox(height: 8),
-          Text(t.addTripExpense, style: const TextStyle(fontSize: 14, color: AppColors.muted)),
+          Text(t.addTripExpense, style: TextStyle(fontSize: 14, color: AppColors.muted)),
           const SizedBox(height: 8),
           Wrap(
             spacing: 8,
@@ -202,7 +202,7 @@ class _TripDetailScreenState extends ConsumerState<TripDetailScreen> {
               children: [
                 Expanded(
                   child: Text(t.tripNet,
-                      style: const TextStyle(fontSize: 16, color: AppColors.muted)),
+                      style: TextStyle(fontSize: 16, color: AppColors.muted)),
                 ),
                 CountUpRupees(
                   trip.bhada - total,
@@ -308,7 +308,7 @@ class _TripDetailScreenState extends ConsumerState<TripDetailScreen> {
                     vertical: 8,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: AppColors.card,
                     border: Border.all(color: AppColors.line),
                     borderRadius: BorderRadius.circular(16),
                   ),
@@ -345,7 +345,7 @@ class _TripDetailScreenState extends ConsumerState<TripDetailScreen> {
                     padding: const EdgeInsets.only(top: 12),
                     child: Text(
                       _error!,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: AppColors.expense,
                         fontSize: 15,
                       ),

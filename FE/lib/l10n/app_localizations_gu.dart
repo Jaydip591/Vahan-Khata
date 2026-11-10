@@ -981,4 +981,16 @@ class AppL10nGu extends AppL10n {
 
   @override
   String get weekdaysShort => 'સોમ,મંગળ,બુધ,ગુરુ,શુક્ર,શનિ,રવિ';
+
+  @override
+  String get themeLabel => 'દેખાવ (લાઇટ / ડાર્ક)';
+
+  @override
+  String get themeSystem => 'ફોન મુજબ';
+
+  @override
+  String get themeLight => 'લાઇટ';
+
+  @override
+  String get themeDark => 'ડાર્ક';
 }

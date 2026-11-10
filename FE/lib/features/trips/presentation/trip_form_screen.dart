@@ -248,7 +248,7 @@ class _TripFormScreenState extends ConsumerState<TripFormScreen> {
     padding: const EdgeInsets.only(bottom: 8),
     child: Text(
       text,
-      style: const TextStyle(fontSize: 14, color: AppColors.muted),
+      style: TextStyle(fontSize: 14, color: AppColors.muted),
     ),
   );
 
@@ -273,10 +273,10 @@ class _TripFormScreenState extends ConsumerState<TripFormScreen> {
   ) {
     return Expanded(
       child: Material(
-        color: Colors.white,
+        color: AppColors.card,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(14),
-          side: const BorderSide(color: AppColors.fieldLine, width: 1.5),
+          side: BorderSide(color: AppColors.fieldLine, width: 1.5),
         ),
         child: InkWell(
           borderRadius: BorderRadius.circular(14),
@@ -296,7 +296,7 @@ class _TripFormScreenState extends ConsumerState<TripFormScreen> {
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontSize: 18,
-                        color: place == null ? AppColors.muted : AppColors.ink,
+                        color: place == null ? AppColors.muted : AppColors.text,
                       ),
                     ),
                   ),
@@ -402,7 +402,7 @@ class _TripFormScreenState extends ConsumerState<TripFormScreen> {
               ),
               IconButton(
                 tooltip: '⇄',
-                icon: const Icon(
+                icon: Icon(
                   Icons.swap_horiz_rounded,
                   color: AppColors.muted,
                 ),
@@ -426,7 +426,7 @@ class _TripFormScreenState extends ConsumerState<TripFormScreen> {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.card,
               border: Border.all(color: AppColors.line),
               borderRadius: BorderRadius.circular(16),
             ),
@@ -456,7 +456,7 @@ class _TripFormScreenState extends ConsumerState<TripFormScreen> {
                           ),
                           Text(
                             t.tapToType,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 12,
                               color: AppColors.muted,
                             ),
@@ -534,14 +534,14 @@ class _TripFormScreenState extends ConsumerState<TripFormScreen> {
                     children: [
                       Text(
                         t.advanceLabel,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 13,
                           color: AppColors.muted,
                         ),
                       ),
                       Text(
                         formatRupees(advance),
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
                           color: AppColors.income,
@@ -554,7 +554,7 @@ class _TripFormScreenState extends ConsumerState<TripFormScreen> {
                     children: [
                       Text(
                         t.balanceLeft,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 13,
                           color: AppColors.muted,
                         ),

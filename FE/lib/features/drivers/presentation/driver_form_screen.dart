@@ -126,7 +126,7 @@ class _DriverFormScreenState extends ConsumerState<DriverFormScreen> {
               },
             ),
             const SizedBox(height: 18),
-            Text(t.defaultVehicle, style: const TextStyle(fontSize: 14, color: AppColors.muted)),
+            Text(t.defaultVehicle, style: TextStyle(fontSize: 14, color: AppColors.muted)),
             const SizedBox(height: 8),
             Wrap(
               spacing: 8,

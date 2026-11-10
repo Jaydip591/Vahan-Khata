@@ -68,7 +68,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
             ),
           ),
           Container(
-            color: Colors.white,
+            color: AppColors.card,
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             child: const MonthSwitcher(),
           ),
@@ -204,7 +204,7 @@ class _VehicleDetailScreenState extends ConsumerState<VehicleDetailScreen> {
     child: Text(
       text,
       textAlign: TextAlign.center,
-      style: const TextStyle(fontSize: 18, color: AppColors.muted),
+      style: TextStyle(fontSize: 18, color: AppColors.muted),
     ),
   );
 }
