@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:package_info_plus/package_info_plus.dart';
+
 import '../../../core/haptics.dart';
+import '../../../core/ui/motion.dart';
 import '../../../core/locale_controller.dart';
 import '../../../core/providers.dart';
 import '../../../core/theme/app_colors.dart';
@@ -66,41 +69,9 @@ class MoreScreen extends ConsumerWidget {
             child: ListView(
               padding: const EdgeInsets.all(16),
               children: [
-                if (user != null && user.name.isNotEmpty)
-                  Container(
-                    padding: const EdgeInsets.all(14),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: AppColors.line),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 24,
-                          backgroundColor: AppColors.ink,
-                          child: Text(
-                            user.name.characters.first.toUpperCase(),
-                            style: const TextStyle(
-                                color: AppColors.gold, fontSize: 20, fontWeight: FontWeight.w500),
-                          ),
-                        ),
-                        const SizedBox(width: 14),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(user.name,
-                                  style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w500)),
-                              Text('@${user.username}',
-                                  style: const TextStyle(fontSize: 14, color: AppColors.muted)),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                if (user != null && user.name.isNotEmpty) _ProfileCard(name: user.name, username: user.username),
                 const SizedBox(height: 20),
+                _Heading(t.manage),
                 for (final item in [
                   (Icons.local_shipping_rounded, t.vehicles, '/vehicles'),
                   (Icons.badge_rounded, t.drivers, '/drivers'),
@@ -116,6 +87,7 @@ class MoreScreen extends ConsumerWidget {
                   const SizedBox(height: 10),
                 ],
                 const SizedBox(height: 10),
+                _Heading(t.settings),
                 Text(t.language, style: const TextStyle(fontSize: 14, color: AppColors.muted)),
                 const SizedBox(height: 8),
                 Row(
@@ -139,6 +111,8 @@ class MoreScreen extends ConsumerWidget {
                 ),
                 const SizedBox(height: 20),
                 const _VibrationRow(),
+                const SizedBox(height: 10),
+                const _VersionRow(),
                 const SizedBox(height: 32),
                 OutlinedButton.icon(
                   onPressed: () => _confirmLogout(context, ref),
@@ -226,6 +200,107 @@ class _VibrationRowState extends ConsumerState<_VibrationRow> {
               if (mounted) setState(() {});
             },
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class _Heading extends StatelessWidget {
+  const _Heading(this.text);
+  final String text;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.only(left: 4, bottom: 10),
+        child: Text(text.toUpperCase(),
+            style: const TextStyle(
+                fontSize: 13, letterSpacing: 0.8, color: AppColors.muted, fontWeight: FontWeight.w600)),
+      );
+}
+
+/// Avatar card at the top; opens the profile.
+class _ProfileCard extends StatelessWidget {
+  const _ProfileCard({required this.name, required this.username});
+  final String name;
+  final String username;
+
+  @override
+  Widget build(BuildContext context) {
+    return PressScale(
+      child: Material(
+        color: AppColors.ink,
+        borderRadius: BorderRadius.circular(18),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(18),
+          onTap: () {
+            Haptics.tap();
+            context.push('/profile');
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              children: [
+                Container(
+                  width: 56,
+                  height: 56,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: AppColors.ink2,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: AppColors.gold, width: 2),
+                  ),
+                  child: Text(
+                    name.characters.first.toUpperCase(),
+                    style: const TextStyle(color: AppColors.gold, fontSize: 24, fontWeight: FontWeight.w600),
+                  ),
+                ),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(name,
+                          style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600)),
+                      Text('@$username', style: const TextStyle(fontSize: 14, color: AppColors.mutedOnInk)),
+                    ],
+                  ),
+                ),
+                const Icon(Icons.chevron_right_rounded, color: AppColors.gold, size: 30),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+final appVersionProvider = FutureProvider<String>((ref) async {
+  final info = await PackageInfo.fromPlatform();
+  return '${info.version} (${info.buildNumber})';
+});
+
+class _VersionRow extends ConsumerWidget {
+  const _VersionRow();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final t = AppL10n.of(context);
+    final version = ref.watch(appVersionProvider).value ?? '';
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: AppColors.line),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Row(
+        children: [
+          const Icon(Icons.info_outline_rounded, color: AppColors.ink),
+          const SizedBox(width: 12),
+          Expanded(child: Text(t.appVersion, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500))),
+          Text(version, style: const TextStyle(fontSize: 16, color: AppColors.muted)),
         ],
       ),
     );

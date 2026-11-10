@@ -116,8 +116,8 @@ A. Open 4a items
 - [x] A2. Khata payment rows show cash/online and the account name.
 
 B. Real-app UX
-- [ ] B1. App identity: real launcher icon (adaptive, ink background + gold truck/ledger mark; Claude designs the logo, user may swap it later), ink status bar, native splash in ink + gold with the LOGO ONLY (no text: the splash shows before Flutter knows the in-app language). Use flutter_launcher_icons / flutter_native_splash or hand-made Android resources. Launcher name stays as today: Android picks it from the PHONE language (`values/strings.xml` "Vahan Khata", `values-gu/strings.xml` "વાહન ખાતા"); user is fine with that. Do not use the activity-alias trick to follow the in-app language. Today the phone shows the default Flutter icon and a white launch screen.
-- [ ] B2. Profile and settings
+- [x] B1. App identity: real launcher icon (adaptive, ink background + gold truck/ledger mark; Claude designs the logo, user may swap it later), ink status bar, native splash in ink + gold with the LOGO ONLY (no text: the splash shows before Flutter knows the in-app language). Use flutter_launcher_icons / flutter_native_splash or hand-made Android resources. Launcher name stays as today: Android picks it from the PHONE language (`values/strings.xml` "Vahan Khata", `values-gu/strings.xml` "વાહન ખાતા"); user is fine with that. Do not use the activity-alias trick to follow the in-app language. Today the phone shows the default Flutter icon and a white launch screen.
+- [x] B2. Profile and settings
   - Profile screen from the avatar card in More: big initial avatar, name, @username, company name, phone (if present), role (superadmin). Edit own name/phone. Needs `GET/PATCH /api/v1/users/me` (GET exists, check PATCH) and the company name in the response.
   - Change password: new endpoint (old + new password; revoke the user's other sessions; tests).
   - Settings section: language, vibration switch (exists), dark mode switch (B4), app version (package_info_plus), logout. No help/contact line for now (user). Keep the existing More list (vehicles, drivers, parties, accounts, users).

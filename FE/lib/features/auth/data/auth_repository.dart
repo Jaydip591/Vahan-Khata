@@ -47,6 +47,30 @@ class AuthRepository {
     return AppUser.fromJson(json);
   }
 
+  /// Changes the logged-in user's own name and phone ("" clears the phone).
+  Future<AppUser> updateProfile({String? name, String? phone}) async {
+    final r = await api.dio.patch('/api/v1/users/me', data: {
+      'name': ?name,
+      'phone': ?phone,
+    });
+    final json = r.data as Map<String, dynamic>;
+    await storage.saveUser(json);
+    return AppUser.fromJson(json);
+  }
+
+  /// Changes the password. The server logs out every other phone and gives this
+  /// phone a fresh session, which is saved here. A wrong old password is a 400.
+  Future<void> changePassword(String oldPassword, String newPassword) async {
+    final r = await api.dio.post('/api/v1/auth/change-password', data: {
+      'old_password': oldPassword,
+      'new_password': newPassword,
+    });
+    await storage.saveSession(
+      access: r.data['access_token'] as String,
+      refresh: r.data['refresh_token'] as String,
+    );
+  }
+
   /// Ends the session on this phone. The server call is best effort: the
   /// local session is always cleared.
   Future<void> logout() async {

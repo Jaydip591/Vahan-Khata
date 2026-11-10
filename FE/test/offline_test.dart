@@ -194,6 +194,7 @@ void main() {
     await saveTollOffline(t);
     await tapIt(t, find.text('હોમ').last);
     await tapIt(t, find.byIcon(Icons.menu_rounded).first);
+    await t.scrollUntilVisible(find.text('લોગઆઉટ'), 300, scrollable: find.byType(Scrollable).first);
     await tapIt(t, find.text('લોગઆઉટ'));
     expect(find.textContaining('1 એન્ટ્રી હજી મોકલાઈ નથી'), findsOneWidget);
     await endTest(t);

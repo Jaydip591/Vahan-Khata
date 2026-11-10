@@ -14,7 +14,9 @@ from apps.auth.schemas.auth import (
     TokenResponse,
 )
 from apps.auth.services.auth_service import AuthService
-from core.dependencies import get_db
+from apps.user.models.user import User
+from apps.user.schemas.user import ChangePasswordRequest
+from core.dependencies import get_current_user, get_db
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
@@ -33,3 +35,16 @@ async def refresh(payload: RefreshRequest, db: AsyncSession = Depends(get_db)) -
 async def logout(payload: LogoutRequest, db: AsyncSession = Depends(get_db)) -> Response:
     await AuthService.logout(db, payload.refresh_token)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+@router.post(
+    "/change-password",
+    response_model=TokenResponse,
+    summary="Change your password; other phones are logged out and this one gets a new session",
+)
+async def change_password(
+    payload: ChangePasswordRequest,
+    user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+) -> TokenResponse:
+    return await AuthService.change_password(db, user, payload)

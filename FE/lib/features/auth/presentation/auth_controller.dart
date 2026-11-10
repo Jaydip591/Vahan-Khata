@@ -68,6 +68,14 @@ class AuthController extends Notifier<AuthState> {
     }
   }
 
+  Future<void> updateProfile({String? name, String? phone}) async {
+    final user = await _repo.updateProfile(name: name, phone: phone);
+    if (state is Authenticated) state = Authenticated(user);
+  }
+
+  Future<void> changePassword(String oldPassword, String newPassword) =>
+      _repo.changePassword(oldPassword, newPassword);
+
   Future<void> logout() async {
     await _repo.logout();
     await ref.read(responseCacheProvider).clear();

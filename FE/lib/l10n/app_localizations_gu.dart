@@ -890,4 +890,71 @@ class AppL10nGu extends AppL10n {
 
   @override
   String get inactiveTag => 'બંધ';
+
+  @override
+  String get profile => 'પ્રોફાઇલ';
+
+  @override
+  String get editProfile => 'પ્રોફાઇલ બદલો';
+
+  @override
+  String get phoneLabel => 'મોબાઇલ નંબર';
+
+  @override
+  String get phoneOptional => 'મોબાઇલ નંબર (જરૂરી નથી)';
+
+  @override
+  String get phoneInvalid => '10 આંકડાનો નંબર લખો';
+
+  @override
+  String get noPhone => 'નંબર ઉમેર્યો નથી';
+
+  @override
+  String get companyLabel => 'કંપની';
+
+  @override
+  String get roleLabel => 'ભૂમિકા';
+
+  @override
+  String get roleSuperadmin => 'માલિક (બધી છૂટ)';
+
+  @override
+  String get usernameLabel => 'યુઝરનેમ';
+
+  @override
+  String get changePassword => 'પાસવર્ડ બદલો';
+
+  @override
+  String get currentPassword => 'હાલનો પાસવર્ડ';
+
+  @override
+  String get newPassword => 'નવો પાસવર્ડ';
+
+  @override
+  String get confirmPassword => 'નવો પાસવર્ડ ફરી લખો';
+
+  @override
+  String get passwordMismatch => 'બંને પાસવર્ડ સરખા નથી';
+
+  @override
+  String get wrongCurrentPassword => 'હાલનો પાસવર્ડ ખોટો છે';
+
+  @override
+  String get passwordChanged => 'પાસવર્ડ બદલાઈ ગયો. બીજા ફોનમાંથી લોગઆઉટ થયું.';
+
+  @override
+  String get passwordChangeNote =>
+      'પાસવર્ડ બદલવાથી બીજા બધા ફોનમાંથી લોગઆઉટ થશે. આ ફોન ચાલુ રહેશે.';
+
+  @override
+  String get settings => 'સેટિંગ્સ';
+
+  @override
+  String get manage => 'માહિતી';
+
+  @override
+  String get appVersion => 'એપ વર્ઝન';
+
+  @override
+  String get profileSaved => 'પ્રોફાઇલ સાચવી';
 }

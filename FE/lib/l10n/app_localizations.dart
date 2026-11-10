@@ -1782,6 +1782,138 @@ abstract class AppL10n {
   /// In gu, this message translates to:
   /// **'બંધ'**
   String get inactiveTag;
+
+  /// No description provided for @profile.
+  ///
+  /// In gu, this message translates to:
+  /// **'પ્રોફાઇલ'**
+  String get profile;
+
+  /// No description provided for @editProfile.
+  ///
+  /// In gu, this message translates to:
+  /// **'પ્રોફાઇલ બદલો'**
+  String get editProfile;
+
+  /// No description provided for @phoneLabel.
+  ///
+  /// In gu, this message translates to:
+  /// **'મોબાઇલ નંબર'**
+  String get phoneLabel;
+
+  /// No description provided for @phoneOptional.
+  ///
+  /// In gu, this message translates to:
+  /// **'મોબાઇલ નંબર (જરૂરી નથી)'**
+  String get phoneOptional;
+
+  /// No description provided for @phoneInvalid.
+  ///
+  /// In gu, this message translates to:
+  /// **'10 આંકડાનો નંબર લખો'**
+  String get phoneInvalid;
+
+  /// No description provided for @noPhone.
+  ///
+  /// In gu, this message translates to:
+  /// **'નંબર ઉમેર્યો નથી'**
+  String get noPhone;
+
+  /// No description provided for @companyLabel.
+  ///
+  /// In gu, this message translates to:
+  /// **'કંપની'**
+  String get companyLabel;
+
+  /// No description provided for @roleLabel.
+  ///
+  /// In gu, this message translates to:
+  /// **'ભૂમિકા'**
+  String get roleLabel;
+
+  /// No description provided for @roleSuperadmin.
+  ///
+  /// In gu, this message translates to:
+  /// **'માલિક (બધી છૂટ)'**
+  String get roleSuperadmin;
+
+  /// No description provided for @usernameLabel.
+  ///
+  /// In gu, this message translates to:
+  /// **'યુઝરનેમ'**
+  String get usernameLabel;
+
+  /// No description provided for @changePassword.
+  ///
+  /// In gu, this message translates to:
+  /// **'પાસવર્ડ બદલો'**
+  String get changePassword;
+
+  /// No description provided for @currentPassword.
+  ///
+  /// In gu, this message translates to:
+  /// **'હાલનો પાસવર્ડ'**
+  String get currentPassword;
+
+  /// No description provided for @newPassword.
+  ///
+  /// In gu, this message translates to:
+  /// **'નવો પાસવર્ડ'**
+  String get newPassword;
+
+  /// No description provided for @confirmPassword.
+  ///
+  /// In gu, this message translates to:
+  /// **'નવો પાસવર્ડ ફરી લખો'**
+  String get confirmPassword;
+
+  /// No description provided for @passwordMismatch.
+  ///
+  /// In gu, this message translates to:
+  /// **'બંને પાસવર્ડ સરખા નથી'**
+  String get passwordMismatch;
+
+  /// No description provided for @wrongCurrentPassword.
+  ///
+  /// In gu, this message translates to:
+  /// **'હાલનો પાસવર્ડ ખોટો છે'**
+  String get wrongCurrentPassword;
+
+  /// No description provided for @passwordChanged.
+  ///
+  /// In gu, this message translates to:
+  /// **'પાસવર્ડ બદલાઈ ગયો. બીજા ફોનમાંથી લોગઆઉટ થયું.'**
+  String get passwordChanged;
+
+  /// No description provided for @passwordChangeNote.
+  ///
+  /// In gu, this message translates to:
+  /// **'પાસવર્ડ બદલવાથી બીજા બધા ફોનમાંથી લોગઆઉટ થશે. આ ફોન ચાલુ રહેશે.'**
+  String get passwordChangeNote;
+
+  /// No description provided for @settings.
+  ///
+  /// In gu, this message translates to:
+  /// **'સેટિંગ્સ'**
+  String get settings;
+
+  /// No description provided for @manage.
+  ///
+  /// In gu, this message translates to:
+  /// **'માહિતી'**
+  String get manage;
+
+  /// No description provided for @appVersion.
+  ///
+  /// In gu, this message translates to:
+  /// **'એપ વર્ઝન'**
+  String get appVersion;
+
+  /// No description provided for @profileSaved.
+  ///
+  /// In gu, this message translates to:
+  /// **'પ્રોફાઇલ સાચવી'**
+  String get profileSaved;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

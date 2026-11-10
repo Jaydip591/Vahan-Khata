@@ -17,11 +17,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from apps.auth.models.refresh_token import RefreshToken
 from apps.auth.schemas.auth import AccessTokenResponse, LoginRequest, TokenResponse
+from apps.user.schemas.user import ChangePasswordRequest
 from apps.user.services.user_service import UserService
 from core.config import settings
 from core.security import (
     DUMMY_HASH,
     create_access_token,
+    hash_password,
     hash_token,
     new_refresh_token,
     verify_password,
@@ -57,14 +59,29 @@ class AuthService:
         if not user.is_active:
             raise HTTPException(status.HTTP_403_FORBIDDEN, "This account is disabled.")
 
+        return await AuthService._issue(db, user.id)
+
+    @staticmethod
+    async def _issue(db: AsyncSession, user_id) -> TokenResponse:
         raw, hashed = new_refresh_token()
-        db.add(RefreshToken(user_id=user.id, token_hash=hashed, expires_at=_refresh_expiry()))
+        db.add(RefreshToken(user_id=user_id, token_hash=hashed, expires_at=_refresh_expiry()))
         await db.commit()
         return TokenResponse(
-            access_token=create_access_token(user.id),
+            access_token=create_access_token(user_id),
             refresh_token=raw,
             expires_in=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
         )
+
+    @staticmethod
+    async def change_password(db: AsyncSession, user, payload: ChangePasswordRequest) -> TokenResponse:
+        """Checks the old password, sets the new one, logs out every other phone and returns a
+        fresh session for this one."""
+        ok = await asyncio.to_thread(verify_password, payload.old_password, user.password_hash)
+        if not ok:
+            raise HTTPException(status.HTTP_400_BAD_REQUEST, "The current password is wrong.")
+        user.password_hash = await asyncio.to_thread(hash_password, payload.new_password)
+        await UserService.revoke_sessions(db, user.id)
+        return await AuthService._issue(db, user.id)
 
     @staticmethod
     async def refresh(db: AsyncSession, raw_token: str) -> AccessTokenResponse:

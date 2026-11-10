@@ -893,4 +893,72 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get inactiveTag => 'Off';
+
+  @override
+  String get profile => 'Profile';
+
+  @override
+  String get editProfile => 'Edit profile';
+
+  @override
+  String get phoneLabel => 'Mobile number';
+
+  @override
+  String get phoneOptional => 'Mobile number (optional)';
+
+  @override
+  String get phoneInvalid => 'Enter a 10 digit number';
+
+  @override
+  String get noPhone => 'No number added';
+
+  @override
+  String get companyLabel => 'Company';
+
+  @override
+  String get roleLabel => 'Role';
+
+  @override
+  String get roleSuperadmin => 'Owner (full access)';
+
+  @override
+  String get usernameLabel => 'Username';
+
+  @override
+  String get changePassword => 'Change password';
+
+  @override
+  String get currentPassword => 'Current password';
+
+  @override
+  String get newPassword => 'New password';
+
+  @override
+  String get confirmPassword => 'New password again';
+
+  @override
+  String get passwordMismatch => 'The two passwords are not the same';
+
+  @override
+  String get wrongCurrentPassword => 'The current password is wrong';
+
+  @override
+  String get passwordChanged =>
+      'Password changed. Other phones are logged out.';
+
+  @override
+  String get passwordChangeNote =>
+      'Changing the password logs out every other phone. This phone stays logged in.';
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  String get manage => 'Records';
+
+  @override
+  String get appVersion => 'App version';
+
+  @override
+  String get profileSaved => 'Profile saved';
 }

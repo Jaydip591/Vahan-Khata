@@ -1,4 +1,5 @@
 
+import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/widgets.dart';
@@ -24,8 +25,11 @@ class FakeAuthRepository implements AuthRepository {
   LoginFailure? loginFailure;
   bool session;
   int logoutCalls = 0;
-  static const user =
-      AppUser(id: '1', username: 'jaydip', name: 'Jaydip', role: 'superadmin');
+  static const baseUser = AppUser(
+      id: '1', username: 'jaydip', name: 'Jaydip', role: 'superadmin', companyName: 'Prajapati Transport');
+  AppUser user = baseUser;
+  String password = 'secret-1';
+  final changedPasswords = <String>[];
 
   @override
   Future<bool> hasSession() async => session;
@@ -40,6 +44,30 @@ class FakeAuthRepository implements AuthRepository {
 
   @override
   Future<AppUser> fetchMe() async => user;
+  @override
+  Future<AppUser> updateProfile({String? name, String? phone}) async {
+    user = AppUser(
+      id: user.id,
+      username: user.username,
+      name: name ?? user.name,
+      role: user.role,
+      phone: phone == null ? user.phone : (phone.isEmpty ? null : phone),
+      companyName: user.companyName,
+    );
+    return user;
+  }
+
+  @override
+  Future<void> changePassword(String oldPassword, String newPassword) async {
+    if (oldPassword != password) {
+      throw DioException(
+        requestOptions: RequestOptions(path: '/api/v1/auth/change-password'),
+        response: Response(requestOptions: RequestOptions(), statusCode: 400),
+      );
+    }
+    password = newPassword;
+    changedPasswords.add(newPassword);
+  }
   @override
   Future<void> logout() async {
     logoutCalls++;

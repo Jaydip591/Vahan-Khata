@@ -19,6 +19,9 @@ import '../../features/trips/data/trip.dart';
 import '../../features/trips/presentation/trip_detail_screen.dart';
 import '../../features/trips/presentation/trip_form_screen.dart';
 import '../../features/trips/presentation/trips_screen.dart';
+import '../../features/profile/presentation/change_password_screen.dart';
+import '../../features/profile/presentation/profile_edit_screen.dart';
+import '../../features/profile/presentation/profile_screen.dart';
 import '../../features/users/data/managed_user.dart';
 import '../../features/users/presentation/user_form_screen.dart';
 import '../../features/users/presentation/users_screen.dart';
@@ -57,6 +60,14 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/splash', builder: (_, _) => const _Splash()),
       GoRoute(path: '/login', builder: (_, _) => const LoginScreen()),
       GoRoute(path: '/more', builder: (_, _) => const MoreScreen()),
+      GoRoute(
+        path: '/profile',
+        builder: (_, _) => const ProfileScreen(),
+        routes: [
+          GoRoute(path: 'edit', builder: (_, _) => const ProfileEditScreen()),
+          GoRoute(path: 'password', builder: (_, _) => const ChangePasswordScreen()),
+        ],
+      ),
       GoRoute(
         path: '/party/:id',
         builder: (_, s) => PartyLedgerScreen(partyId: s.pathParameters['id']!),

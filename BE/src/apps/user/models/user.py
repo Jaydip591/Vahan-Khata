@@ -28,6 +28,7 @@ class User(Base, TimestampMixin, SoftDeleteMixin, CompanyOwnedMixin):
         String(20), default=ROLE_SUPERADMIN, nullable=False
     )
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+    phone: Mapped[str | None] = mapped_column(String(15), nullable=True)
 
     def __repr__(self) -> str:
         return f"<User id={self.id} username={self.username!r}>"
