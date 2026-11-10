@@ -71,7 +71,9 @@ class _ShellScaffoldState extends ConsumerState<ShellScaffold>
       (Icons.bar_chart_outlined, Icons.bar_chart_rounded, t.tabReport),
     ];
     return Scaffold(
-      body: LauncherShortcuts(child: FadeTransition(opacity: _fade, child: navigationShell)),
+      body: LauncherShortcuts(
+        child: FadeTransition(opacity: _fade, child: navigationShell),
+      ),
       bottomNavigationBar: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -81,32 +83,36 @@ class _ShellScaffoldState extends ConsumerState<ShellScaffold>
             child: SafeArea(
               top: false,
               child: Container(
-                height: 66,
+                // Grows with the phone's font size; never shorter than 66.
+                constraints: const BoxConstraints(minHeight: 66),
                 decoration: BoxDecoration(
                   border: Border(top: BorderSide(color: AppColors.line)),
                 ),
                 child: Stack(
                   children: [
-                    Row(
-                      children: [
-                        for (var i = 0; i < items.length; i++)
-                          Expanded(
-                            child: _BarItem(
-                              icon: items[i].$1,
-                              activeIcon: items[i].$2,
-                              label: items[i].$3,
-                              active: navigationShell.currentIndex == i,
-                              onTap: () {
-                                Haptics.tap();
-                                navigationShell.goBranch(
-                                  i,
-                                  initialLocation:
-                                      i == navigationShell.currentIndex,
-                                );
-                              },
+                    IntrinsicHeight(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          for (var i = 0; i < items.length; i++)
+                            Expanded(
+                              child: _BarItem(
+                                icon: items[i].$1,
+                                activeIcon: items[i].$2,
+                                label: items[i].$3,
+                                active: navigationShell.currentIndex == i,
+                                onTap: () {
+                                  Haptics.tap();
+                                  navigationShell.goBranch(
+                                    i,
+                                    initialLocation:
+                                        i == navigationShell.currentIndex,
+                                  );
+                                },
+                              ),
                             ),
-                          ),
-                      ],
+                        ],
+                      ),
                     ),
                     // Gold line above the active tab; it slides to the new tab with a small spring.
                     AnimatedAlign(
@@ -122,7 +128,10 @@ class _ShellScaffoldState extends ConsumerState<ShellScaffold>
                       curve: Curves.easeOutBack,
                       child: FractionallySizedBox(
                         widthFactor: 1 / items.length,
-                        child: Center(
+                        // Top edge only: the line must never sit over the icon.
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          heightFactor: 1,
                           child: Container(
                             width: 44,
                             height: 3.5,
@@ -165,27 +174,31 @@ class _BarItem extends StatelessWidget {
     final color = active ? AppColors.text : AppColors.muted;
     return InkWell(
       onTap: onTap,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          AnimatedScale(
-            scale: active ? 1.12 : 1,
-            duration: const Duration(milliseconds: 260),
-            curve: Curves.easeOutBack,
-            child: Icon(active ? activeIcon : icon, size: 26, color: color),
-          ),
-          const SizedBox(height: 2),
-          Text(
-            label,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: 12,
-              color: color,
-              fontWeight: active ? FontWeight.w500 : FontWeight.w400,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 10, bottom: 6),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            AnimatedScale(
+              scale: active ? 1.12 : 1,
+              duration: const Duration(milliseconds: 260),
+              curve: Curves.easeOutBack,
+              child: Icon(active ? activeIcon : icon, size: 26, color: color),
             ),
-          ),
-        ],
+            const SizedBox(height: 2),
+            Text(
+              label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 12,
+                color: color,
+                fontWeight: active ? FontWeight.w500 : FontWeight.w400,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

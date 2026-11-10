@@ -1133,4 +1133,7 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get upiNeedsInternet => 'UPI needs internet';
+
+  @override
+  String get catAllowanceTile => 'Food /\nallowance';
 }

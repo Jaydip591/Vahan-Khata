@@ -371,5 +371,6 @@
   "yes": "Yes",
   "no": "No",
   "upiPaidTo": "UPI · {name}",
-  "upiNeedsInternet": "UPI needs internet"
+  "upiNeedsInternet": "UPI needs internet",
+  "catAllowanceTile": "Food /\nallowance"
 }

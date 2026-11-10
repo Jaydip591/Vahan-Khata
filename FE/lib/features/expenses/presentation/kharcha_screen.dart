@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+
 import '../../../core/ui/empty_state.dart';
 import '../../../core/ui/motion.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/money.dart';
@@ -42,7 +44,10 @@ class _KharchaScreenState extends ConsumerState<KharchaScreen> {
             child: ListView(
               padding: const EdgeInsets.all(16),
               children: [
-                Text(t.whatExpense, style: TextStyle(fontSize: 16, color: AppColors.muted)),
+                Text(
+                  t.whatExpense,
+                  style: TextStyle(fontSize: 16, color: AppColors.muted),
+                ),
                 const SizedBox(height: 10),
                 GridView.count(
                   padding: EdgeInsets.zero,
@@ -63,19 +68,47 @@ class _KharchaScreenState extends ConsumerState<KharchaScreen> {
                         child: InkWell(
                           borderRadius: BorderRadius.circular(18),
                           onTap: () => showExpenseSheet(context, c),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 52,
-                                height: 52,
-                                decoration: const BoxDecoration(color: AppColors.ink, shape: BoxShape.circle),
-                                child: Icon(c.icon, color: AppColors.gold, size: 28),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(c.tileLabel(t),
-                                  style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500)),
-                            ],
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 6,
+                              vertical: 8,
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 48,
+                                  height: 48,
+                                  decoration: const BoxDecoration(
+                                    color: AppColors.ink,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Icon(
+                                    c.icon,
+                                    color: AppColors.gold,
+                                    size: 26,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                // Long names (ખાવા-પીવા / ભથ્થું) wrap to two centred lines and
+                                // shrink a little rather than spill out of the tile.
+                                Flexible(
+                                  child: FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: Text(
+                                      c.tileLabel(t),
+                                      textAlign: TextAlign.center,
+                                      maxLines: 2,
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        height: 1.25,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -83,10 +116,15 @@ class _KharchaScreenState extends ConsumerState<KharchaScreen> {
                 ),
                 const SizedBox(height: 22),
                 expenses.when(
-                  loading: () => const Center(child: CircularProgressIndicator(color: AppColors.gold)),
+                  loading: () => const Center(
+                    child: CircularProgressIndicator(color: AppColors.gold),
+                  ),
                   error: (e, _) => Column(
                     children: [
-                      Text(errorMessage(t, e), style: const TextStyle(fontSize: 16)),
+                      Text(
+                        errorMessage(t, e),
+                        style: const TextStyle(fontSize: 16),
+                      ),
                       const SizedBox(height: 8),
                       OutlinedButton(
                         onPressed: () => ref.invalidate(expensesProvider(key)),
@@ -97,7 +135,11 @@ class _KharchaScreenState extends ConsumerState<KharchaScreen> {
                   data: (list) {
                     final waiting = ref
                         .watch(outboxProvider)
-                        .where((i) => i.kind == OutboxKind.expense && monthKey(i.date) == key)
+                        .where(
+                          (i) =>
+                              i.kind == OutboxKind.expense &&
+                              monthKey(i.date) == key,
+                        )
                         .toList();
                     if (list.isEmpty && waiting.isEmpty) {
                       return EmptyState(
@@ -120,15 +162,22 @@ class _KharchaScreenState extends ConsumerState<KharchaScreen> {
                           child: Row(
                             children: [
                               Expanded(
-                                child: Text(t.recentExpenses,
-                                    style: const TextStyle(color: AppColors.mutedOnInk, fontSize: 15)),
-                              ),
-                              Text(formatRupees(total),
+                                child: Text(
+                                  t.recentExpenses,
                                   style: const TextStyle(
-                                    color: AppColors.expenseOnInk,
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.w500,
-                                  )),
+                                    color: AppColors.mutedOnInk,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                formatRupees(total),
+                                style: const TextStyle(
+                                  color: AppColors.expenseOnInk,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -137,31 +186,47 @@ class _KharchaScreenState extends ConsumerState<KharchaScreen> {
                           PendingTile(item: w),
                           const SizedBox(height: 8),
                         ],
-                        for (final (i, e) in list.where((x) => !_gone.contains(x.id)).indexed) ...[
-                          EntryFade(index: i, child: SwipeDelete(
-                            key: ValueKey(e.id),
-                            onDelete: () => ref.read(expenseRepositoryProvider).delete(e.id),
-                            onGone: () {
-                              setState(() => _gone.add(e.id));
-                              ref.invalidate(expensesProvider);
-                              ref.invalidate(tripExpensesProvider);
-                              invalidateReports(ref);
-                            },
-                            child: MasterTile(
-                            icon: e.category.icon,
-                            title: e.category.label(t),
-                            subtitle: '${e.vehicle.name} · ${formatDay(e.date)}${e.tripId != null ? ' · ${t.forTrip}' : ''}',
-                            trailing: Padding(
-                              padding: const EdgeInsets.only(right: 4),
-                              child: Text(formatRupees(e.amount),
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w500,
-                                    color: AppColors.expense,
-                                  )),
+                        for (final (i, e)
+                            in list
+                                .where((x) => !_gone.contains(x.id))
+                                .indexed) ...[
+                          EntryFade(
+                            index: i,
+                            child: SwipeDelete(
+                              key: ValueKey(e.id),
+                              onDelete: () => ref
+                                  .read(expenseRepositoryProvider)
+                                  .delete(e.id),
+                              onGone: () {
+                                setState(() => _gone.add(e.id));
+                                ref.invalidate(expensesProvider);
+                                ref.invalidate(tripExpensesProvider);
+                                invalidateReports(ref);
+                              },
+                              child: MasterTile(
+                                icon: e.category.icon,
+                                title: e.category.label(t),
+                                subtitle:
+                                    '${e.vehicle.name} · ${formatDay(e.date)}${e.tripId != null ? ' · ${t.forTrip}' : ''}',
+                                trailing: Padding(
+                                  padding: const EdgeInsets.only(right: 4),
+                                  child: Text(
+                                    formatRupees(e.amount),
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                      color: AppColors.expense,
+                                    ),
+                                  ),
+                                ),
+                                onTap: () => showExpenseSheet(
+                                  context,
+                                  e.category,
+                                  existing: e,
+                                ),
+                              ),
                             ),
-                            onTap: () => showExpenseSheet(context, e.category, existing: e),
-                          ))),
+                          ),
                           const SizedBox(height: 8),
                         ],
                       ],

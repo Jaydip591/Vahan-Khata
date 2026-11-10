@@ -2244,6 +2244,12 @@ abstract class AppL10n {
   /// In gu, this message translates to:
   /// **'UPI માટે ઇન્ટરનેટ જોઈએ'**
   String get upiNeedsInternet;
+
+  /// No description provided for @catAllowanceTile.
+  ///
+  /// In gu, this message translates to:
+  /// **'ખાવા-પીવા\nભથ્થું'**
+  String get catAllowanceTile;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

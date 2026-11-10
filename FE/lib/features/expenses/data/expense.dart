@@ -25,7 +25,12 @@ enum ExpenseCategory {
   static const tiles = [diesel, toll, repair, allowance, challan, other];
 
   /// Name on the Kharcha tile (diesel's tile is the general Fuel tile).
-  String tileLabel(AppL10n t) => this == diesel ? t.fuelLabel : label(t);
+  /// Name on the Kharcha tile; long ones are split over two lines by hand.
+  String tileLabel(AppL10n t) => switch (this) {
+        diesel => t.fuelLabel,
+        allowance => t.catAllowanceTile,
+        _ => label(t),
+      };
 
   static ExpenseCategory fromKey(String key) =>
       ExpenseCategory.values.firstWhere((c) => c.key == key, orElse: () => ExpenseCategory.other);

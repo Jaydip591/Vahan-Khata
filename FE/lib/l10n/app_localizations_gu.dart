@@ -1129,4 +1129,7 @@ class AppL10nGu extends AppL10n {
 
   @override
   String get upiNeedsInternet => 'UPI માટે ઇન્ટરનેટ જોઈએ';
+
+  @override
+  String get catAllowanceTile => 'ખાવા-પીવા\nભથ્થું';
 }

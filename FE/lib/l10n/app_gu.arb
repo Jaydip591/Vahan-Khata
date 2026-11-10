@@ -378,5 +378,6 @@
   "yes": "હા",
   "no": "ના",
   "upiPaidTo": "UPI · {name}",
-  "upiNeedsInternet": "UPI માટે ઇન્ટરનેટ જોઈએ"
+  "upiNeedsInternet": "UPI માટે ઇન્ટરનેટ જોઈએ",
+  "catAllowanceTile": "ખાવા-પીવા\nભથ્થું"
 }
