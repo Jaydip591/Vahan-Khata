@@ -95,16 +95,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Center(
-                      child: Container(
-                        width: 84,
-                        height: 84,
-                        decoration: BoxDecoration(
-                          color: AppColors.gold,
-                          borderRadius: BorderRadius.circular(26),
-                        ),
-                        child: const Icon(Icons.local_shipping_rounded,
-                            size: 46, color: AppColors.ink),
-                      ),
+                      child: Image.asset('assets/brand/logo_mark.png',
+                          width: 128, height: 128),
                     ),
                     const SizedBox(height: 16),
                     Text(

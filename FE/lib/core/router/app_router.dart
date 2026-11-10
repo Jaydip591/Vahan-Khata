@@ -181,9 +181,22 @@ class _Splash extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    // Same logo, size and ink as the phone's launch screen, so the hand-over is seamless.
+    return Scaffold(
       backgroundColor: AppColors.ink,
-      body: Center(child: CircularProgressIndicator(color: AppColors.gold)),
+      body: Stack(
+        children: [
+          Center(child: Image.asset('assets/brand/logo_mark.png', width: 200, height: 200)),
+          const Align(
+            alignment: Alignment(0, 0.55),
+            child: SizedBox(
+              width: 28,
+              height: 28,
+              child: CircularProgressIndicator(color: AppColors.gold, strokeWidth: 2.5),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

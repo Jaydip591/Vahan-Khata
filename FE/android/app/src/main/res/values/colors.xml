@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Ink and gold brand colours (same as lib/core/theme/app_colors.dart). -->
+    <color name="brand_ink">#12161C</color>
+    <color name="brand_gold">#C8A24A</color>
+</resources>
