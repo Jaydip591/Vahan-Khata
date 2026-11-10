@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../outbox/outbox_controller.dart';
 import '../../outbox/pending_widgets.dart';
+import 'launcher_shortcuts.dart';
 
 import '../../../core/haptics.dart';
 import '../../../core/theme/app_colors.dart';
@@ -70,7 +71,7 @@ class _ShellScaffoldState extends ConsumerState<ShellScaffold>
       (Icons.bar_chart_outlined, Icons.bar_chart_rounded, t.tabReport),
     ];
     return Scaffold(
-      body: FadeTransition(opacity: _fade, child: navigationShell),
+      body: LauncherShortcuts(child: FadeTransition(opacity: _fade, child: navigationShell)),
       bottomNavigationBar: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

@@ -1009,4 +1009,13 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get emptyReportHint => 'Add trips and expenses to see them here';
+
+  @override
+  String get shortcutTrip => 'New trip';
+
+  @override
+  String get shortcutExpense => 'Add expense';
+
+  @override
+  String get shortcutPayment => 'Payment received';
 }

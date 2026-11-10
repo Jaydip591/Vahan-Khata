@@ -2010,6 +2010,24 @@ abstract class AppL10n {
   /// In gu, this message translates to:
   /// **'ટ્રીપ અને ખર્ચ ઉમેરશો એટલે અહીં દેખાશે'**
   String get emptyReportHint;
+
+  /// No description provided for @shortcutTrip.
+  ///
+  /// In gu, this message translates to:
+  /// **'નવી ટ્રીપ'**
+  String get shortcutTrip;
+
+  /// No description provided for @shortcutExpense.
+  ///
+  /// In gu, this message translates to:
+  /// **'ખર્ચ ઉમેરો'**
+  String get shortcutExpense;
+
+  /// No description provided for @shortcutPayment.
+  ///
+  /// In gu, this message translates to:
+  /// **'પેમેન્ટ મળ્યું'**
+  String get shortcutPayment;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

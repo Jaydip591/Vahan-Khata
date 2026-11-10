@@ -339,5 +339,8 @@
   "emptyTripsHint": "પહેલી ટ્રીપ ઉમેરો",
   "emptyExpensesHint": "ઉપરના ખાનામાંથી ખર્ચ ઉમેરો",
   "emptyPartiesHint": "ટ્રીપ ઉમેરતી વખતે પાર્ટી બની જશે",
-  "emptyReportHint": "ટ્રીપ અને ખર્ચ ઉમેરશો એટલે અહીં દેખાશે"
+  "emptyReportHint": "ટ્રીપ અને ખર્ચ ઉમેરશો એટલે અહીં દેખાશે",
+  "shortcutTrip": "નવી ટ્રીપ",
+  "shortcutExpense": "ખર્ચ ઉમેરો",
+  "shortcutPayment": "પેમેન્ટ મળ્યું"
 }

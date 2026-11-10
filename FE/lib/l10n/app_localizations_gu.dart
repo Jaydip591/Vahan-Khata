@@ -1005,4 +1005,13 @@ class AppL10nGu extends AppL10n {
 
   @override
   String get emptyReportHint => 'ટ્રીપ અને ખર્ચ ઉમેરશો એટલે અહીં દેખાશે';
+
+  @override
+  String get shortcutTrip => 'નવી ટ્રીપ';
+
+  @override
+  String get shortcutExpense => 'ખર્ચ ઉમેરો';
+
+  @override
+  String get shortcutPayment => 'પેમેન્ટ મળ્યું';
 }
