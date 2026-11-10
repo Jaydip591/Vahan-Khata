@@ -100,13 +100,27 @@ Still to verify by hand on the phone: month numbers against your own books, mile
 ## Phase 4 — Hardening (order decided by the user: finish app features first, deploy last)
 4a Features
 - [x] Offline queue: new trips, expenses and payments are kept on the phone when there is no internet, shown as "not sent", and sent automatically (app open, app resume, every 30 s, or "Send now") with client-made ids so a retry never duplicates. Kept in SharedPreferences (a few entries, no need for drift). Last GET answers are cached so lists and pickers open offline.
-- [ ] PDF and Excel export; share party statement on WhatsApp
+- [x] PDF and Excel export: party statement and month report, shared through the phone's share sheet (WhatsApp etc.); Gujarati PDF is drawn by Flutter as images so shaping is correct
 - [ ] Account balances report (opening balance + payments - expenses per account)
 - [ ] Anything found in Phase 3 phone testing
 - [x] Fuel type per vehicle (diesel, petrol, CNG, CNG+petrol): chosen when adding or editing a vehicle; the Fuel tile on Kharcha preselects the vehicle's fuel (one fuel = only that chip; CNG+petrol = CNG preselected, petrol one tap away; CNG counted in kg). Expense categories are now diesel / petrol / cng. Reports: fuel totals per vehicle; mileage only when one fuel was used (km/l, km/kg for CNG). Existing vehicles became diesel and can be edited.
 - [x] Expenses against a trip: trip detail has a "Trip expenses" card (add fuel, toll, food/allowance, repair... for that trip; vehicle and date come from the trip), the list of that trip's expenses, and the trip profit (bhada minus expenses). Kharcha tab marks trip expenses. Account balances report is still pending (done last).
 - [x] App feel: haptics (tap, press, save, error, delete; switch in More), press-scale on buttons/chips/cards, fade page and tab transitions, count-up amounts, saved tick, skeleton loading, staggered list entry, pull-to-refresh tick, swipe-left delete on trips and expenses.
 - [ ] Payment rows in the party khata should show cash/online and the account
+4a-UX Next: make it feel like a real app (chosen by the user on 2026-11-10; do these in this order, one commit each)
+The user said the app "still feels like something is missing" even after haptics/animations. Compared with a normal app these were the gaps. User picked items 1, 2, 5 and 6 (6 WITHOUT app lock). Not chosen (later, only if asked): search/filter on lists, notifications, WhatsApp "baaki" reminder button.
+- [ ] 1. App identity: real launcher icon (adaptive, ink background + gold truck/ledger mark), app name "વાહન ખાતા" / "Vahan Khata" (strings.xml already has both), native splash screen in ink + gold with the logo (use flutter_launcher_icons / flutter_native_splash or hand-made Android resources), same ink status bar. Today the phone shows the default Flutter icon and a plain white launch screen.
+- [ ] 2. Profile and settings
+  - Profile screen opened from the avatar card in More: big initial avatar, name, @username, company name, phone (if present), role (superadmin). Edit own name/phone. Needs `GET/PATCH /api/v1/users/me` (GET exists, check PATCH) and a company name in the response.
+  - Change password (needs a new backend endpoint: old password + new password; revoke other sessions; test it).
+  - Settings section: language, vibration switch (exists), app version (package_info_plus), help/contact line, logout. Keep the existing More list (vehicles, drivers, parties, accounts, users).
+- [ ] 5. Dashboard charts with fl_chart (already a dependency): Home gets a small 6-month profit trend (data from `/reports/trend`, already exists) and a per-vehicle profit bar/donut for the month; Report tab months screen gets the same trend chart. Income emerald, expense coral, gold highlights, ink background cards. Charts must animate in, work with the offline cache, and have a plain empty state.
+- [ ] 6. Polish (all of these, but NO app lock / PIN / fingerprint):
+  - Empty-state illustrations (simple drawn icons/shapes in the theme colours, friendly Gujarati line like "પહેલી ટ્રીપ ઉમેરો") on Trips, Kharcha, Khata, parties/vehicles lists.
+  - Dark mode (follow phone setting, plus a switch in settings; tokens in `core/theme`, never hardcode colours in widgets; income/expense colours have "on dark" variants already).
+  - Smooth movement: bottom bar with a sliding gold indicator, spring on bottom sheets, predictive back (manifest flag already on).
+  Done when: the app looks right in light and dark on the phone, icon and splash show on the launcher, and all tests plus new tests (profile edit, password change, chart data) pass.
+
 4b Deploy (after 4a is done) — hosting on Render, not Oracle. Database: Neon (free). Keep-awake: a free pinger site (cron-job.org) calls `/health` every 13 minutes so the free web service does not sleep.
 - [ ] Render web service from `BE/Dockerfile`, HTTPS included; `DATABASE_URL`, secrets and admin bootstrap as env vars
 - [ ] Postgres on Neon (`DATABASE_URL` with SSL); check the async driver URL form
@@ -119,6 +133,17 @@ Done when: entries made in airplane mode appear on the server after reconnect wi
 - [ ] Give to 1-2 family drivers for a week; collect issues
 - [ ] Fix font sizes, button placement, wording (Gujarati proofreading)
 - [ ] Optional later: voice amount input, Play Store release, roles
+
+## Handoff notes for a new session (read this first)
+- State on 2026-11-10: Phases 0-3 done; Phase 4a mostly done (offline, fuel type, PDF/Excel, trip expenses, app-feel pass). Still open in 4a: account-balances report (opening + payments - expenses per account) and cash/online + account on the Khata payment rows; then the 4a-UX block above; then 4b deploy. Last commit when this was written: "App feel: haptics ...".
+- Backend + ngrok on the dev PC: API container `transport_api` and `transport_postgres` (docker compose, restart unless-stopped); ngrok static domain `isocheimenal-windrode-latashia.ngrok-free.dev` -> localhost:8000 (`ngrok http 8000 --url=isocheimenal-windrode-latashia.ngrok-free.dev`). The phone app is built against that URL.
+- Build and install on the phone (OPPO/OnePlus CPH2531, adb id PRWWVK8T9XQ8LJ6X; USB debugging on):
+  `cd FE && flutter build apk --release --dart-define=API_BASE_URL=https://isocheimenal-windrode-latashia.ngrok-free.dev && adb install -r build/app/outputs/flutter-apk/app-release.apk`
+  For hot reload: `flutter run -d PRWWVK8T9XQ8LJ6X --dart-define=API_BASE_URL=...` (hot restart does not pick up manifest changes; do a fresh run).
+- Checks: `cd FE && flutter analyze && flutter test` (130 tests); `cd BE && set -a && . ./.env && set +a && .venv/bin/pytest` (119 tests).
+- Phone testing rules: never turn Wi-Fi/data off on the phone (user objected); the screen locks itself and cannot be unlocked by us, so ask the user; do not tap on the phone while the user is using it; avoid the BACK key (it can leave the app and a following tap lands on the launcher). Use `adb shell am start -n com.jaydip.vahan_khata/.MainActivity` to reopen the app. Horizontal swipes: use `adb shell input motionevent DOWN/MOVE/UP`.
+- Commit messages: plain, no co-author or tool attribution lines (user's instruction). Never run `dart format` on all of `lib` (it reformats 70+ files).
+- User talks in Hinglish (Roman Gujarati-Hindi-English mix); answer in the same style, short and concrete. For design/feel work show the plan first and wait for a yes before editing ("pehle batao, phir karo").
 
 ## Risks and notes
 - Flutter SDK and an Android device or emulator are needed on the dev machine (not installed yet).

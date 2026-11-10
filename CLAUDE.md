@@ -3,7 +3,7 @@
 App name: **Vahan Khata** (Gujarati: વાહન ખાતા). Repo: github.com/Jaydip591/Vahan-Khata (monorepo, BE + FE).
 
 Gujarati-first Android app to run a family transport business: trips, expenses, party ledger (khata),
-vehicle-wise profit. Read `PLAN.md` for the phase plan and current progress before starting work.
+vehicle-wise profit. Read `PLAN.md` for the phase plan and current progress before starting work (the "Handoff notes for a new session" section lists how to run, build and test, and the rules for phone testing).
 
 ## Repo layout
 - `BE/` — FastAPI backend (modular apps, async SQLAlchemy, Postgres, Alembic, Docker)
