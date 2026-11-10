@@ -407,6 +407,23 @@ class FakeApi implements HttpClientAdapter {
         {'category': 'toll', 'amount': '500.00', 'count': 2},
       ],
     },
+    'week': {
+      'start': '2026-11-09',
+      'end': '2026-11-15',
+      'income': '48000.00',
+      'expense': '21000.00',
+      'profit': '27000.00',
+      'trips': 12,
+      'days': [
+        for (var i = 0; i < 7; i++)
+          {
+            'day': '2026-11-${(9 + i).toString().padLeft(2, '0')}',
+            'income': i < 3 ? '16000.00' : '0.00',
+            'expense': i == 0 ? '21000.00' : '0.00',
+            'trips': i < 3 ? 4 : 0,
+          },
+      ],
+    },
     'accounts': {
       'total': '14800.00',
       'unassigned_spent': '400.00',

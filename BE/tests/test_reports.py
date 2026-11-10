@@ -178,3 +178,23 @@ async def test_account_balances_company_scoped(client, auth, other_auth):
     await make_account(client, auth)
     r = (await client.get(R + "/accounts", headers=other_auth)).json()
     assert r["accounts"] == [] and Decimal(r["total"]) == 0
+
+
+async def test_week_summary_monday_to_sunday(client, auth, seeded):
+    w = await make_world(client, auth)
+    # 2026-11-09 is a Monday; 2026-11-15 the Sunday
+    await make_trip(client, auth, w, bhada="12000", trip_date="2026-11-09")
+    await make_trip(client, auth, w, bhada="8000", trip_date="2026-11-11")
+    await make_trip(client, auth, w, bhada="3000", trip_date="2026-11-11")
+    await make_trip(client, auth, w, bhada="9999", trip_date="2026-11-08")  # last week
+    await make_trip(client, auth, w, bhada="7777", trip_date="2026-11-16")  # next week
+    await spend(client, auth, w["vehicle"], 1500, day="2026-11-11")
+    await spend(client, auth, w["vehicle"], 500, day="2026-11-15")
+    r = (await client.get(R + "/week", params={"day": "2026-11-12"}, headers=auth)).json()
+    assert r["start"] == "2026-11-09" and r["end"] == "2026-11-15"
+    assert Decimal(r["income"]) == 23000 and Decimal(r["expense"]) == 2000
+    assert Decimal(r["profit"]) == 21000 and r["trips"] == 3
+    assert len(r["days"]) == 7
+    wed = r["days"][2]
+    assert wed["day"] == "2026-11-11" and Decimal(wed["income"]) == 11000 and wed["trips"] == 2
+    assert Decimal(wed["expense"]) == 1500 and Decimal(r["days"][6]["expense"]) == 500

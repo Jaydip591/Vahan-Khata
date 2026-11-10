@@ -205,3 +205,51 @@ class AccountBalances {
         unassignedSpent: parseMoney(j['unassigned_spent']),
       );
 }
+
+class WeekDay {
+  const WeekDay({required this.day, required this.income, required this.expense, required this.trips});
+  final DateTime day;
+  final double income;
+  final double expense;
+  final int trips;
+
+  factory WeekDay.fromJson(Map<String, dynamic> j) => WeekDay(
+        day: DateTime.parse(j['day'] as String),
+        income: parseMoney(j['income']),
+        expense: parseMoney(j['expense']),
+        trips: j['trips'] as int,
+      );
+}
+
+/// Monday-Sunday of the current week.
+class WeekSummary {
+  const WeekSummary({
+    required this.start,
+    required this.end,
+    required this.income,
+    required this.expense,
+    required this.profit,
+    required this.trips,
+    required this.days,
+  });
+
+  final DateTime start;
+  final DateTime end;
+  final double income;
+  final double expense;
+  final double profit;
+  final int trips;
+  final List<WeekDay> days;
+
+  bool get isEmpty => trips == 0 && expense == 0;
+
+  factory WeekSummary.fromJson(Map<String, dynamic> j) => WeekSummary(
+        start: DateTime.parse(j['start'] as String),
+        end: DateTime.parse(j['end'] as String),
+        income: parseMoney(j['income']),
+        expense: parseMoney(j['expense']),
+        profit: parseMoney(j['profit']),
+        trips: j['trips'] as int,
+        days: [for (final d in j['days'] as List) WeekDay.fromJson(d as Map<String, dynamic>)],
+      );
+}

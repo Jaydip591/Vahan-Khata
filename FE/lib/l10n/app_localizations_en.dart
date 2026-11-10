@@ -961,4 +961,28 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get profileSaved => 'Profile saved';
+
+  @override
+  String get thisWeek => 'This week';
+
+  @override
+  String get weekTrips => 'Trips done';
+
+  @override
+  String get weekEarned => 'Earned';
+
+  @override
+  String get weekSpent => 'Spent';
+
+  @override
+  String get weekLeft => 'Left';
+
+  @override
+  String get weekEmpty => 'No trip or expense this week yet';
+
+  @override
+  String get weekBarsNote => 'Earning each day';
+
+  @override
+  String get weekdaysShort => 'Mon,Tue,Wed,Thu,Fri,Sat,Sun';
 }

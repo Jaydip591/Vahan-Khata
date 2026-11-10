@@ -1,4 +1,5 @@
 import uuid
+from datetime import date
 from decimal import Decimal
 
 from pydantic import BaseModel
@@ -92,3 +93,20 @@ class AccountBalances(BaseModel):
     total: Decimal
     accounts: list[AccountBalance]
     unassigned_spent: Decimal  # expenses saved without an account (not in any balance)
+
+
+class WeekDay(BaseModel):
+    day: date
+    income: Decimal
+    expense: Decimal
+    trips: int
+
+
+class WeekSummary(BaseModel):
+    start: date  # Monday
+    end: date  # Sunday (inclusive)
+    income: Decimal
+    expense: Decimal
+    profit: Decimal
+    trips: int
+    days: list[WeekDay]  # always 7, Monday first

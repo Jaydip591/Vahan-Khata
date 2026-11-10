@@ -957,4 +957,28 @@ class AppL10nGu extends AppL10n {
 
   @override
   String get profileSaved => 'પ્રોફાઇલ સાચવી';
+
+  @override
+  String get thisWeek => 'આ અઠવાડિયું';
+
+  @override
+  String get weekTrips => 'ફેરા';
+
+  @override
+  String get weekEarned => 'કમાણી';
+
+  @override
+  String get weekSpent => 'ખર્ચ';
+
+  @override
+  String get weekLeft => 'બચ્યા';
+
+  @override
+  String get weekEmpty => 'આ અઠવાડિયે હજી કોઈ ટ્રીપ કે ખર્ચ નથી';
+
+  @override
+  String get weekBarsNote => 'દરરોજની કમાણી';
+
+  @override
+  String get weekdaysShort => 'સોમ,મંગળ,બુધ,ગુરુ,શુક્ર,શનિ,રવિ';
 }

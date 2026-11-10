@@ -14,6 +14,7 @@ import '../../reports/data/report.dart';
 import '../../reports/data/report_repository.dart';
 import '../../reports/presentation/month_switcher.dart';
 import '../../reports/presentation/report_widgets.dart';
+import 'week_card.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -127,6 +128,8 @@ class HomeScreen extends ConsumerWidget {
                   ),
                 ),
               ),
+              const SizedBox(height: 14),
+              const WeekCard(),
               const SizedBox(height: 18),
               const _VehicleProfits(),
             ],

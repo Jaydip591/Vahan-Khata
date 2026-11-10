@@ -1914,6 +1914,54 @@ abstract class AppL10n {
   /// In gu, this message translates to:
   /// **'પ્રોફાઇલ સાચવી'**
   String get profileSaved;
+
+  /// No description provided for @thisWeek.
+  ///
+  /// In gu, this message translates to:
+  /// **'આ અઠવાડિયું'**
+  String get thisWeek;
+
+  /// No description provided for @weekTrips.
+  ///
+  /// In gu, this message translates to:
+  /// **'ફેરા'**
+  String get weekTrips;
+
+  /// No description provided for @weekEarned.
+  ///
+  /// In gu, this message translates to:
+  /// **'કમાણી'**
+  String get weekEarned;
+
+  /// No description provided for @weekSpent.
+  ///
+  /// In gu, this message translates to:
+  /// **'ખર્ચ'**
+  String get weekSpent;
+
+  /// No description provided for @weekLeft.
+  ///
+  /// In gu, this message translates to:
+  /// **'બચ્યા'**
+  String get weekLeft;
+
+  /// No description provided for @weekEmpty.
+  ///
+  /// In gu, this message translates to:
+  /// **'આ અઠવાડિયે હજી કોઈ ટ્રીપ કે ખર્ચ નથી'**
+  String get weekEmpty;
+
+  /// No description provided for @weekBarsNote.
+  ///
+  /// In gu, this message translates to:
+  /// **'દરરોજની કમાણી'**
+  String get weekBarsNote;
+
+  /// No description provided for @weekdaysShort.
+  ///
+  /// In gu, this message translates to:
+  /// **'સોમ,મંગળ,બુધ,ગુરુ,શુક્ર,શનિ,રવિ'**
+  String get weekdaysShort;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

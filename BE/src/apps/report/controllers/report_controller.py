@@ -11,6 +11,7 @@ from apps.report.schemas.report import (
     PartyReports,
     Trend,
     VehicleReports,
+    WeekSummary,
 )
 from apps.report.services.report_service import ReportService
 from apps.user.models.user import User
@@ -63,3 +64,12 @@ async def expenses(
 @router.get("/accounts", response_model=AccountBalances, summary="Money in each account (all time)")
 async def accounts(user: User = Depends(get_current_user), db: AsyncSession = Depends(get_db)):
     return await ReportService.accounts(db, user.company_id)
+
+
+@router.get("/week", response_model=WeekSummary, summary="This week (Monday-Sunday) day by day")
+async def week(
+    day: date | None = Query(default=None, description="Any day of the week; defaults to today"),
+    user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    return await ReportService.week(db, user.company_id, day or date.today())

@@ -323,5 +323,13 @@
   "settings": "સેટિંગ્સ",
   "manage": "માહિતી",
   "appVersion": "એપ વર્ઝન",
-  "profileSaved": "પ્રોફાઇલ સાચવી"
+  "profileSaved": "પ્રોફાઇલ સાચવી",
+  "thisWeek": "આ અઠવાડિયું",
+  "weekTrips": "ફેરા",
+  "weekEarned": "કમાણી",
+  "weekSpent": "ખર્ચ",
+  "weekLeft": "બચ્યા",
+  "weekEmpty": "આ અઠવાડિયે હજી કોઈ ટ્રીપ કે ખર્ચ નથી",
+  "weekBarsNote": "દરરોજની કમાણી",
+  "weekdaysShort": "સોમ,મંગળ,બુધ,ગુરુ,શુક્ર,શનિ,રવિ"
 }

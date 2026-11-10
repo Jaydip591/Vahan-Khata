@@ -1,5 +1,5 @@
 from collections import defaultdict
-from datetime import date
+from datetime import date, timedelta
 from decimal import Decimal
 from uuid import UUID
 
@@ -12,6 +12,8 @@ from apps.party.models.party import Party
 from apps.payment.models.payment import Payment
 from apps.expense.schemas.expense import FUEL_CATEGORIES
 from apps.report.schemas.report import (
+    WeekDay,
+    WeekSummary,
     AccountBalance,
     AccountBalances,
     CategoryTotal,
@@ -204,6 +206,44 @@ class ReportService:
         ]
         rows.sort(key=lambda r: -r.amount)
         return ExpenseReport(month=month, total=sum((r.amount for r in rows), ZERO), categories=rows)
+
+    @staticmethod
+    async def week(db: AsyncSession, company_id: UUID, day: date) -> WeekSummary:
+        """Monday-Sunday week that holds `day`, with income, expense and trips per day."""
+        start = day - timedelta(days=day.weekday())
+        end = start + timedelta(days=7)
+        inc = {
+            r[0]: (Decimal(r[1]), r[2])
+            for r in await db.execute(
+                select(Trip.trip_date, func.sum(Trip.bhada), func.count())
+                .where(*_live(Trip, company_id), Trip.trip_date >= start, Trip.trip_date < end)
+                .group_by(Trip.trip_date)
+            )
+        }
+        exp = {
+            r[0]: Decimal(r[1])
+            for r in await db.execute(
+                select(Expense.expense_date, func.sum(Expense.amount))
+                .where(*_live(Expense, company_id), Expense.expense_date >= start, Expense.expense_date < end)
+                .group_by(Expense.expense_date)
+            )
+        }
+        days = []
+        for i in range(7):
+            d = start + timedelta(days=i)
+            income, trips = inc.get(d, (ZERO, 0))
+            days.append(WeekDay(day=d, income=income, expense=exp.get(d, ZERO), trips=trips))
+        income = sum((x.income for x in days), ZERO)
+        expense = sum((x.expense for x in days), ZERO)
+        return WeekSummary(
+            start=start,
+            end=end - timedelta(days=1),
+            income=income,
+            expense=expense,
+            profit=income - expense,
+            trips=sum(x.trips for x in days),
+            days=days,
+        )
 
     @staticmethod
     async def accounts(db: AsyncSession, company_id: UUID) -> AccountBalances:

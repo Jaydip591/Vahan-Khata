@@ -35,6 +35,8 @@ class ReportRepository {
   Future<ExpenseReport> expenses(String month) async =>
       ExpenseReport.fromJson(await _get('expenses', {'month': month}));
 
+  Future<WeekSummary> week() async => WeekSummary.fromJson(await _get('week', {}));
+
   Future<AccountBalances> accounts() async => AccountBalances.fromJson(await _get('accounts', {}));
 }
 
@@ -67,6 +69,8 @@ final trendProvider = FutureProvider.family<List<TrendPoint>, String>(
 final expenseReportProvider = FutureProvider.family<ExpenseReport, String>(
     (ref, month) => ref.watch(reportRepositoryProvider).expenses(month));
 
+final weekProvider = FutureProvider<WeekSummary>((ref) => ref.watch(reportRepositoryProvider).week());
+
 final accountBalancesProvider =
     FutureProvider<AccountBalances>((ref) => ref.watch(reportRepositoryProvider).accounts());
 
@@ -82,6 +86,7 @@ void invalidateReports(dynamic ref) {
   ref.invalidate(trendProvider);
   ref.invalidate(expenseReportProvider);
   ref.invalidate(accountBalancesProvider);
+  ref.invalidate(weekProvider);
   ref.invalidate(vehicleTripsProvider);
   ref.invalidate(monthExpensesProvider);
 }

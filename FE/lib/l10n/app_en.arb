@@ -316,5 +316,13 @@
   "settings": "Settings",
   "manage": "Records",
   "appVersion": "App version",
-  "profileSaved": "Profile saved"
+  "profileSaved": "Profile saved",
+  "thisWeek": "This week",
+  "weekTrips": "Trips done",
+  "weekEarned": "Earned",
+  "weekSpent": "Spent",
+  "weekLeft": "Left",
+  "weekEmpty": "No trip or expense this week yet",
+  "weekBarsNote": "Earning each day",
+  "weekdaysShort": "Mon,Tue,Wed,Thu,Fri,Sat,Sun"
 }

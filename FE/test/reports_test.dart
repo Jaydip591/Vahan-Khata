@@ -28,9 +28,31 @@ void main() {
     expect(find.text('₹1,500'), findsOneWidget);
     expect(find.text('₹9,000'), findsOneWidget);
     expect(find.text('ગયા મહિને ₹4,300'), findsOneWidget);
+    await t.scrollUntilVisible(find.text('Eicher 1'), 300, scrollable: find.byType(Scrollable).first);
     expect(find.text('Eicher 1'), findsOneWidget);
     final month = api.where('GET', '/api/v1/reports/summary').first.queryParameters['month'];
     expect(month, monthKey(DateTime.now()));
+  });
+
+  testWidgets('home shows this week in plain words with day bars', (t) async {
+    await boot(t);
+    await t.scrollUntilVisible(find.text('આ અઠવાડિયું'), 300, scrollable: find.byType(Scrollable).first);
+    expect(find.text('₹48,000'), findsOneWidget);
+    expect(find.text('₹21,000'), findsOneWidget);
+    expect(find.text('₹27,000'), findsOneWidget);
+    expect(find.text('12'), findsOneWidget);
+    expect(find.text('સોમ'), findsOneWidget);
+    expect(find.text('રવિ'), findsOneWidget);
+  });
+
+  testWidgets('an empty week says so instead of bars', (t) async {
+    final w = api.reportData['week'] as Map<String, dynamic>;
+    w['trips'] = 0;
+    w['expense'] = '0.00';
+    await boot(t);
+    await t.scrollUntilVisible(find.text('આ અઠવાડિયે હજી કોઈ ટ્રીપ કે ખર્ચ નથી'), 300,
+        scrollable: find.byType(Scrollable).first);
+    expect(find.text('સોમ'), findsNothing);
   });
 
   testWidgets('home month arrows load the previous month; next is blocked on the current month', (t) async {
