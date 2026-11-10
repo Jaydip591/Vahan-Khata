@@ -107,21 +107,43 @@ Still to verify by hand on the phone: month numbers against your own books, mile
 - [x] Expenses against a trip: trip detail has a "Trip expenses" card (add fuel, toll, food/allowance, repair... for that trip; vehicle and date come from the trip), the list of that trip's expenses, and the trip profit (bhada minus expenses). Kharcha tab marks trip expenses. Account balances report is still pending (done last).
 - [x] App feel: haptics (tap, press, save, error, delete; switch in More), press-scale on buttons/chips/cards, fade page and tab transitions, count-up amounts, saved tick, skeleton loading, staggered list entry, pull-to-refresh tick, swipe-left delete on trips and expenses.
 - [ ] Payment rows in the party khata should show cash/online and the account
-4a-UX Next: make it feel like a real app (chosen by the user on 2026-11-10; do these in this order, one commit each)
-The user said the app "still feels like something is missing" even after haptics/animations. Compared with a normal app these were the gaps. User picked items 1, 2, 5 and 6 (6 WITHOUT app lock). Not chosen (later, only if asked): search/filter on lists, notifications, WhatsApp "baaki" reminder button.
-- [ ] 1. App identity: real launcher icon (adaptive, ink background + gold truck/ledger mark), app name "વાહન ખાતા" / "Vahan Khata" (strings.xml already has both), native splash screen in ink + gold with the logo (use flutter_launcher_icons / flutter_native_splash or hand-made Android resources), same ink status bar. Today the phone shows the default Flutter icon and a plain white launch screen.
-- [ ] 2. Profile and settings
-  - Profile screen opened from the avatar card in More: big initial avatar, name, @username, company name, phone (if present), role (superadmin). Edit own name/phone. Needs `GET/PATCH /api/v1/users/me` (GET exists, check PATCH) and a company name in the response.
-  - Change password (needs a new backend endpoint: old password + new password; revoke other sessions; test it).
-  - Settings section: language, vibration switch (exists), app version (package_info_plus), help/contact line, logout. Keep the existing More list (vehicles, drivers, parties, accounts, users).
-- [ ] 5. Dashboard charts with fl_chart (already a dependency): Home gets a small 6-month profit trend (data from `/reports/trend`, already exists) and a per-vehicle profit bar/donut for the month; Report tab months screen gets the same trend chart. Income emerald, expense coral, gold highlights, ink background cards. Charts must animate in, work with the offline cache, and have a plain empty state.
-- [ ] 6. Polish (all of these, but NO app lock / PIN / fingerprint):
-  - Empty-state illustrations (simple drawn icons/shapes in the theme colours, friendly Gujarati line like "પહેલી ટ્રીપ ઉમેરો") on Trips, Kharcha, Khata, parties/vehicles lists.
-  - Dark mode (follow phone setting, plus a switch in settings; tokens in `core/theme`, never hardcode colours in widgets; income/expense colours have "on dark" variants already).
-  - Smooth movement: bottom bar with a sliding gold indicator, spring on bottom sheets, predictive back (manifest flag already on).
-  Done when: the app looks right in light and dark on the phone, icon and splash show on the launcher, and all tests plus new tests (profile edit, password change, chart data) pass.
+### Next work list (final, decided with the user on 2026-11-10). Do in this order, one commit each.
+The user said the app "still feels like something is missing" even after haptics/animations, so the list mixes the two open 4a items, "real app" UX items and three new features.
+Show the plan for each item and wait for a yes before editing ("pehle batao, phir karo").
 
-4b Deploy (after 4a is done) — hosting on Render, not Oracle. Database: Neon (free). Keep-awake: a free pinger site (cron-job.org) calls `/health` every 13 minutes so the free web service does not sleep.
+A. Open 4a items
+- [x] A1. Account balances report: per account = opening balance + payments received into it - expenses paid from it. Simple; NO account-to-account transfer (user said not needed).
+- [x] A2. Khata payment rows show cash/online and the account name.
+
+B. Real-app UX
+- [ ] B1. App identity: real launcher icon (adaptive, ink background + gold truck/ledger mark; Claude designs the logo, user may swap it later), ink status bar, native splash in ink + gold with the LOGO ONLY (no text: the splash shows before Flutter knows the in-app language). Use flutter_launcher_icons / flutter_native_splash or hand-made Android resources. Launcher name stays as today: Android picks it from the PHONE language (`values/strings.xml` "Vahan Khata", `values-gu/strings.xml` "વાહન ખાતા"); user is fine with that. Do not use the activity-alias trick to follow the in-app language. Today the phone shows the default Flutter icon and a white launch screen.
+- [ ] B2. Profile and settings
+  - Profile screen from the avatar card in More: big initial avatar, name, @username, company name, phone (if present), role (superadmin). Edit own name/phone. Needs `GET/PATCH /api/v1/users/me` (GET exists, check PATCH) and the company name in the response.
+  - Change password: new endpoint (old + new password; revoke the user's other sessions; tests).
+  - Settings section: language, vibration switch (exists), dark mode switch (B4), app version (package_info_plus), logout. No help/contact line for now (user). Keep the existing More list (vehicles, drivers, parties, accounts, users).
+- [ ] B3. "Is hafte" (this week) card on Home, simple enough for a driver: trips count, Kamai (bhada), Kharcha, Bacha (profit) for Monday-Sunday of the current week, and 7 small day bars (income per day, today in gold) with fl_chart. Plain words, big numbers. NO 6-month trend and NO per-vehicle chart (user wants it short). Needs a week summary (new `/reports/week` or a date-range variant of the month summary). Works from the offline cache, plain empty state, animates in.
+- [ ] B4. Polish (NO app lock / PIN / fingerprint):
+  - Empty-state illustrations (simple drawn shapes in theme colours, friendly line like "પહેલી ટ્રીપ ઉમેરો") on Trips, Kharcha, Khata, parties/vehicles lists.
+  - Dark mode (follow phone setting, plus a switch in settings; tokens in `core/theme`, never hardcode colours; income/expense have "on dark" variants already).
+  - Smooth movement: bottom bar with a sliding gold indicator, spring on bottom sheets, predictive back (manifest flag already on).
+
+C. New features
+- [ ] C1. Launcher shortcuts: long-press the app icon -> "નવી ટ્રીપ" / "ખર્ચ" / "પેમેન્ટ" opening the entry sheet directly (package `quick_actions`, Android App Shortcuts, Android 7.1+). Labels follow the in-app language (set at runtime). Old phones/odd launchers just show no shortcuts. Test on the user's OPPO first.
+- [ ] C2. Yearly report (financial year April-March): "Saal" option in the Report tab; FY totals (bhada, kharcha, profit, received, baaki), month-by-month table, per-vehicle profit; PDF and Excel export through the existing export code. Backend `/reports/year?fy=2026` (FY start year).
+- [ ] C3. Pay by UPI from the Kharcha entry (approved by the user; problems below were accepted as small):
+  - Flow: category tile -> vehicle chip -> keypad amount -> "UPI થી ચૂકવો" button -> payee chip (saved) or "Scan QR" (first time; camera via `mobile_scanner`) or type a UPI ID -> UPI app opens with the amount filled -> user enters PIN -> back to our app.
+  - Result from the UPI app (`Status`, `txnId`, `ApprovalRefNo`/UTR): SUCCESS -> save the expense automatically (account = a UPI account, UTR in a new `upi_ref` field); FAILURE/cancel -> no entry, show "Payment nahi hua"; SUBMITTED/empty/unclear -> ask "Payment થયું?" yes saves, no discards.
+  - UPI app choice flag: a CODE CONSTANT in `lib/core/config` (user's choice), `upiOnlyGooglePay = true`; no Settings switch, changing it needs a new APK. true -> intent targets package `com.google.android.apps.nbu.paisa.user` directly; if GPay is not installed, fall back to the chooser. false -> Android chooser lists all UPI apps (GPay, PhonePe, Paytm, BHIM...).
+  - Android: `upi://pay?pa=&pn=&am=&cu=INR&tn=&tr=` intent with startActivityForResult (small Kotlin method channel or a maintained plugin), `<queries>` for the `upi` scheme in the manifest (Android 11+ package visibility), CAMERA permission.
+  - Backend: `payees` master (name, upi_id, company scoped, `core/crud.py` helpers) + `upi_ref` on expenses (Alembic migration) + tests.
+  - Known limits (accepted): GPay/PhonePe sometimes block intent payments to a PERSONAL UPI ID ("security reasons"); merchant/business QR works. The returned status is not bank-verified (hence the confirm). Needs internet; offline expenses stay manual.
+  - NOT possible: bank details, balance check or transaction history from GPay/PhonePe. They have no public API; balance is only inside the UPI app with the PIN. (The regulated route is RBI Account Aggregator, not for this app.)
+
+Done when: icon and splash show on the launcher, the app looks right in light and dark on the phone, shortcuts open the entry sheets, a UPI payment saves an expense, and all tests plus new tests (account balances, profile edit, password change, week summary, year report, payees/upi_ref) pass.
+
+Not doing now (user said no): search/filter on lists, WhatsApp "baaki" reminder, account-to-account transfer, app lock, 6-month/per-vehicle charts. Other ideas listed but not chosen: payables khata (pump/mechanic udhaar), vehicle fixed costs (EMI/insurance), bilty/LR PDF, per-ton rate, return trip, km-based service reminder, activity log, recycle bin, full Excel backup.
+
+4b Deploy — ON HOLD (user, 2026-11-10: ignore deploy, expiry notifications and Phase 5 pilot until the next work list is done). Hosting on Render, not Oracle. Database: Neon (free). Keep-awake: a free pinger site (cron-job.org) calls `/health` every 13 minutes so the free web service does not sleep.
 - [ ] Render web service from `BE/Dockerfile`, HTTPS included; `DATABASE_URL`, secrets and admin bootstrap as env vars
 - [ ] Postgres on Neon (`DATABASE_URL` with SSL); check the async driver URL form
 - [ ] Nightly backup with a Render Cron Job running `pg_dump` to Google Drive (rclone) or object storage; tested restore
@@ -135,7 +157,7 @@ Done when: entries made in airplane mode appear on the server after reconnect wi
 - [ ] Optional later: voice amount input, Play Store release, roles
 
 ## Handoff notes for a new session (read this first)
-- State on 2026-11-10: Phases 0-3 done; Phase 4a mostly done (offline, fuel type, PDF/Excel, trip expenses, app-feel pass). Still open in 4a: account-balances report (opening + payments - expenses per account) and cash/online + account on the Khata payment rows; then the 4a-UX block above; then 4b deploy. Last commit when this was written: "App feel: haptics ...".
+- State on 2026-11-10: Phases 0-3 done; Phase 4a mostly done (offline, fuel type, PDF/Excel, trip expenses, app-feel pass). Next: the "Next work list" in Phase 4 (A1 account balances, A2 khata payment rows, B1-B4 UX, C1 launcher shortcuts, C2 yearly report, C3 UPI pay), in that order. Deploy, notifications and pilot are on hold. Last commit when this was written: "App feel: haptics ...".
 - Backend + ngrok on the dev PC: API container `transport_api` and `transport_postgres` (docker compose, restart unless-stopped); ngrok static domain `isocheimenal-windrode-latashia.ngrok-free.dev` -> localhost:8000 (`ngrok http 8000 --url=isocheimenal-windrode-latashia.ngrok-free.dev`). The phone app is built against that URL.
 - Build and install on the phone (OPPO/OnePlus CPH2531, adb id PRWWVK8T9XQ8LJ6X; USB debugging on):
   `cd FE && flutter build apk --release --dart-define=API_BASE_URL=https://isocheimenal-windrode-latashia.ngrok-free.dev && adb install -r build/app/outputs/flutter-apk/app-release.apk`

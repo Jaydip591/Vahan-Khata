@@ -407,6 +407,32 @@ class FakeApi implements HttpClientAdapter {
         {'category': 'toll', 'amount': '500.00', 'count': 2},
       ],
     },
+    'accounts': {
+      'total': '14800.00',
+      'unassigned_spent': '400.00',
+      'accounts': [
+        {
+          'account_id': 'acc-bank',
+          'name': 'Bank - SBI',
+          'kind': 'bank',
+          'is_active': true,
+          'opening': '10000.00',
+          'received': '3000.00',
+          'spent': '2000.00',
+          'balance': '11000.00',
+        },
+        {
+          'account_id': 'acc-cash',
+          'name': 'Cash - Jaydip',
+          'kind': 'cash',
+          'is_active': true,
+          'opening': '0.00',
+          'received': '5000.00',
+          'spent': '1200.00',
+          'balance': '3800.00',
+        },
+      ],
+    },
   };
 
   ResponseBody _reports(String kind, Map<String, dynamic> q) {

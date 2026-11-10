@@ -75,3 +75,20 @@ class ExpenseReport(BaseModel):
     month: str
     total: Decimal
     categories: list[CategoryTotal]
+
+
+class AccountBalance(BaseModel):
+    account_id: uuid.UUID
+    name: str
+    kind: str  # cash / bank / upi
+    is_active: bool
+    opening: Decimal
+    received: Decimal  # payments into this account, all time
+    spent: Decimal  # expenses paid from this account, all time
+    balance: Decimal  # opening + received - spent
+
+
+class AccountBalances(BaseModel):
+    total: Decimal
+    accounts: list[AccountBalance]
+    unassigned_spent: Decimal  # expenses saved without an account (not in any balance)

@@ -1,6 +1,6 @@
 from decimal import Decimal
 
-from helpers import EXP, make_party, make_payment, make_trip, make_vehicle, make_world
+from helpers import EXP, make_account, make_party, make_payment, make_trip, make_vehicle, make_world
 
 R = "/api/v1/reports"
 
@@ -150,3 +150,31 @@ async def test_two_fuels_give_totals_but_no_mileage(client, auth):
     assert row["km"] == 200 and row["mileage"] is None
     assert [(f["category"], Decimal(f["amount"]), f["entries"]) for f in row["fuels"]] == [
         ("cng", 1700, 2), ("petrol", 1000, 1)]
+
+
+async def test_account_balances(client, auth, seeded):
+    w = await make_world(client, auth)  # "Cash - Jaydip", opening 0
+    bank = (
+        await client.post(
+            "/api/v1/accounts", json={"name": "Bank - SBI", "kind": "bank", "opening_balance": "10000"}, headers=auth
+        )
+    ).json()["id"]
+    await make_trip(client, auth, w, bhada="12000")
+    await make_payment(client, auth, w, "5000")
+    await make_payment(client, auth, w, "3000", account_id=bank)
+    await spend(client, auth, w["vehicle"], 1200, account_id=w["account"])
+    await spend(client, auth, w["vehicle"], 2000, account_id=bank)
+    await spend(client, auth, w["vehicle"], 400)  # no account
+    r = (await client.get(R + "/accounts", headers=auth)).json()
+    by = {a["name"]: a for a in r["accounts"]}
+    assert Decimal(by["Cash - Jaydip"]["balance"]) == 3800  # 0 + 5000 - 1200
+    assert Decimal(by["Bank - SBI"]["balance"]) == 11000  # 10000 + 3000 - 2000
+    assert Decimal(by["Bank - SBI"]["received"]) == 3000 and Decimal(by["Bank - SBI"]["spent"]) == 2000
+    assert Decimal(r["total"]) == 14800 and Decimal(r["unassigned_spent"]) == 400
+    assert [a["name"] for a in r["accounts"]] == ["Bank - SBI", "Cash - Jaydip"]
+
+
+async def test_account_balances_company_scoped(client, auth, other_auth):
+    await make_account(client, auth)
+    r = (await client.get(R + "/accounts", headers=other_auth)).json()
+    assert r["accounts"] == [] and Decimal(r["total"]) == 0

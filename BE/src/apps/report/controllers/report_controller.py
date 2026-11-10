@@ -5,6 +5,7 @@ from fastapi import APIRouter, Depends, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from apps.report.schemas.report import (
+    AccountBalances,
     ExpenseReport,
     MonthSummary,
     PartyReports,
@@ -57,3 +58,8 @@ async def expenses(
     db: AsyncSession = Depends(get_db),
 ):
     return await ReportService.expenses(db, user.company_id, _month(month), vehicle_id)
+
+
+@router.get("/accounts", response_model=AccountBalances, summary="Money in each account (all time)")
+async def accounts(user: User = Depends(get_current_user), db: AsyncSession = Depends(get_db)):
+    return await ReportService.accounts(db, user.company_id)

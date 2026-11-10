@@ -864,4 +864,30 @@ class AppL10nGu extends AppL10n {
 
   @override
   String get vibration => 'ટેપ પર વાઇબ્રેશન';
+
+  @override
+  String get reportBalance => 'બેલેન્સ';
+
+  @override
+  String get balanceTotal => 'બધા ખાતામાં કુલ';
+
+  @override
+  String get balanceAllTime => 'શરૂઆતથી આજ સુધી';
+
+  @override
+  String get balanceIn => 'આવ્યા';
+
+  @override
+  String get balanceOut => 'ગયા';
+
+  @override
+  String get balanceOpening => 'શરૂઆત';
+
+  @override
+  String balanceNoAccount(Object amount) {
+    return '$amount ખર્ચમાં ખાતું પસંદ કર્યું નથી';
+  }
+
+  @override
+  String get inactiveTag => 'બંધ';
 }

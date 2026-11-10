@@ -6,11 +6,14 @@ from uuid import UUID
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from apps.account.models.account import Account
 from apps.expense.models.expense import Expense
 from apps.party.models.party import Party
 from apps.payment.models.payment import Payment
 from apps.expense.schemas.expense import FUEL_CATEGORIES
 from apps.report.schemas.report import (
+    AccountBalance,
+    AccountBalances,
     CategoryTotal,
     FuelTotal,
     ExpenseReport,
@@ -201,6 +204,52 @@ class ReportService:
         ]
         rows.sort(key=lambda r: -r.amount)
         return ExpenseReport(month=month, total=sum((r.amount for r in rows), ZERO), categories=rows)
+
+    @staticmethod
+    async def accounts(db: AsyncSession, company_id: UUID) -> AccountBalances:
+        """Money in each account: opening balance + payments received into it - expenses paid from it."""
+        accounts = (
+            (await db.execute(select(Account).where(*_live(Account, company_id)))).scalars().all()
+        )
+        received = {
+            r[0]: Decimal(r[1])
+            for r in await db.execute(
+                select(Payment.account_id, func.sum(Payment.amount))
+                .where(*_live(Payment, company_id))
+                .group_by(Payment.account_id)
+            )
+        }
+        spent = {
+            r[0]: Decimal(r[1])
+            for r in await db.execute(
+                select(Expense.account_id, func.sum(Expense.amount))
+                .where(*_live(Expense, company_id))
+                .group_by(Expense.account_id)
+            )
+        }
+        rows = []
+        for a in accounts:
+            got, out = received.get(a.id, ZERO), spent.get(a.id, ZERO)
+            if not a.is_active and got == 0 and out == 0 and a.opening_balance == 0:
+                continue
+            rows.append(
+                AccountBalance(
+                    account_id=a.id,
+                    name=a.name,
+                    kind=a.kind,
+                    is_active=a.is_active,
+                    opening=a.opening_balance,
+                    received=got,
+                    spent=out,
+                    balance=a.opening_balance + got - out,
+                )
+            )
+        rows.sort(key=lambda r: (not r.is_active, -r.balance, r.name.lower()))
+        return AccountBalances(
+            total=sum((r.balance for r in rows), ZERO),
+            accounts=rows,
+            unassigned_spent=spent.get(None, ZERO),
+        )
 
 
 async def _party_balances(db: AsyncSession, company_id: UUID) -> tuple[dict, Decimal]:

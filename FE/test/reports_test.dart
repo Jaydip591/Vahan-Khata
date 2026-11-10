@@ -66,6 +66,20 @@ void main() {
     expect(find.text('67%'), findsOneWidget);
   });
 
+  testWidgets('balance tab shows money in each account, without the month switcher', (t) async {
+    await boot(t);
+    await tapIt(t, find.text('રિપોર્ટ').last);
+    await t.drag(find.text('પાર્ટી'), const Offset(-400, 0));
+    await t.pumpAndSettle();
+    await tapIt(t, find.text('બેલેન્સ'));
+    expect(find.text('₹14,800'), findsOneWidget);
+    expect(find.text('Bank - SBI'), findsOneWidget);
+    expect(find.text('₹11,000'), findsOneWidget);
+    expect(find.text('₹3,800'), findsOneWidget);
+    expect(find.text('₹400 ખર્ચમાં ખાતું પસંદ કર્યું નથી'), findsOneWidget);
+    expect(find.byTooltip('પાછલો મહિનો'), findsNothing);
+  });
+
   testWidgets('a failed report shows Retry and recovers', (t) async {
     api.failNext['GET /api/v1/reports/summary'] = 500;
     await boot(t);

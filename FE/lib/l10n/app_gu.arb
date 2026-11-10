@@ -293,5 +293,13 @@
   "noTripExpenses": "આ ટ્રીપમાં હજી ખર્ચ નથી",
   "forTrip": "ટ્રીપ",
   "addTripExpense": "આ ટ્રીપનો ખર્ચ ઉમેરો",
-  "vibration": "ટેપ પર વાઇબ્રેશન"
+  "vibration": "ટેપ પર વાઇબ્રેશન",
+  "reportBalance": "બેલેન્સ",
+  "balanceTotal": "બધા ખાતામાં કુલ",
+  "balanceAllTime": "શરૂઆતથી આજ સુધી",
+  "balanceIn": "આવ્યા",
+  "balanceOut": "ગયા",
+  "balanceOpening": "શરૂઆત",
+  "balanceNoAccount": "{amount} ખર્ચમાં ખાતું પસંદ કર્યું નથી",
+  "inactiveTag": "બંધ"
 }

@@ -157,3 +157,51 @@ class ExpenseReport {
         ],
       );
 }
+
+class AccountBalance {
+  const AccountBalance({
+    required this.id,
+    required this.name,
+    required this.kind,
+    required this.isActive,
+    required this.opening,
+    required this.received,
+    required this.spent,
+    required this.balance,
+  });
+
+  final String id;
+  final String name;
+  final String kind; // cash / bank / upi
+  final bool isActive;
+  final double opening;
+  final double received;
+  final double spent;
+  final double balance;
+
+  factory AccountBalance.fromJson(Map<String, dynamic> j) => AccountBalance(
+        id: j['account_id'] as String,
+        name: j['name'] as String,
+        kind: j['kind'] as String,
+        isActive: j['is_active'] as bool? ?? true,
+        opening: parseMoney(j['opening']),
+        received: parseMoney(j['received']),
+        spent: parseMoney(j['spent']),
+        balance: parseMoney(j['balance']),
+      );
+}
+
+class AccountBalances {
+  const AccountBalances({required this.total, required this.accounts, required this.unassignedSpent});
+  final double total;
+  final List<AccountBalance> accounts;
+  final double unassignedSpent;
+
+  factory AccountBalances.fromJson(Map<String, dynamic> j) => AccountBalances(
+        total: parseMoney(j['total']),
+        accounts: [
+          for (final a in j['accounts'] as List) AccountBalance.fromJson(a as Map<String, dynamic>),
+        ],
+        unassignedSpent: parseMoney(j['unassigned_spent']),
+      );
+}

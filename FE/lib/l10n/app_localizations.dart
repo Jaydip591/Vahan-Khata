@@ -1734,6 +1734,54 @@ abstract class AppL10n {
   /// In gu, this message translates to:
   /// **'ટેપ પર વાઇબ્રેશન'**
   String get vibration;
+
+  /// No description provided for @reportBalance.
+  ///
+  /// In gu, this message translates to:
+  /// **'બેલેન્સ'**
+  String get reportBalance;
+
+  /// No description provided for @balanceTotal.
+  ///
+  /// In gu, this message translates to:
+  /// **'બધા ખાતામાં કુલ'**
+  String get balanceTotal;
+
+  /// No description provided for @balanceAllTime.
+  ///
+  /// In gu, this message translates to:
+  /// **'શરૂઆતથી આજ સુધી'**
+  String get balanceAllTime;
+
+  /// No description provided for @balanceIn.
+  ///
+  /// In gu, this message translates to:
+  /// **'આવ્યા'**
+  String get balanceIn;
+
+  /// No description provided for @balanceOut.
+  ///
+  /// In gu, this message translates to:
+  /// **'ગયા'**
+  String get balanceOut;
+
+  /// No description provided for @balanceOpening.
+  ///
+  /// In gu, this message translates to:
+  /// **'શરૂઆત'**
+  String get balanceOpening;
+
+  /// No description provided for @balanceNoAccount.
+  ///
+  /// In gu, this message translates to:
+  /// **'{amount} ખર્ચમાં ખાતું પસંદ કર્યું નથી'**
+  String balanceNoAccount(Object amount);
+
+  /// No description provided for @inactiveTag.
+  ///
+  /// In gu, this message translates to:
+  /// **'બંધ'**
+  String get inactiveTag;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

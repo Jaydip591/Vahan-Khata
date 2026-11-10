@@ -867,4 +867,30 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get vibration => 'Vibration on tap';
+
+  @override
+  String get reportBalance => 'Balance';
+
+  @override
+  String get balanceTotal => 'Total in all accounts';
+
+  @override
+  String get balanceAllTime => 'From the start till today';
+
+  @override
+  String get balanceIn => 'In';
+
+  @override
+  String get balanceOut => 'Out';
+
+  @override
+  String get balanceOpening => 'Opening';
+
+  @override
+  String balanceNoAccount(Object amount) {
+    return '$amount of expenses have no account';
+  }
+
+  @override
+  String get inactiveTag => 'Off';
 }

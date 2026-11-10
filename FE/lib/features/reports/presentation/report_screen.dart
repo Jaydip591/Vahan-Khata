@@ -9,6 +9,7 @@ import '../../../core/network/api_error.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/ui/app_chip.dart';
 import '../../../core/ui/ink_header.dart';
+import '../../../core/ui/status_tag.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../expenses/data/expense.dart';
 import '../data/report.dart';
@@ -16,7 +17,7 @@ import '../data/report_repository.dart';
 import 'month_switcher.dart';
 import 'report_widgets.dart';
 
-enum _Tab { vehicle, party, trend, expense }
+enum _Tab { vehicle, party, trend, expense, balance }
 
 class ReportScreen extends ConsumerStatefulWidget {
   const ReportScreen({super.key});
@@ -37,15 +38,17 @@ class _ReportScreenState extends ConsumerState<ReportScreen> {
       _Tab.party: t.reportParty,
       _Tab.trend: t.reportMonths,
       _Tab.expense: t.reportExpense,
+      _Tab.balance: t.reportBalance,
     };
     return Column(
       children: [
         InkHeader(title: t.tabReport),
-        Container(
-          color: Colors.white,
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-          child: const MonthSwitcher(),
-        ),
+        if (_tab != _Tab.balance)
+          Container(
+            color: Colors.white,
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            child: const MonthSwitcher(),
+          ),
         SizedBox(
           height: 64,
           child: ListView(
@@ -70,6 +73,7 @@ class _ReportScreenState extends ConsumerState<ReportScreen> {
             _Tab.party => _PartyTab(month: key),
             _Tab.trend => _TrendTab(month: key),
             _Tab.expense => _ExpenseTab(month: key),
+            _Tab.balance => const _BalanceTab(),
           },
         ),
       ],
@@ -395,5 +399,108 @@ class _ExpenseTab extends ConsumerWidget {
               ),
       );
     });
+  }
+}
+
+// ───────────────────────── Balance ─────────────────────────
+/// Money in each account, all time: opening + received - spent.
+class _BalanceTab extends ConsumerWidget {
+  const _BalanceTab();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final t = AppL10n.of(context);
+    final p = accountBalancesProvider;
+    return _async<AccountBalances>(context, ref.watch(p), () => ref.invalidate(p), (r) {
+      return AppRefresh(
+        onRefresh: () async => ref.refresh(p.future),
+        child: r.accounts.isEmpty
+            ? _empty(context, Icons.account_balance_wallet_rounded, t.emptyAccounts)
+            : ListView(
+                padding: const EdgeInsets.all(16),
+                children: [
+                  ReportCard(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(t.balanceTotal, style: const TextStyle(fontSize: 17, color: AppColors.muted)),
+                              Text(t.balanceAllTime, style: const TextStyle(fontSize: 13, color: AppColors.muted)),
+                            ],
+                          ),
+                        ),
+                        Text(formatRupees(r.total),
+                            style: TextStyle(fontSize: 26, fontWeight: FontWeight.w600, color: profitColor(r.total))),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  for (final a in r.accounts) ...[
+                    _AccountCard(row: a),
+                    const SizedBox(height: 10),
+                  ],
+                  if (r.unassignedSpent > 0)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                      child: Text(t.balanceNoAccount(formatRupees(r.unassignedSpent)),
+                          style: const TextStyle(fontSize: 14, color: AppColors.muted)),
+                    ),
+                ],
+              ),
+      );
+    });
+  }
+}
+
+class _AccountCard extends StatelessWidget {
+  const _AccountCard({required this.row});
+  final AccountBalance row;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = AppL10n.of(context);
+    final icon = switch (row.kind) {
+      'bank' => Icons.account_balance_rounded,
+      'upi' => Icons.qr_code_2_rounded,
+      _ => Icons.payments_rounded,
+    };
+    Widget part(String label, double value, Color color) => Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(label, style: const TextStyle(fontSize: 13, color: AppColors.muted)),
+              Text(formatRupees(value), style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: color)),
+            ],
+          ),
+        );
+    return ReportCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(icon, color: AppColors.gold),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(row.name, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+              ),
+              if (!row.isActive) ...[StatusTag(t.inactiveTag, TagKind.neutral), const SizedBox(width: 8)],
+              Text(formatRupees(row.balance),
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600, color: profitColor(row.balance))),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              part(t.balanceOpening, row.opening, AppColors.ink),
+              part(t.balanceIn, row.received, AppColors.income),
+              part(t.balanceOut, row.spent, AppColors.expense),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }

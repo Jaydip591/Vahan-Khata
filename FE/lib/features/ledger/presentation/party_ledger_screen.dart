@@ -241,6 +241,15 @@ class PartyLedgerScreen extends ConsumerWidget {
                           ),
                           child: Row(
                             children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 12),
+                                child: Icon(
+                                  p.mode == 'cash'
+                                      ? Icons.payments_rounded
+                                      : Icons.phone_android_rounded,
+                                  color: AppColors.income,
+                                ),
+                              ),
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -254,7 +263,7 @@ class PartyLedgerScreen extends ConsumerWidget {
                                       ),
                                     ),
                                     Text(
-                                      '${formatDay(p.date)} · ${p.accountName}',
+                                      '${formatDay(p.date)} · ${p.mode == 'cash' ? t.modeCash : t.modeOnline} · ${p.accountName}',
                                       style: const TextStyle(
                                         fontSize: 14,
                                         color: AppColors.muted,

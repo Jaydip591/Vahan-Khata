@@ -104,6 +104,9 @@ void main() {
     expect(find.text('સુરત → વલસાડ'), findsOneWidget);
     expect(find.text('+₹20,000'), findsOneWidget);
     expect(find.text('મળી ગયા'), findsOneWidget); // oldest trip is settled by the 20,000
+    // payment row says how it came and into which account
+    final acc = api.db['accounts']!.first['name'];
+    expect(find.text('${formatDay(DateTime.parse(ago(1)))} · ઓનલાઇન · $acc'), findsOneWidget);
   });
 
   testWidgets('record the full due amount from the party khata', (t) async {

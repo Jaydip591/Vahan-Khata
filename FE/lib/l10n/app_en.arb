@@ -286,5 +286,13 @@
   "noTripExpenses": "No expense on this trip yet",
   "forTrip": "Trip",
   "addTripExpense": "Add expense for this trip",
-  "vibration": "Vibration on tap"
+  "vibration": "Vibration on tap",
+  "reportBalance": "Balance",
+  "balanceTotal": "Total in all accounts",
+  "balanceAllTime": "From the start till today",
+  "balanceIn": "In",
+  "balanceOut": "Out",
+  "balanceOpening": "Opening",
+  "balanceNoAccount": "{amount} of expenses have no account",
+  "inactiveTag": "Off"
 }
