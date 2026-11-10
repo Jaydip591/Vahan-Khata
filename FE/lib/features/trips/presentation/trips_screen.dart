@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/ui/empty_state.dart';
 import '../../../core/ui/motion.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -125,20 +126,11 @@ class _TripsScreenState extends ConsumerState<TripsScreen> {
               child: (shown(list).isEmpty && waiting.isEmpty)
                   ? ListView(
                       children: [
-                        const SizedBox(height: 80),
-                        const Icon(
-                          Icons.local_shipping_rounded,
-                          size: 56,
-                          color: AppColors.gold,
-                        ),
-                        const SizedBox(height: 12),
-                        Text(
-                          t.emptyTrips,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: 19,
-                            fontWeight: FontWeight.w500,
-                          ),
+                        EmptyState(
+                          icon: Icons.local_shipping_rounded,
+                          title: t.emptyTrips,
+                          actionLabel: t.emptyTripsHint,
+                          onAction: () => context.push('/trip/new'),
                         ),
                       ],
                     )

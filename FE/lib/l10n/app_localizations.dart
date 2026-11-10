@@ -1986,6 +1986,30 @@ abstract class AppL10n {
   /// In gu, this message translates to:
   /// **'ડાર્ક'**
   String get themeDark;
+
+  /// No description provided for @emptyTripsHint.
+  ///
+  /// In gu, this message translates to:
+  /// **'પહેલી ટ્રીપ ઉમેરો'**
+  String get emptyTripsHint;
+
+  /// No description provided for @emptyExpensesHint.
+  ///
+  /// In gu, this message translates to:
+  /// **'ઉપરના ખાનામાંથી ખર્ચ ઉમેરો'**
+  String get emptyExpensesHint;
+
+  /// No description provided for @emptyPartiesHint.
+  ///
+  /// In gu, this message translates to:
+  /// **'ટ્રીપ ઉમેરતી વખતે પાર્ટી બની જશે'**
+  String get emptyPartiesHint;
+
+  /// No description provided for @emptyReportHint.
+  ///
+  /// In gu, this message translates to:
+  /// **'ટ્રીપ અને ખર્ચ ઉમેરશો એટલે અહીં દેખાશે'**
+  String get emptyReportHint;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import 'empty_state.dart';
 import '../haptics.dart';
 import 'motion.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -142,18 +144,7 @@ class MasterListScreen<T> extends ConsumerWidget {
                 onRefresh: onRefresh,
                 child: list.isEmpty
                     ? ListView(
-                        children: [
-                          const SizedBox(height: 80),
-                          Icon(emptyIcon, size: 56, color: AppColors.gold),
-                          const SizedBox(height: 12),
-                          Text(emptyText,
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w500)),
-                          const SizedBox(height: 4),
-                          Text(t.emptyHint,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 15, color: AppColors.muted)),
-                        ],
+                        children: [EmptyState(icon: emptyIcon, title: emptyText, hint: t.emptyHint)],
                       )
                     : ListView.separated(
                         padding: const EdgeInsets.all(16),

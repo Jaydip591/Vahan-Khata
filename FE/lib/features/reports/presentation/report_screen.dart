@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/ui/empty_state.dart';
 import '../../../core/ui/motion.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -101,12 +102,7 @@ Widget _async<T>(
 }
 
 Widget _empty(BuildContext context, IconData icon, String text) => ListView(children: [
-      const SizedBox(height: 80),
-      Icon(icon, size: 56, color: AppColors.gold),
-      const SizedBox(height: 12),
-      Text(text,
-          textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w500)),
+      EmptyState(icon: icon, title: text, hint: AppL10n.of(context).emptyReportHint),
     ]);
 
 // ───────────────────────── Gaadi ─────────────────────────

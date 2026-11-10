@@ -997,4 +997,16 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get themeDark => 'Dark';
+
+  @override
+  String get emptyTripsHint => 'Add your first trip';
+
+  @override
+  String get emptyExpensesHint => 'Pick a tile above to add an expense';
+
+  @override
+  String get emptyPartiesHint => 'Parties appear when you add a trip';
+
+  @override
+  String get emptyReportHint => 'Add trips and expenses to see them here';
 }

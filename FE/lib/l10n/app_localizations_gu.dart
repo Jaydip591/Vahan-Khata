@@ -993,4 +993,16 @@ class AppL10nGu extends AppL10n {
 
   @override
   String get themeDark => 'ડાર્ક';
+
+  @override
+  String get emptyTripsHint => 'પહેલી ટ્રીપ ઉમેરો';
+
+  @override
+  String get emptyExpensesHint => 'ઉપરના ખાનામાંથી ખર્ચ ઉમેરો';
+
+  @override
+  String get emptyPartiesHint => 'ટ્રીપ ઉમેરતી વખતે પાર્ટી બની જશે';
+
+  @override
+  String get emptyReportHint => 'ટ્રીપ અને ખર્ચ ઉમેરશો એટલે અહીં દેખાશે';
 }

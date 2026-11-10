@@ -122,7 +122,7 @@ B. Real-app UX
   - Change password: new endpoint (old + new password; revoke the user's other sessions; tests).
   - Settings section: language, vibration switch (exists), dark mode switch (B4), app version (package_info_plus), logout. No help/contact line for now (user). Keep the existing More list (vehicles, drivers, parties, accounts, users).
 - [x] B3. "Is hafte" (this week) card on Home, simple enough for a driver: trips count, Kamai (bhada), Kharcha, Bacha (profit) for Monday-Sunday of the current week, and 7 small day bars (income per day, today in gold) with fl_chart. Plain words, big numbers. NO 6-month trend and NO per-vehicle chart (user wants it short). Needs a week summary (new `/reports/week` or a date-range variant of the month summary). Works from the offline cache, plain empty state, animates in.
-- [ ] B4. Polish (NO app lock / PIN / fingerprint):
+- [x] B4. Polish (NO app lock / PIN / fingerprint):
   - Empty-state illustrations (simple drawn shapes in theme colours, friendly line like "પહેલી ટ્રીપ ઉમેરો") on Trips, Kharcha, Khata, parties/vehicles lists.
   - Dark mode (follow phone setting, plus a switch in settings; tokens in `core/theme`, never hardcode colours; income/expense have "on dark" variants already).
   - Smooth movement: bottom bar with a sliding gold indicator, spring on bottom sheets, predictive back (manifest flag already on).

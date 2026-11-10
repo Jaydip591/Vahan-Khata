@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/ui/empty_state.dart';
 import '../../../core/ui/motion.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -99,11 +100,11 @@ class _KharchaScreenState extends ConsumerState<KharchaScreen> {
                         .where((i) => i.kind == OutboxKind.expense && monthKey(i.date) == key)
                         .toList();
                     if (list.isEmpty && waiting.isEmpty) {
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 12),
-                        child: Text(t.emptyExpenses,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 16, color: AppColors.muted)),
+                      return EmptyState(
+                        icon: Icons.receipt_long_rounded,
+                        title: t.emptyExpenses,
+                        hint: t.emptyExpensesHint,
+                        topGap: 8,
                       );
                     }
                     final total = list.fold<double>(0, (a, e) => a + e.amount);

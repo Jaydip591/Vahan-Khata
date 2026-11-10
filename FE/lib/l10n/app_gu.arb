@@ -335,5 +335,9 @@
   "themeLabel": "દેખાવ (લાઇટ / ડાર્ક)",
   "themeSystem": "ફોન મુજબ",
   "themeLight": "લાઇટ",
-  "themeDark": "ડાર્ક"
+  "themeDark": "ડાર્ક",
+  "emptyTripsHint": "પહેલી ટ્રીપ ઉમેરો",
+  "emptyExpensesHint": "ઉપરના ખાનામાંથી ખર્ચ ઉમેરો",
+  "emptyPartiesHint": "ટ્રીપ ઉમેરતી વખતે પાર્ટી બની જશે",
+  "emptyReportHint": "ટ્રીપ અને ખર્ચ ઉમેરશો એટલે અહીં દેખાશે"
 }

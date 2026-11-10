@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/ui/empty_state.dart';
 import '../../../core/ui/motion.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -71,16 +72,11 @@ class KhataScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: 14),
                   if (data.parties.isEmpty)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 40),
-                      child: Column(
-                        children: [
-                          const Icon(Icons.groups_rounded, size: 56, color: AppColors.gold),
-                          const SizedBox(height: 12),
-                          Text(t.emptyParties,
-                              style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w500)),
-                        ],
-                      ),
+                    EmptyState(
+                      icon: Icons.menu_book_rounded,
+                      title: t.emptyParties,
+                      hint: t.emptyPartiesHint,
+                      topGap: 24,
                     ),
                   for (final p in data.parties) ...[
                     _PartyTile(party: p),

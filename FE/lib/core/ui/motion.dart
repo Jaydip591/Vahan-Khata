@@ -6,6 +6,14 @@ import '../theme/app_colors.dart';
 
 /// Shrinks a little while the finger is down, like a real button. Does not take over the tap,
 /// so the child's own InkWell still works.
+/// Bottom sheets rise with a small spring (a light overshoot, then settle).
+const kSheetAnimation = AnimationStyle(
+  curve: Cubic(0.18, 1.18, 0.4, 1),
+  duration: Duration(milliseconds: 380),
+  reverseCurve: Curves.easeInCubic,
+  reverseDuration: Duration(milliseconds: 220),
+);
+
 class PressScale extends StatefulWidget {
   const PressScale({super.key, required this.child, this.scale = 0.97});
   final Widget child;

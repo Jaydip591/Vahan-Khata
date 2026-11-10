@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../core/ui/app_chip.dart';
+import '../../../core/ui/motion.dart';
 import '../../../l10n/app_localizations.dart';
 import '../data/place.dart';
 import '../data/place_repository.dart';
@@ -24,6 +25,7 @@ Future<Place?> showPlacePicker(BuildContext context, {required String title}) {
     context: context,
     isScrollControlled: true,
     useSafeArea: true,
+    sheetAnimationStyle: kSheetAnimation,
     backgroundColor: AppColors.card,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(24)),

@@ -328,5 +328,9 @@
   "themeLabel": "Look (light / dark)",
   "themeSystem": "Like phone",
   "themeLight": "Light",
-  "themeDark": "Dark"
+  "themeDark": "Dark",
+  "emptyTripsHint": "Add your first trip",
+  "emptyExpensesHint": "Pick a tile above to add an expense",
+  "emptyPartiesHint": "Parties appear when you add a trip",
+  "emptyReportHint": "Add trips and expenses to see them here"
 }

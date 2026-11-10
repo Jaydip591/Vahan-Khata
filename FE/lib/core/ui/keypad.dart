@@ -13,6 +13,7 @@ Future<T?> showAppSheet<T>(BuildContext context, WidgetBuilder builder) {
     context: context,
     isScrollControlled: true,
     useSafeArea: true,
+    sheetAnimationStyle: kSheetAnimation,
     backgroundColor: AppColors.card,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(24)),

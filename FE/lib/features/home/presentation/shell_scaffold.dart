@@ -9,7 +9,7 @@ import '../../../core/haptics.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../l10n/app_localizations.dart';
 
-/// Bottom bar with the five main tabs. Active tab has a gold top border.
+/// Bottom bar with the five main tabs. A gold line slides above the active tab.
 class ShellScaffold extends ConsumerStatefulWidget {
   const ShellScaffold({super.key, required this.navigationShell});
 
@@ -84,24 +84,55 @@ class _ShellScaffoldState extends ConsumerState<ShellScaffold>
                 decoration: BoxDecoration(
                   border: Border(top: BorderSide(color: AppColors.line)),
                 ),
-                child: Row(
+                child: Stack(
                   children: [
-                    for (var i = 0; i < items.length; i++)
-                      Expanded(
-                        child: _BarItem(
-                          icon: items[i].$1,
-                          activeIcon: items[i].$2,
-                          label: items[i].$3,
-                          active: navigationShell.currentIndex == i,
-                          onTap: () {
-                            Haptics.tap();
-                            navigationShell.goBranch(
-                              i,
-                              initialLocation: i == navigationShell.currentIndex,
-                            );
-                          },
+                    Row(
+                      children: [
+                        for (var i = 0; i < items.length; i++)
+                          Expanded(
+                            child: _BarItem(
+                              icon: items[i].$1,
+                              activeIcon: items[i].$2,
+                              label: items[i].$3,
+                              active: navigationShell.currentIndex == i,
+                              onTap: () {
+                                Haptics.tap();
+                                navigationShell.goBranch(
+                                  i,
+                                  initialLocation:
+                                      i == navigationShell.currentIndex,
+                                );
+                              },
+                            ),
+                          ),
+                      ],
+                    ),
+                    // Gold line above the active tab; it slides to the new tab with a small spring.
+                    AnimatedAlign(
+                      key: const ValueKey('tab-indicator'),
+                      alignment: Alignment(
+                        -1 +
+                            2 *
+                                navigationShell.currentIndex /
+                                (items.length - 1),
+                        -1,
+                      ),
+                      duration: const Duration(milliseconds: 380),
+                      curve: Curves.easeOutBack,
+                      child: FractionallySizedBox(
+                        widthFactor: 1 / items.length,
+                        child: Center(
+                          child: Container(
+                            width: 44,
+                            height: 3.5,
+                            decoration: BoxDecoration(
+                              color: AppColors.gold,
+                              borderRadius: BorderRadius.circular(3),
+                            ),
+                          ),
                         ),
                       ),
+                    ),
                   ],
                 ),
               ),
@@ -133,32 +164,27 @@ class _BarItem extends StatelessWidget {
     final color = active ? AppColors.text : AppColors.muted;
     return InkWell(
       onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border(
-            top: BorderSide(
-              color: active ? AppColors.gold : Colors.transparent,
-              width: 3,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          AnimatedScale(
+            scale: active ? 1.12 : 1,
+            duration: const Duration(milliseconds: 260),
+            curve: Curves.easeOutBack,
+            child: Icon(active ? activeIcon : icon, size: 26, color: color),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            label,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: 12,
+              color: color,
+              fontWeight: active ? FontWeight.w500 : FontWeight.w400,
             ),
           ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(active ? activeIcon : icon, size: 26, color: color),
-            const SizedBox(height: 2),
-            Text(
-              label,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: 12,
-                color: color,
-                fontWeight: active ? FontWeight.w500 : FontWeight.w400,
-              ),
-            ),
-          ],
-        ),
+        ],
       ),
     );
   }
